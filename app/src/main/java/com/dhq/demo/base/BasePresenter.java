@@ -5,7 +5,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by Administrator on 2016/8/1.
  */
-public class BasePresenter<V extends BaseView> {
+public class BasePresenter<V> {
 
     private WeakReference<V> viewRef;
 

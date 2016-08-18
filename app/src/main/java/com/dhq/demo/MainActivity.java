@@ -14,7 +14,7 @@ public class MainActivity extends BaseActivity<MainView,MainPresenter> {
     }
 
     @Override
-    protected void init() {
+    protected void initialize() {
 
     }
 
