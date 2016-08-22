@@ -2,6 +2,9 @@ package com.dhq.demo.base;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2016/8/1.
@@ -14,6 +17,7 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends Activi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
+        ButterKnife.bind(this);
         mPresenter = createPresenter();
         mPresenter.attachView((V) this);
     }
@@ -46,4 +50,23 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends Activi
      * @return
      */
     protected abstract P createPresenter();
+
+
+    /**
+     * 显示Toast消息
+     * @param msg 需要显示的消息
+     */
+    public void showToast(String msg){
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 显示Toast消息
+     * @param resId 需要显示的消息id
+     */
+    public void showToast(int resId){
+        Toast.makeText(this,resId,Toast.LENGTH_SHORT).show();
+    }
+
+
 }

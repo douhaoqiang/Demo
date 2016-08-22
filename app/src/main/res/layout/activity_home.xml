@@ -14,6 +14,7 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
+                android:id="@+id/home_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@color/colorPrimary">
@@ -36,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
+        app:headerLayout="@layout/home_menu_header"
         app:menu="@menu/activity_home_menu">
 
     </android.support.design.widget.NavigationView>
