@@ -8,10 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/home_toolbar"
@@ -19,16 +19,30 @@
                 android:layout_height="?actionBarSize"
                 android:background="@color/colorPrimary">
 
-
-
             </android.support.v7.widget.Toolbar>
 
-            <TextView
+            <android.support.design.widget.TabLayout
+                android:id="@+id/home_tab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"/>
+                app:tabTextColor="@color/colorAccent"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/colorAccent">
 
-        </LinearLayout>
+            </android.support.design.widget.TabLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/home_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v4.view.ViewPager>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+
 
 
     </android.support.design.widget.CoordinatorLayout>

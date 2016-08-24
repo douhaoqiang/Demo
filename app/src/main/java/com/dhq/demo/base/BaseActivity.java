@@ -5,18 +5,22 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2016/8/1.
  */
-public abstract class BaseActivity<V, P extends BasePresenter<V>> extends Activity {
+public abstract class BaseActivity<V, P extends BasePresenter<V>> extends FragmentActivity {
 
+    private Unbinder mBind;
     protected P mPresenter;
     private static final int INVALID_VAL = -1;
 
@@ -32,9 +36,10 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends Activi
         }
 
         setContentView(getLayoutId());
-        ButterKnife.bind(this);
+        mBind = ButterKnife.bind(this);
         mPresenter = createPresenter();
         mPresenter.attachView((V) this);
+        initialize();
     }
 
 
@@ -81,6 +86,7 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends Activi
         if (mPresenter != null) {
             mPresenter.detachView();
         }
+        mBind.unbind();
         super.onDestroy();
     }
 
