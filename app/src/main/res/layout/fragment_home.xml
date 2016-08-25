@@ -5,8 +5,9 @@
     android:background="@android:color/white">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/fragment_tv"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:text="@string/home_menu_title"/>
 
 </LinearLayout>

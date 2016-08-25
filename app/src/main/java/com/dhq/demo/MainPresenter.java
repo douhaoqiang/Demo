@@ -11,11 +11,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     private Context mContext;
 
-    private MainView mainView;
-
     public MainPresenter(Context context){
-        this.mContext=context;
-        this.mainView=getView();
+        this.mContext=context.getApplicationContext();
     }
 
 

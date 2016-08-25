@@ -14,7 +14,7 @@ public class HomePresentIpml extends BasePresenter<HomeView> {
     private HomeMode mHomeMode=new HomeMode();
 
     public HomePresentIpml(Context context){
-        this.mContext=context;
+        this.mContext=context.getApplicationContext();
     }
 
 

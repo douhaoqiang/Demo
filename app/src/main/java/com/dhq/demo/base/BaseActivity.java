@@ -7,10 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.dhq.demo.R;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -18,7 +21,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2016/8/1.
  */
-public abstract class BaseActivity<V, P extends BasePresenter<V>> extends FragmentActivity {
+public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCompatActivity {
 
     private Unbinder mBind;
     protected P mPresenter;
@@ -30,15 +33,19 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends Fragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            // 透明状态栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        }
 
         setContentView(getLayoutId());
+
+        setStatusBar(getResources().getColor(R.color.colorAccent));
+
         mBind = ButterKnife.bind(this);
         mPresenter = createPresenter();
         mPresenter.attachView((V) this);
+
         initialize();
     }
 

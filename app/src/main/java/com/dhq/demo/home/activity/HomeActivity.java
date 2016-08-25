@@ -9,6 +9,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 
 import com.dhq.demo.R;
 import com.dhq.demo.base.BaseActivity;
@@ -24,7 +27,7 @@ import butterknife.BindView;
 /**
  * Created by Administrator on 2016/8/18.
  */
-public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> {
+public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> implements HomeView {
 
 
     @BindView(R.id.home_toolbar)
@@ -48,6 +51,8 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> {
     @Override
     protected void initialize() {
 
+        initToolBar();
+
         tabIndicators = new ArrayList<>();
         tabFragments = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -60,6 +65,12 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> {
 
         tabLayout.setupWithViewPager(mViewpager);
     }
+
+    private void initToolBar(){
+        homeToolbar.setTitle("首页");// 标题的文字需在setSupportActionBar之前，不然会无效
+        setSupportActionBar(homeToolbar);
+    }
+
 
     @Override
     protected HomePresentIpml createPresenter() {
