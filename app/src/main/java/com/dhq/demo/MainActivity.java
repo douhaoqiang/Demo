@@ -10,8 +10,12 @@ import android.widget.TextView;
 
 import com.dhq.demo.base.BaseActivity;
 
+import java.util.ArrayList;
+import java.util.concurrent.Future;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView{
 
@@ -33,6 +37,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         });
     }
+
+    /**
+     * 初始化列表数据
+     */
+    private void initData(){
+
+    }
+
+
 
 
     private void transfer() {
