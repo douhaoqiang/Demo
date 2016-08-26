@@ -68,6 +68,7 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> implem
 
     private void initToolBar(){
         homeToolbar.setTitle("首页");// 标题的文字需在setSupportActionBar之前，不然会无效
+        homeToolbar.setSubtitle("副标题");
         setSupportActionBar(homeToolbar);
     }
 

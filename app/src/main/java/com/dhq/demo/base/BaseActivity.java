@@ -40,7 +40,7 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
 
         setContentView(getLayoutId());
 
-        setStatusBar(getResources().getColor(R.color.colorAccent));
+//        setStatusBar(getResources().getColor(R.color.colorAccent));
 
         mBind = ButterKnife.bind(this);
         mPresenter = createPresenter();
