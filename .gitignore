@@ -7,4 +7,6 @@
 gradle/
 .gitignore
 .idea/
-
+gradle.properties
+gradlew
+gradlew.bat
