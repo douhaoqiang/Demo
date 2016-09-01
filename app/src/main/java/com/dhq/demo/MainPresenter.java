@@ -2,7 +2,7 @@ package com.dhq.demo;
 
 import android.content.Context;
 
-import com.dhq.demo.base.BasePresenter;
+import com.dhq.baselibrary.presenter.BasePresenter;
 
 /**
  * Created by Administrator on 2016/8/1.

@@ -1,29 +1,24 @@
-package com.dhq.demo.base;
+package com.dhq.baselibrary.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.dhq.demo.R;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import com.dhq.baselibrary.R;
+import com.dhq.baselibrary.presenter.BasePresenter;
 
 /**
- * Created by Administrator on 2016/8/1.
+ * DESC
+ * Created by douhaoqiang on 2016/9/1.
  */
+
 public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCompatActivity {
 
-    private Unbinder mBind;
     protected P mPresenter;
     private static final int INVALID_VAL = -1;
 
@@ -40,9 +35,8 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
 
         setContentView(getLayoutId());
 
-//        setStatusBar(getResources().getColor(R.color.colorAccent));
+        setStatusBar(getResources().getColor(R.color.colorAccent));
 
-        mBind = ButterKnife.bind(this);
         mPresenter = createPresenter();
         mPresenter.attachView((V) this);
 
@@ -93,7 +87,6 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
         if (mPresenter != null) {
             mPresenter.detachView();
         }
-        mBind.unbind();
         super.onDestroy();
     }
 

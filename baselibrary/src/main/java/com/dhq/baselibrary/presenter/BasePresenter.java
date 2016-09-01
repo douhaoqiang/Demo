@@ -1,10 +1,12 @@
-package com.dhq.demo.base;
+package com.dhq.baselibrary.presenter;
 
 import java.lang.ref.WeakReference;
 
 /**
- * Created by Administrator on 2016/8/1.
+ * DESC
+ * Created by douhaoqiang on 2016/9/1.
  */
+
 public class BasePresenter<V> {
 
     private WeakReference<V> viewRef;
