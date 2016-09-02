@@ -1,20 +1,14 @@
 package com.dhq.demo.home.activity;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 
+import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.demo.R;
-import com.dhq.demo.base.BaseActivity;
 import com.dhq.demo.home.Presenter.HomePresentIpml;
 import com.dhq.demo.home.TabContentFragment;
 import com.dhq.demo.home.view.HomeView;
@@ -66,7 +60,7 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> implem
         tabLayout.setupWithViewPager(mViewpager);
     }
 
-    private void initToolBar(){
+    private void initToolBar() {
         homeToolbar.setTitle("首页");// 标题的文字需在setSupportActionBar之前，不然会无效
         homeToolbar.setSubtitle("副标题");
         setSupportActionBar(homeToolbar);

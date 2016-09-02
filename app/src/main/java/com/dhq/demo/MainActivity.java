@@ -67,17 +67,18 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 //        settingTv.startAnimation(animation);
 
 
-        ObjectAnimator anim = ObjectAnimator//
-                .ofFloat(settingTv, "rotationX", 0.0F, 100.0F)//
-                .setDuration(500);//
-        anim.start();
+//        ObjectAnimator anim = ObjectAnimator//
+//                .ofFloat(settingTv, "rotationX", 0.0F, 100.0F)//
+//                .setDuration(500);//
+        ValueAnimator anim = ObjectAnimator.ofFloat(0.0F, 100.0F).setDuration(500);//
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float cVal = (Float) animation.getAnimatedValue();
-
+                settingTv.setRotationX(cVal);
             }
         });
+        anim.start();
 
     }
 

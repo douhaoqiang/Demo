@@ -2,7 +2,7 @@ package com.dhq.demo.home.Presenter;
 
 import android.content.Context;
 
-import com.dhq.demo.base.BasePresenter;
+import com.dhq.baselibrary.presenter.BasePresenter;
 import com.dhq.demo.home.model.HomeMode;
 import com.dhq.demo.home.view.HomeView;
 
@@ -11,12 +11,11 @@ import com.dhq.demo.home.view.HomeView;
  */
 public class HomePresentIpml extends BasePresenter<HomeView> {
     private Context mContext;
-    private HomeMode mHomeMode=new HomeMode();
+    private HomeMode mHomeMode = new HomeMode();
 
-    public HomePresentIpml(Context context){
-        this.mContext=context.getApplicationContext();
+    public HomePresentIpml(Context context) {
+        this.mContext = context.getApplicationContext();
     }
-
 
 
 }
