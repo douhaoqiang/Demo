@@ -11,6 +11,17 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        ndk {
+            moduleName "apputil"          //生成的so名字
+        }
+
+        sourceSets.main{
+            jni.srcDirs = []
+//            jni.srcDirs 'src/main/jni'
+            jniLibs.srcDir 'src/main/libs'
+        }
+
     }
     buildTypes {
         release {
@@ -19,6 +30,11 @@ android {
         }
     }
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

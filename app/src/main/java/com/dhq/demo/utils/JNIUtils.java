@@ -7,23 +7,23 @@ package com.dhq.demo.utils;
 
 public class JNIUtils {
     /**
-     * 获取应用的签名
+     * get app sign
      * @param o
      * @return
      */
     public static native String getSignature(Object o);
 
     /**
-     * 获取应用的包名
+     * get app Packname
      * @param o
      * @return
      */
     public static native String getPackname(Object o);
 
     /**
-     * 加载so库或jni库
+     * load so or jni Library
      */
     static {
-        System.loadLibrary("JNI_ANDROID");
+        System.loadLibrary("apputil");
     }
 }
