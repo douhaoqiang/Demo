@@ -1,0 +1,19 @@
+NDK开发配置
+1.配置ndk.dir
+在local.properties添加如下配置：
+    ndk.dir=D\:\\android\\sdk-studio\\ndk-bundle
+    sdk.dir=D\:\\android\\sdk-studio
+2.Gradle配置NDK模块
+    在defaultConfig目录下添加
+    ndk {
+                moduleName "helloNDK" // 此处为so文件的名字，也就是在java中应用时的名字
+         }
+
+    sourceSets.main{
+                jniLibs.srcDirs = ['libs']
+            }
+
+    在gradle.properties文件中添加
+    android.useDeprecatedNdk=true
+3.生成对应的.h文件
+    指令：javah -jni com.dhq.demo.utils.JNIUtils（com.dhq.demo.utils.JNIUtils为要生成的文件路径）
