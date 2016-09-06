@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Demo</string>
     <string name="home_menu_title">设置</string>
+
+    <string name="main_menu_recycle">Recycle效果</string>
+    <string name="main_menu_ndk">NDKdemo</string>
+    <!--<string name="main_menu_title">设置</string>-->
+    <!--<string name="main_menu_title">设置</string>-->
+
+
+
 </resources>

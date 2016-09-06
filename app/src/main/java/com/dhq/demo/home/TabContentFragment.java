@@ -3,14 +3,14 @@ package com.dhq.demo.home;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-import android.widget.TextView;
 
 import com.dhq.demo.R;
+import com.dhq.demo.recycle.adapter.RecycleViewAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,8 +22,8 @@ import butterknife.Unbinder;
 
 public class TabContentFragment extends Fragment {
 
-    @BindView(R.id.fragment_tv)
-    TextView settingTv;
+    @BindView(R.id.home_first_recycleview)
+    RecyclerView recycleview;
     private Unbinder bind;
 
     public static Fragment newInstance(String title) {
@@ -42,11 +42,15 @@ public class TabContentFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView();
     }
 
-
+    private void initView() {
+        recycleview.setLayoutManager(new LinearLayoutManager(getContext()));
+        recycleview.setAdapter(new RecycleViewAdapter());
+    }
 
     @Override
     public void onDestroyView() {

@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.demo.R;
-import com.dhq.demo.home.Presenter.HomePresentIpml;
+import com.dhq.demo.home.Presenter.HomePresenter;
 import com.dhq.demo.home.TabContentFragment;
 import com.dhq.demo.home.view.HomeView;
 
@@ -17,11 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2016/8/18.
  */
-public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> implements HomeView {
+public class HomeActivity extends BaseActivity<HomeView, HomePresenter> implements HomeView {
 
 
     @BindView(R.id.home_toolbar)
@@ -31,7 +33,7 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> implem
     @BindView(R.id.home_viewpager)
     ViewPager mViewpager;
 
-
+    private Unbinder bind;
     private List<String> tabIndicators;
     private List<Fragment> tabFragments;
     private ContentPagerAdapter contentAdapter;
@@ -44,6 +46,8 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> implem
 
     @Override
     protected void initialize() {
+
+        bind = ButterKnife.bind(this);
 
         initToolBar();
 
@@ -68,8 +72,8 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> implem
 
 
     @Override
-    protected HomePresentIpml createPresenter() {
-        return new HomePresentIpml(this);
+    protected HomePresenter createPresenter() {
+        return new HomePresenter(this);
     }
 
 
@@ -95,5 +99,9 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresentIpml> implem
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bind.unbind();
+    }
 }

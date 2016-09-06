@@ -320,6 +320,10 @@ public class SwipeToLoadLayout extends ViewGroup {
             a.recycle();
         }
 
+        /**
+         * getScaledTouchSlop是一个距离，表示滑动的时候，手的移动要大于这个距离才开始移动控件。
+         * 如果小于这个距离就不触发移动控件，如viewpager就是用这个距离来判断用户是否翻页
+         */
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mAutoScroller = new AutoScroller();
     }
@@ -332,9 +336,12 @@ public class SwipeToLoadLayout extends ViewGroup {
             // no child return
             return;
         } else if (0 < childNum && childNum < 4) {
-            mHeaderView = findViewById(R.id.swipe_refresh_header);
-            mTargetView = findViewById(R.id.swipe_target);
-            mFooterView = findViewById(R.id.swipe_load_more_footer);
+            mHeaderView = getChildAt(0);
+            mTargetView = getChildAt(1);
+            mFooterView = getChildAt(2);
+//            mHeaderView = findViewById(R.id.swipe_refresh_header);
+//            mTargetView = findViewById(R.id.swipe_target);
+//            mFooterView = findViewById(R.id.swipe_load_more_footer);
         } else {
             // more than three children: unsupported!
             throw new IllegalStateException("Children num must equal or less than 3");
@@ -455,6 +462,7 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
+
         final int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -471,10 +479,6 @@ public class SwipeToLoadLayout extends ViewGroup {
                     if (mDebug) {
                         Log.i(TAG, "Another finger down, abort auto scrolling, let the new finger handle");
                     }
-                }
-
-                if (STATUS.isSwipingToRefresh(mStatus) || STATUS.isReleaseToRefresh(mStatus)
-                        || STATUS.isSwipingToLoadMore(mStatus) || STATUS.isReleaseToLoadMore(mStatus)) {
                     return true;
                 }
 

@@ -17,8 +17,18 @@
         </activity>
 
         <activity android:name=".home.activity.HomeActivity">
+        </activity>
+
+        <activity android:name=".recycle.activity.RecycleViewActivity">
 
         </activity>
+
+        <activity android:name=".ndk.activity.NdkDemoActivity">
+
+        </activity>
+
+
+
 
     </application>
 
