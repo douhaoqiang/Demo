@@ -8,9 +8,9 @@ import android.widget.TextView;
 
 import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.demo.R;
-import com.dhq.demo.recycle.adapter.ItemTouchCallback;
-import com.dhq.demo.recycle.adapter.RecycleViewBaseAdapter;
-import com.dhq.demo.recycle.adapter.RecycleViewBaseHolder;
+import com.dhq.baselibrary.adapter.ItemTouchCallback;
+import com.dhq.baselibrary.adapter.RecycleViewBaseAdapter;
+import com.dhq.baselibrary.adapter.RecycleViewBaseHolder;
 import com.dhq.demo.recycle.bean.MyMessage;
 import com.dhq.demo.recycle.prestener.RecycleViewPresenter;
 import com.dhq.demo.recycle.view.IRecycleView;

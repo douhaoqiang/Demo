@@ -1,4 +1,4 @@
-package com.dhq.demo.recycle.adapter;
+package com.dhq.baselibrary.adapter;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;

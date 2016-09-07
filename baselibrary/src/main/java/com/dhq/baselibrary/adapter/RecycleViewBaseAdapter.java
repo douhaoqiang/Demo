@@ -1,11 +1,9 @@
-package com.dhq.demo.recycle.adapter;
+package com.dhq.baselibrary.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.dhq.demo.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,8 +22,8 @@ public abstract class RecycleViewBaseAdapter<T> extends RecyclerView.Adapter<Rec
     /**
      * @param itemId 单个item的布局文件id
      */
-    public RecycleViewBaseAdapter(int itemId){
-        this.layoutId=itemId;
+    public RecycleViewBaseAdapter(int itemId) {
+        this.layoutId = itemId;
     }
 
     /**
@@ -99,7 +97,7 @@ public abstract class RecycleViewBaseAdapter<T> extends RecyclerView.Adapter<Rec
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        convert((RecycleViewBaseHolder)holder,datas.get(position),position);
+        convert((RecycleViewBaseHolder) holder, datas.get(position), position);
     }
 
     @Override
