@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dhq.demo.R;
-import com.dhq.demo.recycle.adapter.RecycleViewAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

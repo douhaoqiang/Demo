@@ -3,11 +3,14 @@ package com.dhq.demo.recycle.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.demo.R;
 import com.dhq.demo.recycle.adapter.ItemTouchCallback;
-import com.dhq.demo.recycle.adapter.RecycleViewAdapter;
+import com.dhq.demo.recycle.adapter.RecycleViewBaseAdapter;
+import com.dhq.demo.recycle.adapter.RecycleViewBaseHolder;
 import com.dhq.demo.recycle.bean.MyMessage;
 import com.dhq.demo.recycle.prestener.RecycleViewPresenter;
 import com.dhq.demo.recycle.view.IRecycleView;
@@ -19,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * DESC
+ * DESC RecyclerView 的简单demo
  * Created by douhaoqiang on 2016/9/6.
  */
 
@@ -29,7 +32,7 @@ public class RecycleViewActivity extends BaseActivity<IRecycleView, RecycleViewP
     RecyclerView recycleview;
     private Unbinder bind;
 
-    private RecycleViewAdapter homeFirstAdapter;
+    private RecycleViewBaseAdapter<MyMessage> adapter;
 
     @Override
     protected int getLayoutId() {
@@ -46,24 +49,38 @@ public class RecycleViewActivity extends BaseActivity<IRecycleView, RecycleViewP
 
     private void initView(){
         recycleview.setLayoutManager(new LinearLayoutManager(this));
-        homeFirstAdapter = new RecycleViewAdapter();
-        recycleview.setAdapter(homeFirstAdapter);
+        adapter = new RecycleViewBaseAdapter<MyMessage>(R.layout.recycle_view_item) {
+            @Override
+            public void convert(RecycleViewBaseHolder holder, MyMessage message, int position) {
+
+                ImageView logoIv=holder.getView(R.id.recycle_item_logo_iv);
+                TextView titleTv=holder.getView(R.id.recycle_item_title_tv);
+                TextView descTv=holder.getView(R.id.recycle_item_desc_tv);
+
+                logoIv.setImageResource(message.logo);
+                titleTv.setText(message.name);
+                descTv.setText(message.desc);
+            }
+        };
+        recycleview.setAdapter(adapter);
 
         ItemTouchCallback itemTouchCallback = new ItemTouchCallback(new ItemTouchCallback.ItemTouchCallbackListener() {
             @Override
             public void dragItem(int dragPosition, int targetPosition) {
-                homeFirstAdapter.changeItem(dragPosition,targetPosition);
+                adapter.changeItem(dragPosition,targetPosition);
             }
 
             @Override
             public void removeItem(int position) {
-                homeFirstAdapter.removeData(position);
+                adapter.removeData(position);
             }
         });
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(itemTouchCallback);
         touchHelper.attachToRecyclerView(recycleview);
     }
+
+
 
     private void getData(){
         mPresenter.getListData();
@@ -88,7 +105,7 @@ public class RecycleViewActivity extends BaseActivity<IRecycleView, RecycleViewP
 
     @Override
     public void getDataSuccess(ArrayList<MyMessage> myMessages) {
-        homeFirstAdapter.setDatas(myMessages);
+        adapter.setDatas(myMessages);
     }
 
     @Override

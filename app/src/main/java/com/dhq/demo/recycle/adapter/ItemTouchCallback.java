@@ -56,7 +56,8 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
         } else if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             //表示左右滑动
             viewHolder.itemView.setAlpha(1-Math.abs(dX/width)+0.2f);
-            viewHolder.itemView.setTranslationX(dX);
+//            viewHolder.itemView.setTranslationX(dX);
+            viewHolder.itemView.setX(dX);
         }
 
     }
