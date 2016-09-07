@@ -8,8 +8,11 @@ import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.demo.R;
 import com.dhq.demo.recycle.adapter.ItemTouchCallback;
 import com.dhq.demo.recycle.adapter.RecycleViewAdapter;
+import com.dhq.demo.recycle.bean.MyMessage;
 import com.dhq.demo.recycle.prestener.RecycleViewPresenter;
 import com.dhq.demo.recycle.view.IRecycleView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +40,11 @@ public class RecycleViewActivity extends BaseActivity<IRecycleView, RecycleViewP
     protected void initialize() {
 
         bind = ButterKnife.bind(this);
+        initView();
+        getData();
+    }
+
+    private void initView(){
         recycleview.setLayoutManager(new LinearLayoutManager(this));
         homeFirstAdapter = new RecycleViewAdapter();
         recycleview.setAdapter(homeFirstAdapter);
@@ -44,18 +52,21 @@ public class RecycleViewActivity extends BaseActivity<IRecycleView, RecycleViewP
         ItemTouchCallback itemTouchCallback = new ItemTouchCallback(new ItemTouchCallback.ItemTouchCallbackListener() {
             @Override
             public void dragItem(int dragPosition, int targetPosition) {
-                homeFirstAdapter.notifyItemMoved(dragPosition, targetPosition);
+                homeFirstAdapter.changeItem(dragPosition,targetPosition);
             }
 
             @Override
-            public void removeItem(int adapterPosition) {
-                homeFirstAdapter.notifyItemRemoved(adapterPosition);
+            public void removeItem(int position) {
+                homeFirstAdapter.removeData(position);
             }
         });
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(itemTouchCallback);
         touchHelper.attachToRecyclerView(recycleview);
+    }
 
+    private void getData(){
+        mPresenter.getListData();
     }
 
     @Override
@@ -70,4 +81,18 @@ public class RecycleViewActivity extends BaseActivity<IRecycleView, RecycleViewP
         bind.unbind();
     }
 
+    @Override
+    public void loadingData() {
+        showToast("正在努力加载数据！");
+    }
+
+    @Override
+    public void getDataSuccess(ArrayList<MyMessage> myMessages) {
+        homeFirstAdapter.setDatas(myMessages);
+    }
+
+    @Override
+    public void getDataFinal(String msg) {
+        showToast("加载数据失败，请刷新！");
+    }
 }

@@ -6,6 +6,7 @@
     android:background="@android:color/white">
 
     <ImageView
+        android:id="@+id/recycle_item_logo_iv"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"
@@ -20,12 +21,14 @@
         android:layout_marginLeft="10dp">
 
         <TextView
+            android:id="@+id/recycle_item_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="离开的接口"
             android:textSize="28sp"
             android:textColor="@color/colorPrimaryDark"/>
         <TextView
+            android:id="@+id/recycle_item_desc_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="离开的接口的的空间就分开来的端口对大家快"
