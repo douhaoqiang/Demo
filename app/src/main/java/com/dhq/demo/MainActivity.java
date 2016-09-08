@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.demo.home.activity.HomeActivity;
 import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
 
@@ -21,6 +22,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     Button menuRecycle;
     @BindView(R.id.main_menu_ndk)
     Button menuNdk;
+    @BindView(R.id.main_menu_tablayout)
+    Button tablayout;
     private Unbinder bind;
 
 
@@ -64,6 +67,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         });
 
+        tablayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoActivity(HomeActivity.class);
+            }
+        });
 
 //        settingTv.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -42,7 +42,7 @@ public class RecycleViewBaseHolder extends RecyclerView.ViewHolder {
     public <T extends View> T getView(int resId) {
         View view = mSparseArray.get(resId);
         if (view == null) {
-            rootView.findViewById(resId);
+            view=rootView.findViewById(resId);
             mSparseArray.put(resId, view);
         }
         return (T) view;

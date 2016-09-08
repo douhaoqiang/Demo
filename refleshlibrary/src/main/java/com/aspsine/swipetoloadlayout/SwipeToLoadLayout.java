@@ -365,6 +365,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             final View headerView = mHeaderView;
             measureChildWithMargins(headerView, widthMeasureSpec, 0, heightMeasureSpec, 0);
             MarginLayoutParams lp = ((MarginLayoutParams) headerView.getLayoutParams());
+            //get header height
             mHeaderHeight = headerView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             if (mRefreshTriggerOffset < mHeaderHeight) {
                 mRefreshTriggerOffset = mHeaderHeight;
@@ -467,6 +468,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
 
+                //get action_down point
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
                 mInitDownY = mLastY = getMotionEventY(event, mActivePointerId);
                 mInitDownX = mLastX = getMotionEventX(event, mActivePointerId);

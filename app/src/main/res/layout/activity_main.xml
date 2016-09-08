@@ -7,20 +7,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/main_menu_recycle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/main_menu_recycle"/>
+                android:text="@string/main_menu_recycle" />
+
             <Button
                 android:id="@+id/main_menu_ndk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/main_menu_ndk"/>
+                android:text="@string/main_menu_ndk" />
+
+            <Button
+                android:id="@+id/main_menu_tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/main_menu_tablayout" />
+
         </LinearLayout>
 
     </ScrollView>
