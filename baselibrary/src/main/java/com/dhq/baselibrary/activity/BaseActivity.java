@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.dhq.baselibrary.R;
@@ -28,14 +29,16 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            // 透明状态栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // 透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//头部状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);//底部虚拟键
+        }
 
         setContentView(getLayoutId());
 
-        setStatusBar(getResources().getColor(R.color.colorAccent));
+//        setStatusBar(getResources().getColor(R.color.colorAccent));
+
 
         mPresenter = createPresenter();
         mPresenter.attachView((V) this);
@@ -53,8 +56,11 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
             int color = COLOR_DEFAULT;
             ViewGroup contentView = (ViewGroup) findViewById(android.R.id.content);
+//            contentView.setFitsSystemWindows(true);
+//            contentView.setClipToPadding(true);
             if (statusColor != INVALID_VAL) {
                 color = statusColor;
             }

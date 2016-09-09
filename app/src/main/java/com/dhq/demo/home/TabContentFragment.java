@@ -67,6 +67,7 @@ public class TabContentFragment extends Fragment {
         mViewpager.setAdapter(contentAdapter);
 
         tabLayout.setupWithViewPager(mViewpager);
+        tabLayout.setTabsFromPagerAdapter(contentAdapter);
     }
 
 
