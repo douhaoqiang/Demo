@@ -37,6 +37,7 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:23.2.0'
     compile 'com.jakewharton:butterknife:8.2.1'
