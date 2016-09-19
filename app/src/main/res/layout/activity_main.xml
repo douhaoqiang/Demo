@@ -33,6 +33,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/main_menu_tablayout" />
 
+            <Button
+                android:id="@+id/main_menu_adtest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/main_menu_adtest" />
+
         </LinearLayout>
 
     </ScrollView>

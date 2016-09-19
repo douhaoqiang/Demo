@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,6 +12,8 @@ import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.demo.home.activity.HomeActivity;
 import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
+
+import org.yc.PubMainManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,11 +27,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     Button menuNdk;
     @BindView(R.id.main_menu_tablayout)
     Button tablayout;
+    @BindView(R.id.main_menu_adtest)
+    Button adtest;
     private Unbinder bind;
 
 
     @Override
     protected int getLayoutId() {
+        Log.e("infe","onCreate");
         return R.layout.activity_main;
     }
 
@@ -71,6 +77,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             @Override
             public void onClick(View v) {
                 gotoActivity(HomeActivity.class);
+            }
+        });
+        adtest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
