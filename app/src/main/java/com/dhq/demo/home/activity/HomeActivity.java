@@ -54,7 +54,7 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresenter> implemen
         initToolBar();
 
 //        initContent();
-        
+        int i=1;
         initTab();
 
     }
