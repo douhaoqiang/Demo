@@ -1,14 +1,25 @@
 package com.dhq.demo.home.activity;
 
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.demo.MyApplication;
 import com.dhq.demo.R;
 import com.dhq.demo.home.Presenter.HomePresenter;
 import com.dhq.demo.home.TabContentFragment;
+import com.dhq.demo.home.adapter.HomePagerAdapter;
+import com.dhq.demo.home.fragment.ItemFragment;
 import com.dhq.demo.home.view.HomeView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,11 +33,10 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresenter> implemen
 
     @BindView(R.id.home_toolbar)
     Toolbar homeToolbar;
-
-
-    private int currentTabIndex;
-    private int index;
-    private Fragment[] fragments;
+    @BindView(R.id.home_tab)
+    TabLayout homeTab;
+    @BindView(R.id.home_viewpager)
+    ViewPager mViewPager;
 
     private Unbinder bind;
 
@@ -43,37 +53,31 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresenter> implemen
 
         initToolBar();
 
-        initContent();
+//        initContent();
+        
+        initTab();
 
-    }
-
-    private void initContent() {
-        TabContentFragment mHomeFragment = new TabContentFragment();
-
-
-        fragments = new Fragment[]{
-                mHomeFragment
-        };
-
-        setShowingFragment();
     }
 
     private void initToolBar() {
         homeToolbar.setTitle("首页");// 标题的文字需在setSupportActionBar之前，不然会无效
-        homeToolbar.setSubtitle("副标题");
         setSupportActionBar(homeToolbar);
     }
 
-    private void setShowingFragment() {
-        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-        trx.replace(R.id.home_container, fragments[0]).commit();
-//        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-//        trx.hide(fragments[currentTabIndex]);
-//        if (!fragments[index].isAdded()) {
-//            trx.add(R.id.home_container, fragments[index]);
-//        }
-//        trx.show(fragments[index]).commit();
-//        currentTabIndex = index;
+    private void initTab() {
+//        homeTab.set
+        List<String> titles = new ArrayList<>();
+        List<Fragment> fragmentLists= new ArrayList<>();
+        for(int i=1;i<4;i++){
+            titles.add("标题"+i);
+            fragmentLists.add(new ItemFragment());
+        }
+        HomePagerAdapter adapter = new HomePagerAdapter(
+                getSupportFragmentManager(), titles, fragmentLists);
+        mViewPager.setAdapter(adapter);
+        homeTab.setupWithViewPager(mViewPager);
+        dynamicSetTabLayoutMode(homeTab);
+
     }
 
     @Override
@@ -87,4 +91,45 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresenter> implemen
         super.onDestroy();
         bind.unbind();
     }
+
+
+    /**
+     * 定义Tab布局的显示模式
+     * @param tabLayout
+     */
+    public static void dynamicSetTabLayoutMode(TabLayout tabLayout) {
+        int tabWidth = calculateTabWidth(tabLayout);
+        int screenWidth = getScreenWith();
+
+        if (tabWidth <= screenWidth) {
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        } else {
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
+    }
+
+    /**
+     *  计算tab布局的宽度
+     * @param tabLayout
+     * @return
+     */
+    private static int calculateTabWidth(TabLayout tabLayout) {
+        int tabWidth = 0;
+        for (int i = 0; i < tabLayout.getChildCount(); i++) {
+            final View view = tabLayout.getChildAt(i);
+            view.measure(0, 0); // 通知父view测量，以便于能够保证获取到宽高
+            tabWidth += view.getMeasuredWidth();
+        }
+        return tabWidth;
+    }
+
+    /**
+     * 获取屏幕的宽度
+     * @return
+     */
+    public static int getScreenWith() {
+        return MyApplication.getIntance().getResources().getDisplayMetrics().widthPixels;
+    }
+
+
 }

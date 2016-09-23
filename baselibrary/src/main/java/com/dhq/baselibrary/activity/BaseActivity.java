@@ -29,15 +29,15 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//头部状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);//底部虚拟键
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            // 透明状态栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//头部状态栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);//底部虚拟键
+//        }
 
         setContentView(getLayoutId());
 
-//        setStatusBar(getResources().getColor(R.color.colorAccent));
+        setStatusBar(getResources().getColor(R.color.colorAccent));
 
 
         mPresenter = createPresenter();

@@ -13,8 +13,6 @@ import com.dhq.demo.home.activity.HomeActivity;
 import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
 
-import org.yc.PubMainManager;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
