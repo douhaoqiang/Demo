@@ -9,4 +9,8 @@
 
     </style>
 
+    <declare-styleable name="refresh">
+        <attr name="refreshtype" format="string" />
+    </declare-styleable>
+
 </resources>
