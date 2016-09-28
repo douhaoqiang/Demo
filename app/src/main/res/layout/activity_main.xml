@@ -3,44 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <com.dhq.demo.refresh.PullToRefreshLayout2
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:fitsSystemWindows="true"
-        android:clipToPadding="true">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <com.dhq.demo.refresh.PullableScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:clipToPadding="true"
+            android:fitsSystemWindows="true">
 
-            <Button
-                android:id="@+id/main_menu_recycle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/main_menu_recycle" />
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/main_menu_ndk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/main_menu_ndk" />
+                <Button
+                    android:id="@+id/main_menu_recycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_menu_recycle" />
 
-            <Button
-                android:id="@+id/main_menu_tablayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/main_menu_tablayout" />
+                <Button
+                    android:id="@+id/main_menu_ndk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_menu_ndk" />
 
-            <Button
-                android:id="@+id/main_menu_adtest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/main_menu_adtest" />
+                <Button
+                    android:id="@+id/main_menu_tablayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_menu_tablayout" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/main_menu_adtest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_menu_adtest" />
 
-    </ScrollView>
+                <com.dhq.demo.view.CanvasTestView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp" />
 
+            </LinearLayout>
+
+        </com.dhq.demo.refresh.PullableScrollView>
+    </com.dhq.demo.refresh.PullToRefreshLayout2>
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -99,8 +101,6 @@ public class PullToRefreshLayout2 extends LinearLayout {
 
     // 实现了Pullable接口的View
     private View pullableView;
-    // 过滤多点触碰
-    private int mEvents;
     // 这两个变量用来控制pull的方向，如果不加控制，当情况满足可上拉又可下拉时没法下拉
     private boolean canPullDown = true;
     private boolean canPullUp = true;
@@ -167,14 +167,14 @@ public class PullToRefreshLayout2 extends LinearLayout {
 
     public PullToRefreshLayout2(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context,attrs);
+        init(context, attrs);
     }
 
     private void init(Context context, AttributeSet attrs) {
         mContext = context;
         setOrientation(VERTICAL);
         //加载自定义的属性
-        TypedArray a=context.obtainStyledAttributes(attrs,R.styleable.refresh);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.refresh);
         refreshtype = a.getString(R.styleable.refresh_refreshtype);
 
         timer = new MyTimer(updateHandler);
@@ -197,25 +197,60 @@ public class PullToRefreshLayout2 extends LinearLayout {
         }
         pullableView = getChildAt(0);
         setRefreshType();
-        
+        initView();
     }
 
     /**
      * 添加对应的刷新样式
      */
-    private void setRefreshType(){
+    private void setRefreshType() {
 
-        if("11".equals(refreshtype)){
+        if ("11".equals(refreshtype)) {
 
         }
 
         //添加头部刷新布局
-        refreshView=LayoutInflater.from(getContext()).inflate(R.layout.refresh_head,null);
-        addView(refreshView,0);
+        refreshView = LayoutInflater.from(getContext()).inflate(R.layout.refresh_head, null);
+        addView(refreshView, 0);
 
         //获取底部加载更多布局
-        loadmoreView=LayoutInflater.from(getContext()).inflate(R.layout.load_more,null);
+        loadmoreView = LayoutInflater.from(getContext()).inflate(R.layout.load_more, null);
         addView(loadmoreView);
+
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.e(TAG, "onMeasure");
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        measureChild(refreshView, widthMeasureSpec, heightMeasureSpec);
+        measureChild(loadmoreView, widthMeasureSpec, heightMeasureSpec);
+        measureChild(pullableView, widthMeasureSpec, heightMeasureSpec);
+        refreshDist = refreshView.getMeasuredHeight();
+        loadmoreDist = loadmoreView.getMeasuredHeight();
+        setMeasuredDimension(widthSize, heightSize);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        Log.e(TAG, "onLayout");
+        // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
+        refreshView.layout(0,
+                (int) (pullDownY + pullUpY) - refreshView.getMeasuredHeight(),
+                refreshView.getMeasuredWidth(), (int) (pullDownY + pullUpY));
+
+        pullableView.layout(0, (int) (pullDownY + pullUpY),
+                pullableView.getMeasuredWidth(), (int) (pullDownY + pullUpY)
+                        + pullableView.getMeasuredHeight());
+
+        loadmoreView.layout(0,
+                (int) (pullDownY + pullUpY) + pullableView.getMeasuredHeight(),
+                loadmoreView.getMeasuredWidth(),
+                (int) (pullDownY + pullUpY) + pullableView.getMeasuredHeight()
+                        + loadmoreView.getMeasuredHeight());
     }
 
 
@@ -373,61 +408,53 @@ public class PullToRefreshLayout2 extends LinearLayout {
                 downY = ev.getY();
                 lastY = downY;
                 timer.cancel();
-                mEvents = 0;
                 releasePull();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_POINTER_UP:
-                // 过滤多点触碰
-                mEvents = -1;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mEvents == 0) {
-                    if (pullDownY > 0
-                            || (((Pullable) pullableView).canPullDown()
-                            && canPullDown && state != LOADING)) {
-                        // 可以下拉，正在加载时不能下拉
-                        // 对实际滑动距离做缩小，造成用力拉的感觉
-                        pullDownY = pullDownY + (ev.getY() - lastY) / radio;
-                        if (pullDownY < 0) {
-                            pullDownY = 0;
-                            canPullDown = false;
-                            canPullUp = true;
-                        }
-                        if (pullDownY > getMeasuredHeight())
-                            pullDownY = getMeasuredHeight();
-                        if (state == REFRESHING) {
-                            // 正在刷新的时候触摸移动
-                            isTouch = true;
-                        }
-                    } else if (pullUpY < 0
-                            || (((Pullable) pullableView).canPullUp() && canPullUp && state != REFRESHING)) {
-                        // 可以上拉，正在刷新时不能上拉
-                        pullUpY = pullUpY + (ev.getY() - lastY) / radio;
-                        if (pullUpY > 0) {
-                            pullUpY = 0;
-                            canPullDown = true;
-                            canPullUp = false;
-                        }
-                        if (pullUpY < -getMeasuredHeight())
-                            pullUpY = -getMeasuredHeight();
-                        if (state == LOADING) {
-                            // 正在加载的时候触摸移动
-                            isTouch = true;
-                        }
-                    } else
-                        releasePull();
-                } else
-                    mEvents = 0;
+                if (pullDownY > 0 || (canChildScrollDown() && canPullDown && state != LOADING)) {
+                    // 可以下拉，正在加载时不能下拉
+                    // 对实际滑动距离做缩小，造成用力拉的感觉
+                    pullDownY = pullDownY + (ev.getY() - lastY) / radio;
+                    if (pullDownY < 0) {
+                        pullDownY = 0;
+                        canPullDown = false;
+                        canPullUp = true;
+                    }
+                    if (pullDownY > refreshDist) {
+                        pullDownY = refreshDist;
+                    }
+                    if (state == REFRESHING) {
+                        // 正在刷新的时候触摸移动
+                        isTouch = true;
+                    }
+                } else if (pullUpY < 0 || (canChildScrollUp() && canPullUp && state != REFRESHING)) {
+                    // 可以上拉，正在刷新时不能上拉
+                    pullUpY = pullUpY + (ev.getY() - lastY) / radio;
+                    if (pullUpY > 0) {
+                        pullUpY = 0;
+                        canPullDown = true;
+                        canPullUp = false;
+                    }
+                    if (pullUpY < -loadmoreDist)
+                        pullUpY = -loadmoreDist;
+                    if (state == LOADING) {
+                        // 正在加载的时候触摸移动
+                        isTouch = true;
+                    }
+                } else {
+                    releasePull();
+                }
                 lastY = ev.getY();
                 // 根据下拉距离改变比例
-                radio = (float) (2 + 2 * Math.tan(Math.PI / 2 / getMeasuredHeight()
-                        * (pullDownY + Math.abs(pullUpY))));
-                if (pullDownY > 0 || pullUpY < 0)
+                radio = (float) (2 + 2 * Math.tan(Math.PI / 2 / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY))));
+                if (pullDownY > 0 || pullUpY < 0) {
                     requestLayout();
+                }
                 if (pullDownY > 0) {
-                    if (pullDownY <= refreshDist
-                            && (state == RELEASE_TO_REFRESH || state == DONE)) {
+                    if (pullDownY <= refreshDist && (state == RELEASE_TO_REFRESH || state == DONE)) {
                         // 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新
                         changeState(INIT);
                     }
@@ -437,8 +464,7 @@ public class PullToRefreshLayout2 extends LinearLayout {
                     }
                 } else if (pullUpY < 0) {
                     // 下面是判断上拉加载的，同上，注意pullUpY是负值
-                    if (-pullUpY <= loadmoreDist
-                            && (state == RELEASE_TO_LOAD || state == DONE)) {
+                    if (-pullUpY <= loadmoreDist && (state == RELEASE_TO_LOAD || state == DONE)) {
                         changeState(INIT);
                     }
                     // 上拉操作
@@ -455,9 +481,8 @@ public class PullToRefreshLayout2 extends LinearLayout {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (pullDownY > refreshDist || -pullUpY > loadmoreDist)
-                // 正在刷新时往下拉（正在加载时往上拉），释放后下拉头（上拉头）不隐藏
-                {
+                if (pullDownY > refreshDist || -pullUpY > loadmoreDist) {
+                    // 正在刷新时往下拉（正在加载时往上拉），释放后下拉头（上拉头）不隐藏
                     isTouch = false;
                 }
                 if (state == RELEASE_TO_REFRESH) {
@@ -468,8 +493,9 @@ public class PullToRefreshLayout2 extends LinearLayout {
                 } else if (state == RELEASE_TO_LOAD) {
                     changeState(LOADING);
                     // 加载操作
-                    if (mListener != null)
+                    if (mListener != null) {
                         mListener.onLoadMore(this);
+                    }
                 }
                 hide();
             default:
@@ -589,6 +615,45 @@ public class PullToRefreshLayout2 extends LinearLayout {
                 handler.obtainMessage().sendToTarget();
             }
 
+        }
+    }
+
+    /**
+     * 判断是否可以上拉
+     * @return
+     */
+    protected boolean canChildScrollUp() {
+        if (android.os.Build.VERSION.SDK_INT < 14) {
+            if (pullableView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) pullableView;
+                return absListView.getChildCount() > 0
+                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+                        .getTop() < absListView.getPaddingTop());
+            } else {
+                return ViewCompat.canScrollVertically(pullableView, -1) || pullableView.getScrollY() > 0;
+            }
+        } else {
+            return ViewCompat.canScrollVertically(pullableView, -1);
+        }
+    }
+
+
+    /**
+     * 判断是否可以下拉
+     * @return
+     */
+    protected boolean canChildScrollDown() {
+        if (android.os.Build.VERSION.SDK_INT < 14) {
+            if (pullableView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) pullableView;
+                return absListView.getChildCount() > 0
+                        && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
+                        || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
+            } else {
+                return ViewCompat.canScrollVertically(pullableView, 1) || pullableView.getScrollY() < 0;
+            }
+        } else {
+            return ViewCompat.canScrollVertically(pullableView, 1);
         }
     }
 

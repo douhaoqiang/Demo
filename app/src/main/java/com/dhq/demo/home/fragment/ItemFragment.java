@@ -2,6 +2,7 @@ package com.dhq.demo.home.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.Size;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.dhq.demo.R;
 import com.dhq.demo.recycle.bean.MyMessage;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,10 +90,15 @@ public class ItemFragment extends Fragment {
     }
 
     private void setData(){
+        String dd="点时空裂缝了了分开来到";
         ArrayList<MyMessage> myMessages=new ArrayList<>();
         MyMessage myMessage;
+        Random random=new Random();
         for(int i=1;i<=10;i++){
-            myMessage=new MyMessage(R.mipmap.ic_launcher,i+"-Title",i+"---描述的卡口监控了发动机是两个");
+            int textSize=random.nextInt(dd.length());
+            StringBuilder title=new StringBuilder(i+"title");
+            title.append(dd.substring(dd.length()-textSize,dd.length()));
+            myMessage=new MyMessage(R.mipmap.ic_launcher,title.toString(),i+"---描述的卡口监控了发动机是两个");
             myMessages.add(myMessage);
         }
         adapter.setDatas(myMessages);
