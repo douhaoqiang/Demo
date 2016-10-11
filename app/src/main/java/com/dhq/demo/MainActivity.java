@@ -5,8 +5,11 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.dhq.baselibrary.activity.BaseActivity;
@@ -26,6 +29,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     Button menuNdk;
     @BindView(R.id.main_menu_tablayout)
     Button tablayout;
+
+    @BindView(R.id.main_menu_edittext)
+    EditText edtext;
+
     @BindView(R.id.main_menu_adtest)
     Button adtest;
     private Unbinder bind;
@@ -85,6 +92,26 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         });
 
+        edtext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                showToast("是否聚焦"+hasFocus);
+            }
+        });
+
+        edtext.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction()==KeyEvent.ACTION_DOWN) {
+                    //表示按下的是回车键
+                    showToast("点击回车键！");
+//                    edtext.isFocused();
+                    return true;
+                }
+                return false;
+            }
+        });
 
 //        settingTv.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -148,5 +175,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         super.onDestroy();
         bind.unbind();
     }
+
 
 }

@@ -30,7 +30,7 @@ public class ArrowFooterView extends FrameLayout implements IPullFooterView {
     private RotateAnimation refreshAnim;
 
     public ArrowFooterView(Context context) {
-        super(context,null);
+        this(context,null);
     }
 
     public ArrowFooterView(Context context, AttributeSet attrs) {
