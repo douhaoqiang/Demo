@@ -75,6 +75,7 @@ public class ArrowHeaderView extends FrameLayout implements IPullHeaderView {
         pullArrowView.setVisibility(View.GONE);
         pullCicleView.setVisibility(View.VISIBLE);
         pullCicleView.startAnimation(refreshAnim);//开始旋转
+        pullText.setText("正在刷新！");
 
     }
 

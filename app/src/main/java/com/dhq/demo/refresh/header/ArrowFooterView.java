@@ -58,7 +58,7 @@ public class ArrowFooterView extends FrameLayout implements IPullFooterView {
 
     @Override
     public void prepareLoadmore() {
-
+        pullText.setText("松开加载更多！");
     }
 
     @Override
@@ -67,12 +67,26 @@ public class ArrowFooterView extends FrameLayout implements IPullFooterView {
         pullArrowView.setVisibility(View.GONE);
         pullCicleView.setVisibility(View.INVISIBLE);
         pullCicleView.setAnimation(refreshAnim);
+        pullText.setText("正在加载！");
     }
 
     @Override
     public void completeLoadmore() {
+
         //清除旋转动画
         pullCicleView.clearAnimation();
+        reset();
+    }
+
+    /**
+     * 重置状态
+     */
+    private void reset(){
+        pullText.setText("上拉加载！");
+        //加载完成重置状态
+        pullCicleView.clearAnimation();//清除旋转动画
+        pullArrowView.setVisibility(View.VISIBLE);
+        pullCicleView.setVisibility(View.GONE);
     }
 
 }

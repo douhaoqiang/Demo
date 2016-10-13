@@ -16,6 +16,7 @@ import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.demo.home.activity.HomeActivity;
 import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
+import com.dhq.demo.refresh.PullToRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +24,8 @@ import butterknife.Unbinder;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
 
+    @BindView(R.id.main_refresh_view)
+    PullToRefreshLayout refreshView;
     @BindView(R.id.main_menu_recycle)
     Button menuRecycle;
     @BindView(R.id.main_menu_ndk)
@@ -64,6 +67,21 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * 事件监听器初始化
      */
     private void initListener() {
+
+        refreshView.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                //刷新列表
+                pullToRefreshLayout.complete();
+            }
+
+            @Override
+            public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                //加载更多
+                pullToRefreshLayout.complete();
+            }
+        });
+
 
         menuRecycle.setOnClickListener(new View.OnClickListener() {
             @Override

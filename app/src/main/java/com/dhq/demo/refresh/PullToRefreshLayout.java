@@ -1,14 +1,20 @@
 package com.dhq.demo.refresh;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.view.animation.CycleInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
@@ -18,6 +24,8 @@ import com.dhq.demo.R;
 import com.dhq.demo.refresh.header.ArrowFooterView;
 import com.dhq.demo.refresh.header.ArrowHeaderView;
 import com.dhq.demo.refresh.mode.Mode;
+
+import static android.R.attr.animation;
 
 /**
  *
@@ -71,7 +79,7 @@ public class PullToRefreshLayout extends LinearLayout {
     // 实现了Pullable接口的View
     private View pullableView;
     // 控制上拉下拉记载模式，默认情况为BOTH
-    private Mode mode=Mode.BOTH;
+    private Mode mode = Mode.BOTH;
 
     //上拉下拉的转换比例
     private float pullRadio = 0.8f;
@@ -81,60 +89,47 @@ public class PullToRefreshLayout extends LinearLayout {
     //getScaledTouchSlop是一个距离，表示滑动的时候，手的移动要大于这个距离才开始移动控件。如果小于这个距离就不触发移动控件
     private int mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
 
-//    /**
-//     * 执行自动回滚的handler
-//     */
-//    Handler updateHandler = new Handler() {
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//            // 回弹速度随下拉距离moveDeltaY增大而增大
-//            MOVE_SPEED = (float) (8 + 5 * Math.tan(Math.PI / 2
-//                    / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY))));
-//            if (!isTouch) {
-//                // 正在刷新，且没有往上推的话则悬停，显示"正在刷新..."
-//                if (state == REFRESHING && pullDownY <= refreshDist) {
-//                    pullDownY = refreshDist;
-//                    timer.cancel();
-//                } else if (state == LOADING && -pullUpY <= loadmoreDist) {
-//                    pullUpY = -loadmoreDist;
-//                    timer.cancel();
-//                }
-//
-//            }
-//            if (pullDownY > 0) {
-//                pullDownY -= MOVE_SPEED;
-//            }else if (pullUpY < 0) {
-//                pullUpY += MOVE_SPEED;
-//            }
-//            if (pullDownY < 0) {
-//                // 已完成回弹
-//                pullDownY = 0;
-//                pullView.clearAnimation();
-//                // 隐藏下拉头时有可能还在刷新，只有当前状态不是正在刷新时才改变状态
-//                if (state != REFRESHING && state != LOADING)
-//                    changeState(INIT);
-//                timer.cancel();
-//                requestLayout();
-//            }
-//            if (pullUpY > 0) {
-//                // 已完成回弹
-//                pullUpY = 0;
-//                pullUpView.clearAnimation();
-//                // 隐藏上拉头时有可能还在刷新，只有当前状态不是正在刷新时才改变状态
-//                if (state != REFRESHING && state != LOADING)
-//                    changeState(INIT);
-//                timer.cancel();
-//                requestLayout();
-//            }
-//            // 刷新布局,会自动调用onLayout
-//            requestLayout();
-//            // 没有拖拉或者回弹完成
-//            if (pullDownY + Math.abs(pullUpY) == 0)
-//                timer.cancel();
-//        }
-//
-//    };
+    /**
+     * 执行自动回滚的handler
+     */
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            // 回弹速度随下拉距离moveDeltaY增大而增大
+            MOVE_SPEED = (float) (8 + 5 * Math.tan(Math.PI / 2
+                    / getMeasuredHeight() * (Math.abs(pullY))));
+            if (pullY > 0) {
+                //刷新回弹
+                ValueAnimator animator=ValueAnimator.ofFloat(1,0);
+                animator.setDuration(500);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        Log.i("update", ((Float) animation.getAnimatedValue()).toString());
+                        pullY=pullY*(Float)animation.getAnimatedValue();
+                        requestLayout();
+                    }
+                });
+                animator.start();
+            }
+            if (pullY < 0) {
+                // 加载回弹
+                ValueAnimator animator=ValueAnimator.ofFloat(1,0);
+                animator.setDuration(500);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        Log.i("update", ((Float) animation.getAnimatedValue()).toString());
+                        pullY=pullY*(Float)animation.getAnimatedValue();
+                        requestLayout();
+                    }
+                });
+                animator.start();
+            }
+        }
+
+    };
 
 
     public PullToRefreshLayout(Context context, AttributeSet attrs) {
@@ -175,7 +170,7 @@ public class PullToRefreshLayout extends LinearLayout {
      */
     private void setRefreshType() {
 
-        Log.e(TAG,"setRefreshType");
+        Log.e(TAG, "setRefreshType");
         if ("11".equals(refreshtype)) {
 
         }
@@ -209,8 +204,14 @@ public class PullToRefreshLayout extends LinearLayout {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 //        Log.e(TAG, "onLayout");
         // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
+        if (pullY > refreshDist) {
+            pullY = refreshDist;
+        }
+        if (pullY < -loadmoreDist) {
+            pullY = -loadmoreDist;
+        }
         refreshView.layout(0,
-                (int) (pullY) - refreshView.getMeasuredHeight(),
+                (int) (pullY - refreshDist),
                 refreshView.getMeasuredWidth(), (int) (pullY));
 
         pullableView.layout(0, (int) (pullY),
@@ -229,22 +230,13 @@ public class PullToRefreshLayout extends LinearLayout {
     }
 
     private void hide() {
-
+        handler.sendEmptyMessage(0);
     }
 
     /**
-     * 完成刷新操作，显示刷新结果。注意：刷新完成后一定要调用这个方法
+     * 刷新或加载
      */
-    public void refreshFinish() {
-
-        changeState(DONE);
-        hide();
-    }
-
-    /**
-     * 加载完毕，显示加载结果。注意：加载完成后一定要调用这个方法
-     */
-    public void loadmoreFinish() {
+    public void complete(){
         changeState(DONE);
         hide();
     }
@@ -278,13 +270,14 @@ public class PullToRefreshLayout extends LinearLayout {
                 Log.e(TAG, "DONE");
                 // 刷新或加载完毕，啥都不做
                 ((IPullFooterView) loadmoreView).completeLoadmore();
+                ((IPullHeaderView) refreshView).completeRefresh();
                 break;
         }
     }
 
-    public void setMode(Mode mode){
-        if(mode!=null){
-            this.mode=mode;
+    public void setMode(Mode mode) {
+        if (mode != null) {
+            this.mode = mode;
         }
     }
 
@@ -299,8 +292,8 @@ public class PullToRefreshLayout extends LinearLayout {
                 break;
             case MotionEvent.ACTION_MOVE:
 
-                if (mode==Mode.NONE || state == LOADING) {
-                    //当正在刷新且不可以上下拉时 不监听移动操作
+                if (mode == Mode.NONE || state == LOADING || state == REFRESHING) {
+                    //当正在刷新或者不可以上下拉时 不监听移动操作
                     break;
                 }
 
@@ -312,12 +305,11 @@ public class PullToRefreshLayout extends LinearLayout {
                     }
                     ((IPullHeaderView) refreshView).pullDownPrecent(pullY / refreshDist);
                     //表示下拉
-                    if (pullY < refreshDist * pullRadio) {
-                        // 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新
-                        changeState(INIT);
-                    } else {
+                    if (pullY >= refreshDist * pullRadio) {
                         // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
                         changeState(RELEASE_TO_REFRESH);
+                    }else{
+                        changeState(INIT);
                     }
                     requestLayout();
                 } else if (pullY < 0 && !canChildScrollUp()) {
@@ -328,10 +320,10 @@ public class PullToRefreshLayout extends LinearLayout {
                     ((IPullFooterView) loadmoreView).pullUpPrecent(pullY / loadmoreDist);
                     //表示上拉
                     // 下面是判断上拉加载的，同上，注意pullUpY是负值
-                    if (-pullY < loadmoreDist * pullRadio) {
-                        changeState(INIT);
-                    } else {
+                    if (-pullY >= loadmoreDist * pullRadio) {
                         changeState(RELEASE_TO_LOAD);
+                    }else{
+                        changeState(INIT);
                     }
                     requestLayout();
                 }
@@ -351,8 +343,10 @@ public class PullToRefreshLayout extends LinearLayout {
                     if (mListener != null) {
                         mListener.onLoadMore(this);
                     }
+                }else if(state == INIT){
+                    hide();
                 }
-                hide();
+
             default:
                 break;
         }
