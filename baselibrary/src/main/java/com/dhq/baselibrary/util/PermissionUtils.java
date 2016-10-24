@@ -189,15 +189,19 @@ public class PermissionUtils {
     }
 
 
+    /**
+     * 展示是否获取权限提示框
+     * @param activity
+     * @param requestCode
+     * @param requestPermission
+     */
     private static void shouldShowRationale(final Activity activity, final int requestCode, final String requestPermission) {
         //TODO
         String[] permissionsHint = activity.getResources().getStringArray(R.array.permissions);
         showMessageOKCancel(activity, "Rationale: " + permissionsHint[requestCode], new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{requestPermission},
-                        requestCode);
+                ActivityCompat.requestPermissions(activity,new String[]{requestPermission},requestCode);
                 Log.d(TAG, "showMessageOKCancel requestPermissions:" + requestPermission);
             }
         });

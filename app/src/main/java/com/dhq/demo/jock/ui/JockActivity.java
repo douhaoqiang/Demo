@@ -1,14 +1,16 @@
 package com.dhq.demo.jock.ui;
 
 import com.dhq.baselibrary.activity.BaseActivity;
-import com.dhq.demo.jock.iview.IJockView;
-import com.dhq.demo.jock.presenter.JockPresenter;
+import com.dhq.baselibrary.activity.BaseActivity2;
+import com.dhq.demo.jock.contract.JockContract;
+import com.dhq.demo.jock.presenter.JockPresenterImpl;
+import com.dhq.demo.jock.view.JockViewImpl;
 
 /**
  * DESC
  * Created by douhaoqiang on 2016/10/18.
  */
-public class JockActivity extends BaseActivity<IJockView,JockPresenter> implements IJockView{
+public class JockActivity extends BaseActivity2<JockContract.Presenter> implements JockViewImpl {
     private static final String TAG = "JockActivity";
 
 
@@ -23,8 +25,8 @@ public class JockActivity extends BaseActivity<IJockView,JockPresenter> implemen
     }
 
     @Override
-    protected JockPresenter createPresenter() {
-        return new JockPresenter();
+    protected JockContract.Presenter createPresenter() {
+        return new JockPresenterImpl(this);
     }
 
 
