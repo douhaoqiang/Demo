@@ -1,5 +1,6 @@
 package com.dhq.demo.refresh;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -48,8 +49,12 @@ public class PullToRefreshLayout extends LinearLayout {
     private int state = INIT;
     // 刷新回调接口
     private OnRefreshListener mListener;
-    // 按下Y坐标，上一个事件点Y坐标
+
+    // 按下点的Y坐标
     private float downY;
+    private float downX;
+    private float lastY;
+    private float lastX;
 
     private float pullY = 0;
 
@@ -110,6 +115,28 @@ public class PullToRefreshLayout extends LinearLayout {
                         pullY=pullY*(Float)animation.getAnimatedValue();
                         requestLayout();
                     }
+
+                });
+                animator.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        changeState(DONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
                 });
                 animator.start();
             }
@@ -123,6 +150,27 @@ public class PullToRefreshLayout extends LinearLayout {
                         Log.i("update", ((Float) animation.getAnimatedValue()).toString());
                         pullY=pullY*(Float)animation.getAnimatedValue();
                         requestLayout();
+                    }
+                });
+                animator.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        changeState(DONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
                     }
                 });
                 animator.start();
@@ -229,16 +277,12 @@ public class PullToRefreshLayout extends LinearLayout {
         mListener = listener;
     }
 
-    private void hide() {
-        handler.sendEmptyMessage(0);
-    }
 
     /**
-     * 刷新或加载
+     * 刷新或加载结束
      */
     public void complete(){
-        changeState(DONE);
-        hide();
+        handler.sendEmptyMessage(0);
     }
 
     private void changeState(int to) {
@@ -285,7 +329,8 @@ public class PullToRefreshLayout extends LinearLayout {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                downY = ev.getY();
+                lastY=downY = ev.getY();
+                lastX=downX = ev.getX();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_POINTER_UP:
@@ -294,7 +339,20 @@ public class PullToRefreshLayout extends LinearLayout {
 
                 if (mode == Mode.NONE || state == LOADING || state == REFRESHING) {
                     //当正在刷新或者不可以上下拉时 不监听移动操作
-                    break;
+                    return false;
+                }
+                float nowY = ev.getY();
+                float nowX = ev.getX();
+
+                float yDiff = nowY - lastY;
+                float xDiff = nowX - lastX;
+
+
+                if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > mTouchSlop) {
+                    return false;
+                }else{
+                    lastY = nowY;
+                    lastX = nowX;
                 }
 
                 pullY = (ev.getY() - downY) / radio;//Y轴上移动的距离
@@ -344,7 +402,7 @@ public class PullToRefreshLayout extends LinearLayout {
                         mListener.onLoadMore(this);
                     }
                 }else if(state == INIT){
-                    hide();
+                    complete();
                 }
 
             default:

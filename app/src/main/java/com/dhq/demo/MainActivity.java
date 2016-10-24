@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -40,6 +42,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     Button adtest;
     private Unbinder bind;
 
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+
+        }
+    };
+
+    private Runnable task =new Runnable() {
+        @Override
+        public void run() {
+            refreshView.complete();
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -72,13 +87,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
                 //刷新列表
-                pullToRefreshLayout.complete();
+//                pullToRefreshLayout.complete();
+                handler.postDelayed(task, 2000);
             }
 
             @Override
             public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
                 //加载更多
-                pullToRefreshLayout.complete();
+//                pullToRefreshLayout.complete();
+                handler.postDelayed(task, 2000);
             }
         });
 
