@@ -1,1 +1,1 @@
-include ':app', ':refleshlibrary', ':baselibrary'
+include ':app', ':refleshlibrary', ':baselibrary', ':ndklibrary'

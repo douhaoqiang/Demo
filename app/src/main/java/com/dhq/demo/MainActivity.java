@@ -20,6 +20,8 @@ import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
 import com.dhq.demo.refresh.PullToRefreshLayout;
 
+import java.lang.reflect.Field;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -73,6 +75,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * 初始化列表数据
      */
     private void initData() {
+
 
 
     }
