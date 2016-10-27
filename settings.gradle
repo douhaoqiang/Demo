@@ -1,1 +1,1 @@
-include ':app', ':refleshlibrary', ':baselibrary', ':ndklibrary'
+include ':app', ':refleshlibrary', ':baselibrary', ':ndkdemo'

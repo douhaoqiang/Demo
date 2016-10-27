@@ -19,7 +19,7 @@ extern "C" {
  * Signature: (Ljava/lang/Object;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_dhq_demo_utils_JNIUtils_getSignature
-  (JNIEnv * env ,jclass jclass , jobject obj){
+  (JNIEnv *env ,jclass jclass , jobject obj){
     LOGE("这里是来自c的string1");
     return (*env)->NewStringUTF(env,"这里是来自c的string1");
   }
@@ -30,7 +30,7 @@ JNIEXPORT jstring JNICALL Java_com_dhq_demo_utils_JNIUtils_getSignature
  * Signature: (Ljava/lang/Object;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_dhq_demo_utils_JNIUtils_getPackname
-  (JNIEnv * env , jclass jclass , jobject obj){
+  (JNIEnv *env , jclass jclass , jobject obj){
     LOGE("这里是来自c的string2");
   return (*env)->NewStringUTF(env,"这里是来自c的string2");
   }

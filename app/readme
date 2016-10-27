@@ -15,5 +15,10 @@ NDK开发配置
 
     在gradle.properties文件中添加
     android.useDeprecatedNdk=true
+
 3.生成对应的.h文件
+    切换到项目对应的/main/java目录
     指令：javah -jni com.dhq.demo.utils.JNIUtils（com.dhq.demo.utils.JNIUtils为要生成的文件路径）
+    生成的.h的文件在/main/jav目录之下
+
+4.在main/java 目录下创建jni文件夹将生成的.h文件拷贝到该目录下
