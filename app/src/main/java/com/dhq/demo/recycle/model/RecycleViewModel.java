@@ -2,6 +2,7 @@ package com.dhq.demo.recycle.model;
 
 import com.dhq.demo.R;
 import com.dhq.demo.recycle.bean.MyMessage;
+import com.dhq.demo.recycle.contract.RecycleContract;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * Created by douhaoqiang on 2016/9/6.
  */
 
-public class RecycleViewModel {
+public class RecycleViewModel implements RecycleContract.IRecycleModel {
 
 
     public ArrayList<MyMessage> getListData() {

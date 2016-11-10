@@ -1,32 +1,30 @@
-package com.dhq.demo;
+package com.dhq.demo.main.ui;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.demo.main.contract.MainContract;
+import com.dhq.demo.main.presenter.MainPresenterImpl;
+import com.dhq.demo.R;
 import com.dhq.demo.home.activity.HomeActivity;
 import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
 import com.dhq.demo.refresh.PullToRefreshLayout;
-
-import java.lang.reflect.Field;
+import com.dhq.dialoglibrary.MyDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
+public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> implements MainContract.IMainView {
 
     @BindView(R.id.main_refresh_view)
     PullToRefreshLayout refreshView;
@@ -39,6 +37,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @BindView(R.id.main_menu_edittext)
     EditText edtext;
+
+    @BindView(R.id.main_menu_more)
+    Button moreBtn;
 
     @BindView(R.id.main_menu_adtest)
     Button adtest;
@@ -130,33 +131,36 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         });
 
-        edtext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                showToast("是否聚焦"+hasFocus);
-            }
-        });
-
-        edtext.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction()==KeyEvent.ACTION_DOWN) {
-                    //表示按下的是回车键
-                    showToast("点击回车键！");
-//                    edtext.isFocused();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-//        settingTv.setOnClickListener(new View.OnClickListener() {
+//        edtext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
-//            public void onClick(View v) {
-//                transfer();
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                showToast("是否聚焦"+hasFocus);
 //            }
 //        });
+//
+//        edtext.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction()==KeyEvent.ACTION_DOWN) {
+//                    //表示按下的是回车键
+//                    showToast("点击回车键！");
+////                    edtext.isFocused();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
+        moreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MyDialog(MainActivity.this, MyDialog.CUSTOM_IMAGE_TYPE)
+                        .setTitleText("Good job!")
+                        .setContentText("You clicked the button!")
+                        .show();
+            }
+        });
     }
 
 
@@ -191,8 +195,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    protected MainPresenter createPresenter() {
-        return new MainPresenter(this);
+    protected MainPresenterImpl createPresenter() {
+        return new MainPresenterImpl(this);
     }
 
     @Override

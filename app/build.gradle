@@ -46,4 +46,5 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.9'
     compile project(':baselibrary')
     compile 'com.android.support:appcompat-v7:23.0.3'
+    compile project(':dialoglibrary')
 }

@@ -1,22 +1,18 @@
 package com.dhq.demo.home.activity;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.FrameLayout;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.MyApplication;
 import com.dhq.demo.R;
 import com.dhq.demo.home.Presenter.HomePresenter;
-import com.dhq.demo.home.TabContentFragment;
 import com.dhq.demo.home.adapter.HomePagerAdapter;
+import com.dhq.demo.home.contract.HomeContract;
 import com.dhq.demo.home.fragment.ItemFragment;
-import com.dhq.demo.home.view.HomeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +24,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2016/8/18.
  */
-public class HomeActivity extends BaseActivity<HomeView, HomePresenter> implements HomeView {
+public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> implements HomeContract.IHomeView {
 
 
     @BindView(R.id.home_toolbar)
@@ -81,7 +77,7 @@ public class HomeActivity extends BaseActivity<HomeView, HomePresenter> implemen
     }
 
     @Override
-    protected HomePresenter createPresenter() {
+    protected HomeContract.IHomePresenter createPresenter() {
         return new HomePresenter(this);
     }
 

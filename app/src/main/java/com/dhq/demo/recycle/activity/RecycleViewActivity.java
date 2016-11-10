@@ -6,14 +6,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.R;
 import com.dhq.baselibrary.adapter.ItemTouchCallback;
 import com.dhq.baselibrary.adapter.RecycleViewBaseAdapter;
 import com.dhq.baselibrary.adapter.RecycleViewBaseHolder;
 import com.dhq.demo.recycle.bean.MyMessage;
+import com.dhq.demo.recycle.contract.RecycleContract;
 import com.dhq.demo.recycle.prestener.RecycleViewPresenter;
-import com.dhq.demo.recycle.view.IRecycleView;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ import butterknife.Unbinder;
  * Created by douhaoqiang on 2016/9/6.
  */
 
-public class RecycleViewActivity extends BaseActivity<IRecycleView, RecycleViewPresenter> implements IRecycleView {
+public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecyclePresenter> implements RecycleContract.IRecycleView {
 
     @BindView(R.id.home_first_recycleview)
     RecyclerView recycleview;
