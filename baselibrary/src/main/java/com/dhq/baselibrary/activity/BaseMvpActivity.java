@@ -14,77 +14,22 @@ import com.dhq.baselibrary.presenter.BasePresenter;
 import com.dhq.baselibrary.util.PermissionUtils;
 
 /**
- * DESC
+ * DESC MVP模式Activity
  * Created by douhaoqiang on 2016/9/1.
  */
 
-public abstract class BaseActivity2<P extends BasePresenter> extends AppCompatActivity {
+public abstract class BaseMvpActivity<P extends BasePresenter> extends BaseActivity {
 
     protected P mPresenter;
-    private static final int INVALID_VAL = -1;
-
-    private static final int COLOR_DEFAULT = Color.parseColor("#FA7198");
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            // 透明状态栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//头部状态栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);//底部虚拟键
-//        }
-
-        setContentView(getLayoutId());
-
-        setStatusBar(getResources().getColor(R.color.colorAccent));
-
 
         mPresenter = createPresenter();
         mPresenter.attachView(this);
 
-        initialize();
-    }
-
-
-    private void setStatusBar(int statusColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (statusColor != INVALID_VAL) {
-                getWindow().setStatusBarColor(statusColor);
-            }
-            return;
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-
-            int color = COLOR_DEFAULT;
-            ViewGroup contentView = (ViewGroup) findViewById(android.R.id.content);
-//            contentView.setFitsSystemWindows(true);
-//            contentView.setClipToPadding(true);
-            if (statusColor != INVALID_VAL) {
-                color = statusColor;
-            }
-            View statusBarView = contentView.getChildAt(0);
-            // 改变颜色时避免重复添加statusBarView
-            if (statusBarView != null && statusBarView.getMeasuredHeight() == getStatusBarHeight(this)) {
-                statusBarView.setBackgroundColor(color);
-                return;
-            }
-            statusBarView = new View(this);
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(this));
-            statusBarView.setBackgroundColor(color);
-            contentView.addView(statusBarView, lp);
-        }
-    }
-
-    private int getStatusBarHeight(Context context) {
-
-        int result = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = context.getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
     }
 
 
@@ -96,18 +41,6 @@ public abstract class BaseActivity2<P extends BasePresenter> extends AppCompatAc
         super.onDestroy();
     }
 
-    /**
-     * 获取Activity对应的布局文件
-     *
-     * @return 布局文件的layoutid
-     */
-    protected abstract int getLayoutId();
-
-    /**
-     * 初始化方法
-     */
-    protected abstract void initialize();
-
 
     /**
      * 获取对应的Presenter
@@ -116,24 +49,6 @@ public abstract class BaseActivity2<P extends BasePresenter> extends AppCompatAc
      */
     protected abstract P createPresenter();
 
-
-    /**
-     * 显示Toast消息
-     *
-     * @param msg 需要显示的消息
-     */
-    public void showToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * 显示Toast消息
-     *
-     * @param resId 需要显示的消息id
-     */
-    public void showToast(int resId) {
-        Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
-    }
 
     /**
      *
