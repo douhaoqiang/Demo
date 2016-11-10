@@ -21,7 +21,7 @@ import com.dhq.dialoglibrary.view.ProgressWheel;
 import java.util.List;
 
 /**
- * DESC
+ * DESC 弹框工具类
  * Created by douhaoqiang on 2016/11/9.
  */
 public class MyDialog extends Dialog implements View.OnClickListener {
@@ -55,8 +55,8 @@ public class MyDialog extends Dialog implements View.OnClickListener {
     private Button mCancelButton;
     private ProgressHelper mProgressHelper;
     private FrameLayout mWarningFrame;
-    private OnSweetClickListener mCancelClickListener;
-    private OnSweetClickListener mConfirmClickListener;
+    private OnDialogClickListener mCancelClickListener;
+    private OnDialogClickListener mConfirmClickListener;
     private boolean mCloseFromCancel;
 
     public static final int NORMAL_TYPE = 0;
@@ -66,8 +66,8 @@ public class MyDialog extends Dialog implements View.OnClickListener {
     public static final int CUSTOM_IMAGE_TYPE = 4;
     public static final int PROGRESS_TYPE = 5;
 
-    public static interface OnSweetClickListener {
-        public void onClick (MyDialog MyDialog);
+    public interface OnDialogClickListener {
+        void onClick(MyDialog MyDialog);
     }
 
     public MyDialog(Context context) {
@@ -76,18 +76,51 @@ public class MyDialog extends Dialog implements View.OnClickListener {
 
     public MyDialog(Context context, int alertType) {
         super(context, R.style.alert_dialog);
+        this.mProgressHelper = new ProgressHelper(context);
+        this.mAlertType = alertType;
+        init();
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.alert_dialog);
+
+        mDialogView = getWindow().getDecorView().findViewById(android.R.id.content);
+        mTitleTextView = (TextView) findViewById(R.id.title_text);
+        mContentTextView = (TextView) findViewById(R.id.content_text);
+        mErrorFrame = (FrameLayout) findViewById(R.id.error_frame);
+        mErrorX = (ImageView) mErrorFrame.findViewById(R.id.error_x);
+        mSuccessFrame = (FrameLayout) findViewById(R.id.success_frame);
+        mProgressFrame = (FrameLayout) findViewById(R.id.progress_dialog);
+        mSuccessTick = (SuccessTickView) mSuccessFrame.findViewById(R.id.success_tick);
+        mSuccessLeftMask = mSuccessFrame.findViewById(R.id.mask_left);
+        mSuccessRightMask = mSuccessFrame.findViewById(R.id.mask_right);
+        mCustomImage = (ImageView) findViewById(R.id.custom_image);
+        mWarningFrame = (FrameLayout) findViewById(R.id.warning_frame);
+        mConfirmButton = (Button) findViewById(R.id.confirm_button);
+        mCancelButton = (Button) findViewById(R.id.cancel_button);
+        mProgressHelper.setProgressWheel((ProgressWheel) findViewById(R.id.progressWheel));
+        mConfirmButton.setOnClickListener(this);
+        mCancelButton.setOnClickListener(this);
+
+        setTitleText(mTitleText);
+        setContentText(mContentText);
+        setCancelText(mCancelText);
+        setConfirmText(mConfirmText);
+        changeAlertType(mAlertType, true);
+    }
+
+    private void init(){
         setCancelable(true);
         setCanceledOnTouchOutside(false);
-        mProgressHelper = new ProgressHelper(context);
-        mAlertType = alertType;
-        mErrorInAnim = OptAnimationLoader.loadAnimation(getContext(), R.anim.error_frame_in);
-        mErrorXInAnim = (AnimationSet)OptAnimationLoader.loadAnimation(getContext(), R.anim.error_x_in);
+        this.mErrorInAnim = OptAnimationLoader.loadAnimation(getContext(), R.anim.error_frame_in);
+        this.mErrorXInAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.error_x_in);
         // 2.3.x system don't support alpha-animation on layer-list drawable
         // remove it from animation set
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             List<Animation> childAnims = mErrorXInAnim.getAnimations();
             int idx = 0;
-            for (;idx < childAnims.size();idx++) {
+            for (; idx < childAnims.size(); idx++) {
                 if (childAnims.get(idx) instanceof AlphaAnimation) {
                     break;
                 }
@@ -97,7 +130,7 @@ public class MyDialog extends Dialog implements View.OnClickListener {
             }
         }
         mSuccessBowAnim = OptAnimationLoader.loadAnimation(getContext(), R.anim.success_bow_roate);
-        mSuccessLayoutAnimSet = (AnimationSet)OptAnimationLoader.loadAnimation(getContext(), R.anim.success_mask_layout);
+        mSuccessLayoutAnimSet = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.success_mask_layout);
         mModalInAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_in);
         mModalOutAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_out);
         mModalOutAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -138,37 +171,8 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         mOverlayOutAnim.setDuration(120);
     }
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.alert_dialog);
 
-        mDialogView = getWindow().getDecorView().findViewById(android.R.id.content);
-        mTitleTextView = (TextView)findViewById(R.id.title_text);
-        mContentTextView = (TextView)findViewById(R.id.content_text);
-        mErrorFrame = (FrameLayout)findViewById(R.id.error_frame);
-        mErrorX = (ImageView)mErrorFrame.findViewById(R.id.error_x);
-        mSuccessFrame = (FrameLayout)findViewById(R.id.success_frame);
-        mProgressFrame = (FrameLayout)findViewById(R.id.progress_dialog);
-        mSuccessTick = (SuccessTickView)mSuccessFrame.findViewById(R.id.success_tick);
-        mSuccessLeftMask = mSuccessFrame.findViewById(R.id.mask_left);
-        mSuccessRightMask = mSuccessFrame.findViewById(R.id.mask_right);
-        mCustomImage = (ImageView)findViewById(R.id.custom_image);
-        mWarningFrame = (FrameLayout)findViewById(R.id.warning_frame);
-        mConfirmButton = (Button)findViewById(R.id.confirm_button);
-        mCancelButton = (Button)findViewById(R.id.cancel_button);
-        mProgressHelper.setProgressWheel((ProgressWheel)findViewById(R.id.progressWheel));
-        mConfirmButton.setOnClickListener(this);
-        mCancelButton.setOnClickListener(this);
-
-        setTitleText(mTitleText);
-        setContentText(mContentText);
-        setCancelText(mCancelText);
-        setConfirmText(mConfirmText);
-        changeAlertType(mAlertType, true);
-
-    }
-
-    private void restore () {
+    private void restore() {
         mCustomImage.setVisibility(View.GONE);
         mErrorFrame.setVisibility(View.GONE);
         mSuccessFrame.setVisibility(View.GONE);
@@ -184,7 +188,7 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         mSuccessRightMask.clearAnimation();
     }
 
-    private void playAnimation () {
+    private void playAnimation() {
         if (mAlertType == ERROR_TYPE) {
             mErrorFrame.startAnimation(mErrorInAnim);
             mErrorX.startAnimation(mErrorXInAnim);
@@ -230,7 +234,7 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    public int getAlerType () {
+    public int getAlerType() {
         return mAlertType;
     }
 
@@ -239,11 +243,11 @@ public class MyDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    public String getTitleText () {
+    public String getTitleText() {
         return mTitleText;
     }
 
-    public MyDialog setTitleText (String text) {
+    public MyDialog setTitleText(String text) {
         mTitleText = text;
         if (mTitleTextView != null && mTitleText != null) {
             mTitleTextView.setText(mTitleText);
@@ -251,7 +255,7 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public MyDialog setCustomImage (Drawable drawable) {
+    public MyDialog setCustomImage(Drawable drawable) {
         mCustomImgDrawable = drawable;
         if (mCustomImage != null && mCustomImgDrawable != null) {
             mCustomImage.setVisibility(View.VISIBLE);
@@ -260,15 +264,15 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public MyDialog setCustomImage (int resourceId) {
+    public MyDialog setCustomImage(int resourceId) {
         return setCustomImage(getContext().getResources().getDrawable(resourceId));
     }
 
-    public String getContentText () {
+    public String getContentText() {
         return mContentText;
     }
 
-    public MyDialog setContentText (String text) {
+    public MyDialog setContentText(String text) {
         mContentText = text;
         if (mContentTextView != null && mContentText != null) {
             showContentText(true);
@@ -277,11 +281,11 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public boolean isShowCancelButton () {
+    public boolean isShowCancelButton() {
         return mShowCancel;
     }
 
-    public MyDialog showCancelButton (boolean isShow) {
+    public MyDialog showCancelButton(boolean isShow) {
         mShowCancel = isShow;
         if (mCancelButton != null) {
             mCancelButton.setVisibility(mShowCancel ? View.VISIBLE : View.GONE);
@@ -289,11 +293,11 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public boolean isShowContentText () {
+    public boolean isShowContentText() {
         return mShowContent;
     }
 
-    public MyDialog showContentText (boolean isShow) {
+    public MyDialog showContentText(boolean isShow) {
         mShowContent = isShow;
         if (mContentTextView != null) {
             mContentTextView.setVisibility(mShowContent ? View.VISIBLE : View.GONE);
@@ -301,11 +305,11 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public String getCancelText () {
+    public String getCancelText() {
         return mCancelText;
     }
 
-    public MyDialog setCancelText (String text) {
+    public MyDialog setCancelText(String text) {
         mCancelText = text;
         if (mCancelButton != null && mCancelText != null) {
             showCancelButton(true);
@@ -314,11 +318,11 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public String getConfirmText () {
+    public String getConfirmText() {
         return mConfirmText;
     }
 
-    public MyDialog setConfirmText (String text) {
+    public MyDialog setConfirmText(String text) {
         mConfirmText = text;
         if (mConfirmButton != null && mConfirmText != null) {
             mConfirmButton.setText(mConfirmText);
@@ -326,12 +330,12 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public MyDialog setCancelClickListener (OnSweetClickListener listener) {
+    public MyDialog setCancelClickListener(OnDialogClickListener listener) {
         mCancelClickListener = listener;
         return this;
     }
 
-    public MyDialog setConfirmClickListener (OnSweetClickListener listener) {
+    public MyDialog setConfirmClickListener(OnDialogClickListener listener) {
         mConfirmClickListener = listener;
         return this;
     }
@@ -379,7 +383,7 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    public ProgressHelper getProgressHelper () {
+    public ProgressHelper getProgressHelper() {
         return mProgressHelper;
     }
 }

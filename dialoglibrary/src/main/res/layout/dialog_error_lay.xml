@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/error_frame"
+    android:layout_width="53dp"
+    android:layout_height="53dp"
+    android:layout_marginTop="5dp"
+    android:visibility="gone">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/error_circle" />
+
+    <ImageView
+        android:id="@+id/error_x"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:src="@drawable/error_center_x" />
+
+</FrameLayout>
