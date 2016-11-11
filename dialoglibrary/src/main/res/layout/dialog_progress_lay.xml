@@ -10,7 +10,6 @@
 
     <com.dhq.dialoglibrary.view.ProgressWheel
         android:id="@+id/progressWheel"
-        wheel:progressIndeterminate="true"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center" />

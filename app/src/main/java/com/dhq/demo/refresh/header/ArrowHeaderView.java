@@ -44,7 +44,7 @@ public class ArrowHeaderView extends FrameLayout implements IPullHeaderView {
 
 
     private void init() {
-        Log.e(TAG,"ArrowHeaderView--init");
+        Log.e(TAG,"ArrowHeaderView--initializes");
         LayoutInflater.from(getContext()).inflate(R.layout.refresh_head,this);
 
         pullArrowView = (ImageView) findViewById(R.id.pull_icon);

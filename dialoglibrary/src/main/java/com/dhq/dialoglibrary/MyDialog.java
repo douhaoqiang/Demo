@@ -3,13 +3,11 @@ package com.dhq.dialoglibrary;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -18,21 +16,15 @@ import android.widget.TextView;
 
 import com.dhq.dialoglibrary.view.ProgressWheel;
 
-import java.util.List;
-
 /**
  * DESC 弹框工具类
  * Created by douhaoqiang on 2016/11/9.
  */
 public class MyDialog extends Dialog implements View.OnClickListener {
     private View mDialogView;
-    private AnimationSet mModalInAnim;
-    private AnimationSet mModalOutAnim;
+    private Animation mModalInAnim;
+    private Animation mModalOutAnim;
     private Animation mOverlayOutAnim;
-    private Animation mErrorInAnim;
-    private AnimationSet mErrorXInAnim;
-    private AnimationSet mSuccessLayoutAnimSet;
-    private Animation mSuccessBowAnim;
     private TextView mTitleTextView;
     private TextView mContentTextView;
     private String mTitleText;
@@ -47,8 +39,6 @@ public class MyDialog extends Dialog implements View.OnClickListener {
     private FrameLayout mProgressFrame;
     private SuccessTickView mSuccessTick;
     private ImageView mErrorX;
-    private View mSuccessLeftMask;
-    private View mSuccessRightMask;
     private Drawable mCustomImgDrawable;
     private ImageView mCustomImage;
     private Button mConfirmButton;
@@ -81,6 +71,7 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         init();
     }
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alert_dialog);
@@ -93,8 +84,6 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         mSuccessFrame = (FrameLayout) findViewById(R.id.success_frame);
         mProgressFrame = (FrameLayout) findViewById(R.id.progress_dialog);
         mSuccessTick = (SuccessTickView) mSuccessFrame.findViewById(R.id.success_tick);
-        mSuccessLeftMask = mSuccessFrame.findViewById(R.id.mask_left);
-        mSuccessRightMask = mSuccessFrame.findViewById(R.id.mask_right);
         mCustomImage = (ImageView) findViewById(R.id.custom_image);
         mWarningFrame = (FrameLayout) findViewById(R.id.warning_frame);
         mConfirmButton = (Button) findViewById(R.id.confirm_button);
@@ -113,26 +102,10 @@ public class MyDialog extends Dialog implements View.OnClickListener {
     private void init(){
         setCancelable(true);
         setCanceledOnTouchOutside(false);
-        this.mErrorInAnim = OptAnimationLoader.loadAnimation(getContext(), R.anim.error_frame_in);
-        this.mErrorXInAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.error_x_in);
-        // 2.3.x system don't support alpha-animation on layer-list drawable
-        // remove it from animation set
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            List<Animation> childAnims = mErrorXInAnim.getAnimations();
-            int idx = 0;
-            for (; idx < childAnims.size(); idx++) {
-                if (childAnims.get(idx) instanceof AlphaAnimation) {
-                    break;
-                }
-            }
-            if (idx < childAnims.size()) {
-                childAnims.remove(idx);
-            }
-        }
-        mSuccessBowAnim = OptAnimationLoader.loadAnimation(getContext(), R.anim.success_bow_roate);
-        mSuccessLayoutAnimSet = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.success_mask_layout);
-        mModalInAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_in);
-        mModalOutAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_out);
+
+
+        mModalInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.modal_in);
+        mModalOutAnim =  AnimationUtils.loadAnimation(getContext(), R.anim.modal_out);
         mModalOutAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -184,17 +157,11 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         mErrorFrame.clearAnimation();
         mErrorX.clearAnimation();
         mSuccessTick.clearAnimation();
-        mSuccessLeftMask.clearAnimation();
-        mSuccessRightMask.clearAnimation();
     }
 
     private void playAnimation() {
-        if (mAlertType == ERROR_TYPE) {
-            mErrorFrame.startAnimation(mErrorInAnim);
-            mErrorX.startAnimation(mErrorXInAnim);
-        } else if (mAlertType == SUCCESS_TYPE) {
+        if (mAlertType == SUCCESS_TYPE) {
             mSuccessTick.startTickAnim();
-            mSuccessRightMask.startAnimation(mSuccessBowAnim);
         }
     }
 
@@ -212,9 +179,6 @@ public class MyDialog extends Dialog implements View.OnClickListener {
                     break;
                 case SUCCESS_TYPE:
                     mSuccessFrame.setVisibility(View.VISIBLE);
-                    // initial rotate layout of success mask
-                    mSuccessLeftMask.startAnimation(mSuccessLayoutAnimSet.getAnimations().get(0));
-                    mSuccessRightMask.startAnimation(mSuccessLayoutAnimSet.getAnimations().get(1));
                     break;
                 case WARNING_TYPE:
                     mConfirmButton.setBackgroundResource(R.drawable.red_button_background);

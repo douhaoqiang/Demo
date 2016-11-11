@@ -1,5 +1,6 @@
 package com.dhq.demo.home.activity;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -43,7 +44,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes() {
 
         bind = ButterKnife.bind(this);
 
@@ -93,7 +94,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
      * 定义Tab布局的显示模式
      * @param tabLayout
      */
-    public static void dynamicSetTabLayoutMode(TabLayout tabLayout) {
+    public void dynamicSetTabLayoutMode(TabLayout tabLayout) {
         int tabWidth = calculateTabWidth(tabLayout);
         int screenWidth = getScreenWith();
 
@@ -109,7 +110,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
      * @param tabLayout
      * @return
      */
-    private static int calculateTabWidth(TabLayout tabLayout) {
+    private int calculateTabWidth(TabLayout tabLayout) {
         int tabWidth = 0;
         for (int i = 0; i < tabLayout.getChildCount(); i++) {
             final View view = tabLayout.getChildAt(i);
@@ -123,9 +124,9 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
      * 获取屏幕的宽度
      * @return
      */
-    public static int getScreenWith() {
-        return MyApplication.getIntance().getResources().getDisplayMetrics().widthPixels;
+    public int getScreenWith() {
+        int widthPixels = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
+        return widthPixels;
     }
-
 
 }

@@ -8,9 +8,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.demo.edit.EditActivity;
 import com.dhq.demo.main.contract.MainContract;
 import com.dhq.demo.main.presenter.MainPresenterImpl;
 import com.dhq.demo.R;
@@ -28,21 +28,23 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
 
     @BindView(R.id.main_refresh_view)
     PullToRefreshLayout refreshView;
+
     @BindView(R.id.main_menu_recycle)
     Button menuRecycle;
+
     @BindView(R.id.main_menu_ndk)
     Button menuNdk;
+
     @BindView(R.id.main_menu_tablayout)
     Button tablayout;
 
-    @BindView(R.id.main_menu_edittext)
-    EditText edtext;
+    @BindView(R.id.main_menu_edittest)
+    Button edtext;
 
     @BindView(R.id.main_menu_more)
     Button moreBtn;
 
-    @BindView(R.id.main_menu_adtest)
-    Button adtest;
+
     private Unbinder bind;
 
     private Handler handler=new Handler(){
@@ -66,7 +68,7 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes() {
         bind = ButterKnife.bind(this);
         initData();
         initListener();
@@ -124,33 +126,13 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
                 gotoActivity(HomeActivity.class);
             }
         });
-        adtest.setOnClickListener(new View.OnClickListener() {
+
+        edtext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                gotoActivity(EditActivity.class);
             }
         });
-
-//        edtext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                showToast("是否聚焦"+hasFocus);
-//            }
-//        });
-//
-//        edtext.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
-//                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction()==KeyEvent.ACTION_DOWN) {
-//                    //表示按下的是回车键
-//                    showToast("点击回车键！");
-////                    edtext.isFocused();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
 
         moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override

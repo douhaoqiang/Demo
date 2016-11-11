@@ -40,7 +40,7 @@ public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecycl
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes() {
 
         bind = ButterKnife.bind(this);
         initView();

@@ -8,7 +8,7 @@ import com.dhq.baselibrary.presenter.BasePresenter;
  */
 public interface MainContract {
 
-    public interface IMainView {
+    interface IMainView {
         /**
          * 正在加载数据(显示加载框)
          */
@@ -20,11 +20,11 @@ public interface MainContract {
         void isCompleted();
     }
 
-    public abstract class IMainPresenter extends BasePresenter<IMainView> {
+    abstract class IMainPresenter extends BasePresenter<IMainView> {
 
     }
 
-    public interface IMainModel {
+    interface IMainModel {
 
 
     }

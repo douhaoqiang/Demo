@@ -22,25 +22,16 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends BaseActiv
 
     protected P mPresenter;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void initialize() {
+        //绑定presenter
         mPresenter = createPresenter();
         mPresenter.attachView(this);
-
+        initializes();
     }
 
 
-    @Override
-    protected void onDestroy() {
-        if (mPresenter != null) {
-            mPresenter.detachView();
-        }
-        super.onDestroy();
-    }
-
+    protected abstract void initializes();
 
     /**
      * 获取对应的Presenter
@@ -48,6 +39,18 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends BaseActiv
      * @return
      */
     protected abstract P createPresenter();
+
+    @Override
+    protected void onDestroy() {
+        //接触绑定
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+        super.onDestroy();
+    }
+
+
+
 
 
     /**

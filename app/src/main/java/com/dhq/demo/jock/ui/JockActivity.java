@@ -18,7 +18,7 @@ public class JockActivity extends BaseMvpActivity<JockContract.Presenter> implem
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes() {
 
     }
 
