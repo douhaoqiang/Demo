@@ -1,5 +1,6 @@
 package com.dhq.demo.edit;
 
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ public class EditActivity extends BaseActivity {
     private static final String TAG = "EditActivity";
 
     private EditText edtext1;
+    private Toolbar toolbar;
 
     @Override
     protected int getLayoutId() {
@@ -23,8 +25,14 @@ public class EditActivity extends BaseActivity {
 
     @Override
     protected void initialize() {
-        edtext1=(EditText)findViewById(R.id.edit_menu_et1);
+        init();
         initListener();
+    }
+
+    private void init(){
+        edtext1=(EditText)findViewById(R.id.edit_menu_et1);
+        toolbar=(Toolbar)findViewById(R.id.edit_menu_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void initListener(){
