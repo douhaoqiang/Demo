@@ -37,7 +37,9 @@
 
         <activity android:name=".ndk.activity.NdkDemoActivity"/>
 
-        <activity android:name=".edit.EditActivity"/>/
+        <activity android:name=".edit.EditActivity"/>
+
+        <activity android:name=".rx.RxActivity"/>
 
 
     </application>

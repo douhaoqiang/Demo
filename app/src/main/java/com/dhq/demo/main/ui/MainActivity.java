@@ -18,6 +18,7 @@ import com.dhq.demo.home.activity.HomeActivity;
 import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
 import com.dhq.demo.refresh.PullToRefreshLayout;
+import com.dhq.demo.rx.RxActivity;
 import com.dhq.dialoglibrary.MyDialog;
 
 import butterknife.BindView;
@@ -40,6 +41,9 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
 
     @BindView(R.id.main_menu_edittest)
     Button edtext;
+
+    @BindView(R.id.main_menu_rx)
+    Button rxBtn;
 
     @BindView(R.id.main_menu_more)
     Button moreBtn;
@@ -131,6 +135,12 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
             @Override
             public void onClick(View v) {
                 gotoActivity(EditActivity.class);
+            }
+        });
+        rxBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoActivity(RxActivity.class);
             }
         });
 

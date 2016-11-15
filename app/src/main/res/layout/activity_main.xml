@@ -51,6 +51,12 @@
                     android:text="@string/main_menu_animator" />
 
                 <Button
+                    android:id="@+id/main_menu_rx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_menu_rx" />
+
+                <Button
                     android:id="@+id/main_menu_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
