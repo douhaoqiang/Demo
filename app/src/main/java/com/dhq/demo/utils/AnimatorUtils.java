@@ -1,7 +1,9 @@
 package com.dhq.demo.utils;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +58,8 @@ public class AnimatorUtils {
 
     private void RotateAnimation(View view) {
         ObjectAnimator anim = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f);
+//        ObjectAnimator objectAnimatorRotateX1 = ObjectAnimator.ofFloat(view, "rotationX", 0f, 360f);
+//        ObjectAnimator objectAnimatorRotateX2 = ObjectAnimator.ofFloat(view, "rotationX", 0f, 360f);
         anim.setDuration(1000);
         anim.start();
     }
@@ -66,6 +70,33 @@ public class AnimatorUtils {
         anim.setRepeatMode(ObjectAnimator.REVERSE);
         anim.setDuration(2000);
         anim.start();
+    }
+
+
+    /**
+     * 缩放的组合动画
+     * @param view
+     */
+    private void ScaleHolderAnimation(View view){
+        /**动画组合**/
+        PropertyValuesHolder objectAnimatorScaleX = PropertyValuesHolder.ofFloat("scaleX", 0f, 1f);
+        PropertyValuesHolder objectAnimatorScaleY = PropertyValuesHolder.ofFloat("scaleY", 0f, 1f);
+        /**同时播放两个动画**/
+        ObjectAnimator.ofPropertyValuesHolder(view, objectAnimatorScaleX, objectAnimatorScaleY).setDuration(1000).start();
+    }
+
+
+    private void multAnimation(View view){
+        /**动画组合**/
+        AnimatorSet animatorSetGroup1 = new AnimatorSet();
+        ObjectAnimator animatorScaleX1 = ObjectAnimator.ofFloat(view, "scaleX", 0f, 1f);
+        ObjectAnimator animatorScaleY1 = ObjectAnimator.ofFloat(view, "scaleY", 0f, 1f);
+        ObjectAnimator animatorRotateX1 = ObjectAnimator.ofFloat(view, "rotationX", 0f, 360f);
+        ObjectAnimator animatorRotateY1 = ObjectAnimator.ofFloat(view, "rotationY", 0f, 360f);
+        animatorSetGroup1.setDuration(1000);
+        animatorSetGroup1.play(animatorScaleX1).with(animatorScaleY1)
+                .before(animatorRotateX1).before(animatorRotateY1);
+        animatorSetGroup1.start();
     }
 
 }

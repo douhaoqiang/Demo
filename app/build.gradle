@@ -44,7 +44,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'io.reactivex:rxjava:1.1.9'
-    compile project(':baselibrary')
     compile 'com.android.support:appcompat-v7:23.0.3'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile project(':baselibrary')
     compile project(':dialoglibrary')
 }
