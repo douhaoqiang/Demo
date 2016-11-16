@@ -16,7 +16,6 @@ public class EditActivity extends BaseActivity {
     private static final String TAG = "EditActivity";
 
     private EditText edtext1;
-    private Toolbar toolbar;
 
     @Override
     protected int getLayoutId() {
@@ -30,9 +29,7 @@ public class EditActivity extends BaseActivity {
     }
 
     private void init(){
-        edtext1=(EditText)findViewById(R.id.edit_menu_et1);
-        toolbar=(Toolbar)findViewById(R.id.edit_menu_toolbar);
-        setSupportActionBar(toolbar);
+        edtext1=(EditText)findViewById(R.id.edit_name);
     }
 
     private void initListener(){

@@ -5,55 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/edit_menu_toolbar"
-        app:contentInsetEnd="0dp"
-        app:contentInsetEndWithActions="0dp"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        app:logo="@mipmap/ic_launcher"
-        app:navigationIcon="@mipmap/ic_launcher"
-        app:popupTheme="@style/AppToolbarPopup"
-        app:subtitle="子标题"
-        app:subtitleTextColor="@android:color/white"
-        app:theme="@style/AppToolbar"
-        app:title="标题"
-        app:titleTextColor="@android:color/white"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize">
-
-        <LinearLayout
+        android:background="@color/colorPrimary">
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="hello~"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </android.support.v7.widget.Toolbar>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/edit_menu_et1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/main_menu_edit_hint"
-            android:imeOptions="actionSearch"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textColor="@color/colorAccent" />
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            android:background="@drawable/rip_tv"
+            android:text="标题"/>
+    </RelativeLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

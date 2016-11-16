@@ -1,14 +1,15 @@
 package com.dhq.demo.home.activity;
 
-import android.content.Context;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.dhq.baselibrary.activity.BaseMvpActivity;
-import com.dhq.demo.MyApplication;
 import com.dhq.demo.R;
 import com.dhq.demo.home.Presenter.HomePresenter;
 import com.dhq.demo.home.adapter.HomePagerAdapter;
@@ -28,10 +29,18 @@ import butterknife.Unbinder;
 public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> implements HomeContract.IHomeView {
 
 
+    @BindView(R.id.home_drawer_layout)
+    DrawerLayout mDrawerLayout;
+
+    @BindView(R.id.home_navigationview_la)
+    NavigationView mNavigationview;
+
     @BindView(R.id.home_toolbar)
     Toolbar homeToolbar;
+
     @BindView(R.id.home_tab)
     TabLayout homeTab;
+
     @BindView(R.id.home_viewpager)
     ViewPager mViewPager;
 
@@ -47,12 +56,9 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
     protected void initializes() {
 
         bind = ButterKnife.bind(this);
-
         initToolBar();
-
-//        initContent();
-        int i=1;
         initTab();
+        initListener();
 
     }
 
@@ -64,9 +70,9 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
     private void initTab() {
 //        homeTab.set
         List<String> titles = new ArrayList<>();
-        List<Fragment> fragmentLists= new ArrayList<>();
-        for(int i=1;i<4;i++){
-            titles.add("标题"+i);
+        List<Fragment> fragmentLists = new ArrayList<>();
+        for (int i = 1; i < 4; i++) {
+            titles.add("标题" + i);
             fragmentLists.add(new ItemFragment());
         }
         HomePagerAdapter adapter = new HomePagerAdapter(
@@ -76,6 +82,32 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
         dynamicSetTabLayoutMode(homeTab);
 
     }
+
+    private void initListener() {
+
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+    }
+
 
     @Override
     protected HomeContract.IHomePresenter createPresenter() {
@@ -92,6 +124,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
 
     /**
      * 定义Tab布局的显示模式
+     *
      * @param tabLayout
      */
     public void dynamicSetTabLayoutMode(TabLayout tabLayout) {
@@ -106,7 +139,8 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
     }
 
     /**
-     *  计算tab布局的宽度
+     * 计算tab布局的宽度
+     *
      * @param tabLayout
      * @return
      */
@@ -122,6 +156,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
 
     /**
      * 获取屏幕的宽度
+     *
      * @return
      */
     public int getScreenWith() {
