@@ -25,11 +25,11 @@ public class EditActivity extends BaseActivity {
     @Override
     protected void initialize() {
         init();
-        initListener();
+//        initListener();
     }
 
     private void init(){
-        edtext1=(EditText)findViewById(R.id.edit_name);
+//        edtext1=(EditText)findViewById(R.id.edit_name);
     }
 
     private void initListener(){
