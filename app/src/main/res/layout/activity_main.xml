@@ -1,71 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/blue_btn_bg_color">
 
-    <com.dhq.demo.refresh.PullToRefreshLayout
-        android:id="@+id/main_refresh_view"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_viewpage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/main_bottom_lay">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:clipToPadding="true"
-            android:fitsSystemWindows="true">
+    </android.support.v4.view.ViewPager>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/main_menu_recycle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_menu_recycle" />
+    <LinearLayout
+        android:id="@+id/main_bottom_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/button_text_color"
+        android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/main_menu_ndk"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_menu_ndk" />
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:button="@null"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary">
 
-                <Button
-                    android:id="@+id/main_menu_tablayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_menu_tablayout" />
+        </RadioButton>
 
-                <Button
-                    android:id="@+id/main_menu_edittest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_menu_edittest" />
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:button="@null"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary">
 
-                <Button
-                    android:id="@+id/main_menu_animator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_menu_animator" />
+        </RadioButton>
 
-                <Button
-                    android:id="@+id/main_menu_rx"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_menu_rx" />
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:button="@null"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary">
 
-                <Button
-                    android:id="@+id/main_menu_more"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_menu_more" />
+        </RadioButton>
 
-            </LinearLayout>
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:button="@null"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary">
 
-        </ScrollView>
+        </RadioButton>
 
-    </com.dhq.demo.refresh.PullToRefreshLayout>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -92,4 +92,23 @@ public class RxActivity extends BaseActivity {
     }
 
 
+    private <T> void dddd(){
+        new Observer<T>() {
+            @Override
+            public void onCompleted() {
+                Log.i("wxl", "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onNext(T integer) {
+                Log.i("wxl", "onNext=" + integer);
+            }
+        };
+    }
+
+
 }
