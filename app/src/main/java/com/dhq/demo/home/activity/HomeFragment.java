@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.baselibrary.fragment.BaseMvpFragment;
 import com.dhq.demo.R;
 import com.dhq.demo.home.Presenter.HomePresenter;
 import com.dhq.demo.home.adapter.HomePagerAdapter;
@@ -26,7 +27,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2016/8/18.
  */
-public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> implements HomeContract.IHomeView {
+public class HomeFragment extends BaseMvpFragment<HomeContract.IHomePresenter> implements HomeContract.IHomeView {
 
 
     @BindView(R.id.home_drawer_layout)
@@ -55,7 +56,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
     @Override
     protected void initializes() {
 
-        bind = ButterKnife.bind(this);
+        bind = ButterKnife.bind(this,getView());
         initToolBar();
         initTab();
         initListener();
@@ -64,7 +65,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
 
     private void initToolBar() {
         homeToolbar.setTitle("首页");// 标题的文字需在setSupportActionBar之前，不然会无效
-        setSupportActionBar(homeToolbar);
+//        setSupportActionBar(homeToolbar);
     }
 
     private void initTab() {
@@ -76,7 +77,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
             fragmentLists.add(new ItemFragment());
         }
         HomePagerAdapter adapter = new HomePagerAdapter(
-                getSupportFragmentManager(), titles, fragmentLists);
+                getChildFragmentManager(), titles, fragmentLists);
         mViewPager.setAdapter(adapter);
         homeTab.setupWithViewPager(mViewPager);
         dynamicSetTabLayoutMode(homeTab);
@@ -111,12 +112,12 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
 
     @Override
     protected HomeContract.IHomePresenter createPresenter() {
-        return new HomePresenter(this);
+        return new HomePresenter(getContext());
     }
 
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         bind.unbind();
     }
@@ -160,7 +161,7 @@ public class HomeActivity extends BaseMvpActivity<HomeContract.IHomePresenter> i
      * @return
      */
     public int getScreenWith() {
-        int widthPixels = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
+        int widthPixels = getContext().getResources().getDisplayMetrics().widthPixels;
         return widthPixels;
     }
 

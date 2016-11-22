@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class PullToRefreshLayout extends LinearLayout {
     private float lastX;
 
     private float pullY = 0;
+    private float mPullCountY = 0;
 
     // 释放刷新的距离
     private float refreshDist = 200;
@@ -106,13 +108,13 @@ public class PullToRefreshLayout extends LinearLayout {
                     / getMeasuredHeight() * (Math.abs(pullY))));
             if (pullY > 0) {
                 //刷新回弹
-                ValueAnimator animator=ValueAnimator.ofFloat(1,0);
+                ValueAnimator animator = ValueAnimator.ofFloat(1, 0);
                 animator.setDuration(500);
                 animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         Log.i("update", ((Float) animation.getAnimatedValue()).toString());
-                        pullY=pullY*(Float)animation.getAnimatedValue();
+                        pullY = pullY * (Float) animation.getAnimatedValue();
                         requestLayout();
                     }
 
@@ -142,13 +144,13 @@ public class PullToRefreshLayout extends LinearLayout {
             }
             if (pullY < 0) {
                 // 加载回弹
-                ValueAnimator animator=ValueAnimator.ofFloat(1,0);
+                ValueAnimator animator = ValueAnimator.ofFloat(1, 0);
                 animator.setDuration(500);
                 animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         Log.i("update", ((Float) animation.getAnimatedValue()).toString());
-                        pullY=pullY*(Float)animation.getAnimatedValue();
+                        pullY = pullY * (Float) animation.getAnimatedValue();
                         requestLayout();
                     }
                 });
@@ -281,7 +283,7 @@ public class PullToRefreshLayout extends LinearLayout {
     /**
      * 刷新或加载结束
      */
-    public void complete(){
+    public void complete() {
         handler.sendEmptyMessage(0);
     }
 
@@ -325,12 +327,39 @@ public class PullToRefreshLayout extends LinearLayout {
         }
     }
 
+//    //事件拦截
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        switch (ev.getActionMasked()) {
+//            case MotionEvent.ACTION_DOWN:
+//
+//                lastY = downY = ev.getY();
+//                lastX = downX = ev.getX();
+//
+//                // 如果不是正在加载 正在刷新 或者 初始化状态就要拦截
+//                if (!(state == REFRESHING || state == LOADING)) {
+//
+//                    return true;
+//                }
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//
+//                break;
+//            case MotionEvent.ACTION_UP:
+//
+//                break;
+//        }
+//
+//        return super.onInterceptTouchEvent(ev);
+//    }
+
+    //事件处理
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                lastY=downY = ev.getY();
-                lastX=downX = ev.getX();
+                lastY = downY = ev.getY();
+                lastX = downX = ev.getX();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_POINTER_UP:
@@ -347,17 +376,22 @@ public class PullToRefreshLayout extends LinearLayout {
                 float yDiff = nowY - lastY;
                 float xDiff = nowX - lastX;
 
+                lastY = nowY;
+                lastX = nowX;
 
-                if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > mTouchSlop) {
+                if (Math.abs(xDiff) > Math.abs(yDiff) ) {
                     return false;
-                }else{
-                    lastY = nowY;
-                    lastX = nowX;
                 }
+                mPullCountY=mPullCountY+yDiff;
+                pullY = mPullCountY / radio;//Y轴上移动的距离
 
-                pullY = (ev.getY() - downY) / radio;//Y轴上移动的距离
+                Log.e(TAG,"下拉："+!canChildScrollDown());
+                Log.e(TAG,"滑动距离："+yDiff);
+                Log.e(TAG,"总滑动距离："+pullY);
 
-                if (pullY > 0 && !canChildScrollDown()) {
+                Log.e(TAG,"上拉："+!canChildScrollUp());
+
+                if (yDiff > 0 && !canChildScrollDown()) {
                     if (pullY > refreshDist) {
                         pullY = refreshDist;
                     }
@@ -366,11 +400,11 @@ public class PullToRefreshLayout extends LinearLayout {
                     if (pullY >= refreshDist * pullRadio) {
                         // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
                         changeState(RELEASE_TO_REFRESH);
-                    }else{
+                    } else {
                         changeState(INIT);
                     }
                     requestLayout();
-                } else if (pullY < 0 && !canChildScrollUp()) {
+                } else if (pullY < 0 && canChildScrollUp()) {
                     if (pullY < -loadmoreDist) {
                         pullY = -loadmoreDist;
                     }
@@ -380,7 +414,7 @@ public class PullToRefreshLayout extends LinearLayout {
                     // 下面是判断上拉加载的，同上，注意pullUpY是负值
                     if (-pullY >= loadmoreDist * pullRadio) {
                         changeState(RELEASE_TO_LOAD);
-                    }else{
+                    } else {
                         changeState(INIT);
                     }
                     requestLayout();
@@ -388,7 +422,7 @@ public class PullToRefreshLayout extends LinearLayout {
 
                 break;
             case MotionEvent.ACTION_UP:
-
+                mPullCountY=0;
                 if (state == RELEASE_TO_REFRESH) {
                     changeState(REFRESHING);
                     // 刷新操作
@@ -401,7 +435,7 @@ public class PullToRefreshLayout extends LinearLayout {
                     if (mListener != null) {
                         mListener.onLoadMore(this);
                     }
-                }else if(state == INIT){
+                } else if (state == INIT) {
                     complete();
                 }
 
@@ -456,9 +490,11 @@ public class PullToRefreshLayout extends LinearLayout {
                 return ViewCompat.canScrollVertically(pullableView, 1) || pullableView.getScrollY() < 0;
             }
         } else {
-            return ViewCompat.canScrollVertically(pullableView, 1);
+            return pullableView.canScrollVertically(1);
+//            return ViewCompat.canScrollVertically(pullableView, 1);
         }
     }
+
 
     /**
      * 刷新加载回调接口

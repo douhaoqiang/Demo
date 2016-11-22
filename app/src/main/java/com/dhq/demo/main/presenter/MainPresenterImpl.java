@@ -15,5 +15,9 @@ public class MainPresenterImpl extends MainContract.IMainPresenter {
         this.mContext=context.getApplicationContext();
     }
 
+    public void getData(){
+
+    }
+
 
 }

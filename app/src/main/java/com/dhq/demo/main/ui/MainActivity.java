@@ -1,7 +1,8 @@
 package com.dhq.demo.main.ui;
 
-import android.app.Fragment;
-import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -10,6 +11,10 @@ import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.R;
 import com.dhq.demo.main.contract.MainContract;
 import com.dhq.demo.main.presenter.MainPresenterImpl;
+import com.dhq.demo.main.ui.fragment.MainFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +41,8 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
     @Override
     protected void initializes() {
         bind = ButterKnife.bind(this);
-        initData();
         initListener();
+        initData();
     }
 
     /**
@@ -45,7 +50,14 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
      */
     private void initData() {
 
-//        mainViewpage.setAdapter();
+//        mainViewpage.setAdapter(new FragAdapter);
+        List<Fragment> fragments = new ArrayList<Fragment>();
+        fragments.add(new MainFragment());
+        fragments.add(new MainFragment());
+
+        FragAdapter adapter = new FragAdapter(getSupportFragmentManager(), fragments);
+        mainViewpage.setAdapter(adapter);
+        mainViewpage.setCurrentItem(0);
     }
 
 
@@ -70,12 +82,7 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
             }
         });
 
-    }
 
-
-    private void gotoActivity(Class aClass) {
-        Intent intent = new Intent(this, aClass);
-        startActivity(intent);
     }
 
 
@@ -101,6 +108,32 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
     protected void onDestroy() {
         super.onDestroy();
         bind.unbind();
+    }
+
+
+    public class FragAdapter extends FragmentPagerAdapter{
+
+        private List<Fragment> fragments;
+
+
+        public FragAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public FragAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm);
+            this.fragments = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
     }
 
 }

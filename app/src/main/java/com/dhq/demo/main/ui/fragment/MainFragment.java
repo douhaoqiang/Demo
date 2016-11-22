@@ -1,20 +1,22 @@
 package com.dhq.demo.main.ui.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.dhq.baselibrary.fragment.BaseMvpFragment;
 import com.dhq.demo.R;
 import com.dhq.demo.edit.EditActivity;
-import com.dhq.demo.home.activity.HomeActivity;
-import com.dhq.demo.main.ui.MainActivity;
+import com.dhq.demo.home.activity.HomeFragment;
+import com.dhq.demo.main.contract.MainContract;
+import com.dhq.demo.main.presenter.MainPresenterImpl;
 import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
 import com.dhq.demo.refresh.PullToRefreshLayout;
@@ -29,7 +31,7 @@ import butterknife.Unbinder;
  * DESC 主页Fragment
  * Created by douhaoqiang on 2016/11/18.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
     private static final String TAG = "MainFragment";
     private Unbinder bind;
 
@@ -68,21 +70,24 @@ public class MainFragment extends Fragment {
         }
     };
 
-    @Nullable
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_lay, container);
-        bind = ButterKnife.bind(this,view);
-        return view;
+    protected int getLayoutId() {
+        return R.layout.fragment_main_lay;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void initializes() {
+        bind = ButterKnife.bind(this,getView());
         initData();
         initListener();
     }
 
+    @Override
+    protected MainContract.IMainPresenter createPresenter() {
+        return new MainPresenterImpl(getActivity());
+    }
     /**
      * 初始化列表数据
      */
@@ -132,7 +137,7 @@ public class MainFragment extends Fragment {
         tablayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoActivity(HomeActivity.class);
+                gotoActivity(HomeFragment.class);
             }
         });
 
@@ -165,5 +170,6 @@ public class MainFragment extends Fragment {
         Intent intent=new Intent(getActivity(),aClass);
         startActivity(intent);
     }
+
 
 }

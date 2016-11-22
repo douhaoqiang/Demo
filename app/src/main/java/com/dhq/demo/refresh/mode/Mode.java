@@ -6,6 +6,8 @@ package com.dhq.demo.refresh.mode;
  */
 public enum  Mode {
 
-    BOTH,ONLYREFRESH,NONE
+    BOTH,
+    ONLYREFRESH,
+    NONE
 
 }

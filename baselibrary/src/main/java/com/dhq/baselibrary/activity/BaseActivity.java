@@ -34,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setContentView(getLayoutId());
 
-        setStatusBar(getResources().getColor(R.color.colorAccent));
+//        setStatusBar(getResources().getColor(R.color.colorAccent));
 
         initialize();
 
