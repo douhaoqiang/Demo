@@ -12,6 +12,7 @@ import com.dhq.demo.R;
 import com.dhq.demo.main.contract.MainContract;
 import com.dhq.demo.main.presenter.MainPresenterImpl;
 import com.dhq.demo.main.ui.fragment.MainFragment;
+import com.dhq.demo.main.ui.fragment.MainScrollFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
 //        mainViewpage.setAdapter(new FragAdapter);
         List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new MainFragment());
-        fragments.add(new MainFragment());
+        fragments.add(new MainScrollFragment());
 
         FragAdapter adapter = new FragAdapter(getSupportFragmentManager(), fragments);
         mainViewpage.setAdapter(adapter);

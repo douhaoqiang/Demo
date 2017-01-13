@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 
 /**
  * DESC

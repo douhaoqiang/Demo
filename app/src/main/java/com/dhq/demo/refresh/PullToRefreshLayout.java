@@ -1,22 +1,18 @@
 package com.dhq.demo.refresh;
 
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.view.animation.CycleInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
@@ -27,27 +23,15 @@ import com.dhq.demo.refresh.header.ArrowFooterView;
 import com.dhq.demo.refresh.header.ArrowHeaderView;
 import com.dhq.demo.refresh.mode.Mode;
 
-import static android.R.attr.animation;
-
 /**
  *
  */
 public class PullToRefreshLayout extends LinearLayout {
     public static final String TAG = "PullToRefreshLayout";
-    // 初始状态
-    public static final int INIT = 0;
-    // 释放刷新
-    public static final int RELEASE_TO_REFRESH = 1;
-    // 正在刷新
-    public static final int REFRESHING = 2;
-    // 释放加载
-    public static final int RELEASE_TO_LOAD = 3;
-    // 正在加载
-    public static final int LOADING = 4;
-    // 操作完毕
-    public static final int DONE = 5;
+
+
     // 当前状态
-    private int state = INIT;
+    private int nowState = Status.INIT;
     // 刷新回调接口
     private OnRefreshListener mListener;
 
@@ -127,7 +111,7 @@ public class PullToRefreshLayout extends LinearLayout {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        changeState(DONE);
+                        changeState(Status.DONE);
                     }
 
                     @Override
@@ -162,7 +146,7 @@ public class PullToRefreshLayout extends LinearLayout {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        changeState(DONE);
+                        changeState(Status.DONE);
                     }
 
                     @Override
@@ -288,31 +272,31 @@ public class PullToRefreshLayout extends LinearLayout {
     }
 
     private void changeState(int to) {
-        state = to;
-        switch (state) {
-            case INIT:
+        nowState = to;
+        switch (nowState) {
+            case Status.INIT:
                 Log.e(TAG, "INIT");
                 break;
-            case RELEASE_TO_REFRESH:
+            case Status.RELEASE_TO_REFRESH:
                 Log.e(TAG, "RELEASE_TO_REFRESH");
                 ((IPullHeaderView) refreshView).prepareRefresh();
                 break;
-            case REFRESHING:
+            case Status.REFRESHING:
                 Log.e(TAG, "REFRESHING");
                 // 正在刷新状态
                 ((IPullHeaderView) refreshView).startRefresh();
                 break;
-            case RELEASE_TO_LOAD:
+            case Status.RELEASE_TO_LOAD:
                 Log.e(TAG, "RELEASE_TO_LOAD");
                 // 释放加载状态
                 ((IPullFooterView) loadmoreView).prepareLoadmore();
                 break;
-            case LOADING:
+            case Status.LOADING:
                 Log.e(TAG, "LOADING");
                 // 正在加载状态
                 ((IPullFooterView) loadmoreView).startLoadMore();
                 break;
-            case DONE:
+            case Status.DONE:
                 Log.e(TAG, "DONE");
                 // 刷新或加载完毕，啥都不做
                 ((IPullFooterView) loadmoreView).completeLoadmore();
@@ -327,31 +311,16 @@ public class PullToRefreshLayout extends LinearLayout {
         }
     }
 
-//    //事件拦截
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        switch (ev.getActionMasked()) {
-//            case MotionEvent.ACTION_DOWN:
-//
-//                lastY = downY = ev.getY();
-//                lastX = downX = ev.getX();
-//
-//                // 如果不是正在加载 正在刷新 或者 初始化状态就要拦截
-//                if (!(state == REFRESHING || state == LOADING)) {
-//
-//                    return true;
-//                }
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//
-//                break;
-//            case MotionEvent.ACTION_UP:
-//
-//                break;
-//        }
-//
-//        return super.onInterceptTouchEvent(ev);
-//    }
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+
+        if (isStatus(Status.RELEASE_PULL_TO_LOAD) || isStatus(Status.RELEASE_PULL_TO_REFRESH)
+                || isStatus(Status.REFRESHING) || isStatus(Status.LOADING)) {
+            return true;
+        }
+
+        return super.onInterceptTouchEvent(ev);
+    }
 
     //事件处理
     @Override
@@ -366,7 +335,7 @@ public class PullToRefreshLayout extends LinearLayout {
                 break;
             case MotionEvent.ACTION_MOVE:
 
-                if (mode == Mode.NONE || state == LOADING || state == REFRESHING) {
+                if (mode == Mode.NONE || nowState == Status.LOADING || nowState == Status.REFRESHING) {
                     //当正在刷新或者不可以上下拉时 不监听移动操作
                     return false;
                 }
@@ -379,19 +348,16 @@ public class PullToRefreshLayout extends LinearLayout {
                 lastY = nowY;
                 lastX = nowX;
 
-                if (Math.abs(xDiff) > Math.abs(yDiff) ) {
+                if (Math.abs(xDiff) > Math.abs(yDiff) || Math.abs(yDiff) < mTouchSlop) {
                     return false;
                 }
-                mPullCountY=mPullCountY+yDiff;
+
+//                setStatus(yDiff);
+                mPullCountY = mPullCountY + yDiff;
                 pullY = mPullCountY / radio;//Y轴上移动的距离
 
-                Log.e(TAG,"下拉："+!canChildScrollDown());
-                Log.e(TAG,"滑动距离："+yDiff);
-                Log.e(TAG,"总滑动距离："+pullY);
+                if (pullY > 0 && !canChildScrollDown()) {
 
-                Log.e(TAG,"上拉："+!canChildScrollUp());
-
-                if (yDiff > 0 && !canChildScrollDown()) {
                     if (pullY > refreshDist) {
                         pullY = refreshDist;
                     }
@@ -399,12 +365,12 @@ public class PullToRefreshLayout extends LinearLayout {
                     //表示下拉
                     if (pullY >= refreshDist * pullRadio) {
                         // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
-                        changeState(RELEASE_TO_REFRESH);
+                        changeState(Status.RELEASE_TO_REFRESH);
                     } else {
-                        changeState(INIT);
+                        changeState(Status.INIT);
                     }
                     requestLayout();
-                } else if (pullY < 0 && canChildScrollUp()) {
+                } else if (pullY < 0 && !canChildScrollUp()) {
                     if (pullY < -loadmoreDist) {
                         pullY = -loadmoreDist;
                     }
@@ -413,29 +379,29 @@ public class PullToRefreshLayout extends LinearLayout {
                     //表示上拉
                     // 下面是判断上拉加载的，同上，注意pullUpY是负值
                     if (-pullY >= loadmoreDist * pullRadio) {
-                        changeState(RELEASE_TO_LOAD);
+                        changeState(Status.RELEASE_TO_LOAD);
                     } else {
-                        changeState(INIT);
+                        changeState(Status.INIT);
                     }
                     requestLayout();
                 }
 
                 break;
             case MotionEvent.ACTION_UP:
-                mPullCountY=0;
-                if (state == RELEASE_TO_REFRESH) {
-                    changeState(REFRESHING);
+                mPullCountY = 0;
+                if (nowState == Status.RELEASE_TO_REFRESH) {
+                    changeState(Status.REFRESHING);
                     // 刷新操作
                     if (mListener != null) {
                         mListener.onRefresh(this);
                     }
-                } else if (state == RELEASE_TO_LOAD) {
-                    changeState(LOADING);
+                } else if (nowState == Status.RELEASE_TO_LOAD) {
+                    changeState(Status.LOADING);
                     // 加载操作
                     if (mListener != null) {
                         mListener.onLoadMore(this);
                     }
-                } else if (state == INIT) {
+                } else if (nowState == Status.INIT) {
                     complete();
                 }
 
@@ -443,17 +409,16 @@ public class PullToRefreshLayout extends LinearLayout {
                 break;
         }
         // 事件分发交给父类
-        super.dispatchTouchEvent(ev);
-        return true;
+        return super.dispatchTouchEvent(ev);
     }
 
     /**
-     * 判断自己的内容是否可以上拉
+     * 判断自己的内容是否可以下拉
      *
      * @return
      */
 
-    protected boolean canChildScrollUp() {
+    protected boolean canChildScrollDown() {
         if (android.os.Build.VERSION.SDK_INT < 14) {
             if (pullableView instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) pullableView;
@@ -474,11 +439,11 @@ public class PullToRefreshLayout extends LinearLayout {
 
 
     /**
-     * 判断自己的内容是否可以下拉
+     * 判断自己的内容是否可以上拉
      *
      * @return
      */
-    protected boolean canChildScrollDown() {
+    protected boolean canChildScrollUp() {
         if (android.os.Build.VERSION.SDK_INT < 14) {
             if (pullableView instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) pullableView;
@@ -490,11 +455,62 @@ public class PullToRefreshLayout extends LinearLayout {
                 return ViewCompat.canScrollVertically(pullableView, 1) || pullableView.getScrollY() < 0;
             }
         } else {
-            return pullableView.canScrollVertically(1);
-//            return ViewCompat.canScrollVertically(pullableView, 1);
+            return ViewCompat.canScrollVertically(pullableView, 1);
         }
     }
 
+
+    private void setStatus(float yDiff) {
+
+        if (yDiff > 0 && !canChildScrollDown()) {
+            if (pullY < 0 && isStatus(Status.RELEASE_PULL_TO_LOAD)) {
+
+            }
+            mPullCountY = mPullCountY + yDiff;
+            pullY = mPullCountY / radio;//Y轴上移动的距离
+            if (pullY > refreshDist) {
+                pullY = refreshDist;
+            }
+            ((IPullHeaderView) refreshView).pullDownPrecent(pullY / refreshDist);
+            //表示下拉
+            if (pullY >= refreshDist * pullRadio) {
+                // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
+                changeState(Status.RELEASE_TO_REFRESH);
+            } else {
+                changeState(Status.INIT);
+            }
+            requestLayout();
+        } else if (yDiff < 0 && !canChildScrollUp()) {
+            mPullCountY = mPullCountY + yDiff;
+            pullY = mPullCountY / radio;//Y轴上移动的距离
+            if (pullY < -loadmoreDist) {
+                pullY = -loadmoreDist;
+            }
+
+            ((IPullFooterView) loadmoreView).pullUpPrecent(pullY / loadmoreDist);
+            //表示上拉
+            // 下面是判断上拉加载的，同上，注意pullUpY是负值
+            if (-pullY >= loadmoreDist * pullRadio) {
+                changeState(Status.RELEASE_TO_LOAD);
+            } else {
+                changeState(Status.INIT);
+            }
+            requestLayout();
+        }
+
+
+    }
+
+
+    /**
+     * 判断当前状态是否跟传入的状态一直
+     *
+     * @param status
+     * @return
+     */
+    private boolean isStatus(int status) {
+        return nowState == status;
+    }
 
     /**
      * 刷新加载回调接口
