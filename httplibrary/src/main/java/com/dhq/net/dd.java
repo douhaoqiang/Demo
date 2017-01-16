@@ -18,7 +18,7 @@ public class dd {
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
+                BaseResponse body = response.body();
             }
 
             @Override
