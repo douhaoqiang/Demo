@@ -2,6 +2,12 @@ package com.dhq.net;
 
 import com.dhq.net.entity.BaseResponse;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -13,7 +19,7 @@ import retrofit2.Response;
 public class dd {
     private static final String TAG = "dd";
 
-    private void ddd(){
+    private void ddd() {
         Call<BaseResponse> baseResponseCall = OlderServiceGen.getInstance().getService().addUser(new BaseResponse());
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
@@ -26,6 +32,34 @@ public class dd {
 
             }
         });
+
+
+//        OlderServiceGen.getInstance().getService().getUsers()
+//                .observeOn(Schedulers.io())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<String>() {
+//                    @Override
+//                    public void onSubscribe(Subscription s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+
     }
+
 
 }

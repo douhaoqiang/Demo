@@ -5,6 +5,7 @@ import com.dhq.net.entity.BaseResponse;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -28,7 +29,7 @@ public interface TestService {
      * @param userId
      * @return
      */
-    @GET("/{userId}/getUsers")
+    @GET("{userId}/getUsers")
     Call<BaseResponse> getUsers(@Path("userId") String userId);
 
     /**
@@ -67,5 +68,12 @@ public interface TestService {
     @POST("login")
     Call<BaseResponse> login(@Part("userId") String userId, @Part("password") String password);
 
+
+    /**
+     * get请求 添加参数
+     * @return
+     */
+    @GET("getUsers")
+    Observable<BaseResponse> getUsers();
 
 }

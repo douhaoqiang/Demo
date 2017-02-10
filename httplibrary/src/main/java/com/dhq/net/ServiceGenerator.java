@@ -1,5 +1,7 @@
 package com.dhq.net;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -33,7 +35,8 @@ public abstract class ServiceGenerator<T> {
                 .build();
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
         retrofit=builder
                 .baseUrl(getBaseUrl())
