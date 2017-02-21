@@ -1,12 +1,15 @@
 package com.dhq.net;
 
 import com.dhq.net.entity.BaseResponse;
+import com.dhq.net.entity.User;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,31 +36,23 @@ public class dd {
             }
         });
 
+        Observer observer = new BaseObserver<User>() {
+            @Override
+            public void success(User result) {
 
-//        OlderServiceGen.getInstance().getService().getUsers()
-//                .observeOn(Schedulers.io())
-//                .subscribeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<String>() {
-//                    @Override
-//                    public void onSubscribe(Subscription s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable t) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
+            }
+
+            @Override
+            public void fail(String msg) {
+
+            }
+        };
+
+
+        OlderServiceGen.getInstance().getService().getUsers()
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
 
     }
 

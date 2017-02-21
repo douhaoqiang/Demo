@@ -1,10 +1,12 @@
 package com.dhq.net.entity;
 
+import java.io.Serializable;
+
 /**
  * DESC
  * Created by douhaoqiang on 2016/11/9.
  */
-public class BaseResponse<T> {
+public class BaseResponse<T> implements Serializable{
 
     //  判断标示
     private int code;

@@ -1,5 +1,7 @@
 package com.dhq.net;
 
+import android.util.Log;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -30,6 +32,8 @@ public class MyIntercepter implements Interceptor {
         Request newRequest = oriRequest.newBuilder()
                 .header("token", "oneself_token")
                 .build();
+        Log.d(TAG,"RequestBody："+newRequest.body().toString());
+        Log.d(TAG,"RequestHeader："+newRequest.headers().toString());
         return newRequest;
     }
 
