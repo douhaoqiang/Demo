@@ -117,12 +117,13 @@ public class DropDownMenu extends LinearLayout {
         mListView.setAdapter(mAadapter);
         listClickListener();
 
+
         mPopupWindow = new PopupWindow(contentView,LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, true);
-        // 点击窗外可取消
+
         mPopupWindow.setTouchable(true);
         mPopupWindow.setOutsideTouchable(false);
         mPopupWindow.setFocusable(false);
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x88000000));
+//        mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x88ffffff));
         //指定弹出和消失的动画
 //        mPopupWindow.setAnimationStyle(R.style.popwindow_anim_style);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -216,7 +217,7 @@ public class DropDownMenu extends LinearLayout {
                         tabIv.setImageResource(menuSelectedIcon);
                         current_tab_position = position;
                         mAadapter.setData(Arrays.asList(mDatas.get(position)));
-                        show();
+//                        show();
                     }
                 }
             }
