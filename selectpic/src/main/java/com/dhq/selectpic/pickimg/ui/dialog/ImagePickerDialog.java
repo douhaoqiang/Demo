@@ -339,6 +339,7 @@ public final class ImagePickerDialog {
 			} catch (IOException e) {
 				Log.e(TAG, "run()", e);
 			} finally {
+				//获取完数据后结束监听
 				if (localServerSocket != null) {
 					try {
 						localServerSocket.close();
