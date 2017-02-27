@@ -64,9 +64,10 @@
                     android:text="@string/main_menu_more" />
 
                 <Button
+                    android:id="@+id/main_menu_cloud_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/main_menu_more" />
+                    android:text="@string/main_menu_cloud_view" />
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

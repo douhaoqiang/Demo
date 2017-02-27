@@ -40,6 +40,8 @@
 
         <activity android:name=".rx.RxActivity"/>
 
+        <activity android:name=".cloudview.CloudViewActivity"/>
+
 
     </application>
 

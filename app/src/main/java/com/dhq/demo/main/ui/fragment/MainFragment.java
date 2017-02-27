@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.dhq.baselibrary.fragment.BaseMvpFragment;
 import com.dhq.demo.R;
+import com.dhq.demo.cloudview.CloudViewActivity;
 import com.dhq.demo.edit.EditActivity;
 import com.dhq.demo.home.activity.HomeFragment;
 import com.dhq.demo.main.contract.MainContract;
@@ -55,6 +56,9 @@ public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
 
     @BindView(R.id.main_menu_more)
     Button moreBtn;
+
+    @BindView(R.id.main_menu_cloud_view)
+    Button cloudView;
 
     private Handler handler=new Handler(){
         @Override
@@ -163,6 +167,14 @@ public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
                         .show();
             }
         });
+
+        cloudView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoActivity(CloudViewActivity.class);
+            }
+        });
+
     }
 
 

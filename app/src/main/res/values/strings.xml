@@ -13,6 +13,7 @@
     <string name="main_menu_edit_hint">请输入信息</string>
     <string name="main_menu_rx">RXJAVA</string>
     <string name="main_menu_more">更多</string>
+    <string name="main_menu_cloud_view">云标签</string>
     <!--<string name="main_menu_title">设置</string>-->
     <!--<string name="main_menu_title">设置</string>-->
 
