@@ -1,0 +1,37 @@
+<resources>
+
+
+    <declare-styleable name="TagCloudView">
+        <!-- 背景 -->
+        <attr name="tcvBackground" format="reference" />
+        <!-- 选中是文字颜色 -->
+        <attr name="tcvSeclecTextColor" format="reference" />
+        <!-- 为选中时文字颜色 -->
+        <attr name="tcvTextColor" format="color" />
+        <!--  -->
+        <attr name="tcvBorder" format="dimension" />
+        <!-- 文字大小 -->
+        <attr name="tcvTextSize" format="dimension" />
+        <!-- -->
+        <attr name="tcvBorderItem" format="dimension" />
+        <!-- -->
+        <attr name="tcvItemBorderVertical" format="dimension" />
+        <!-- -->
+        <attr name="tcvItemBorderHorizontal" format="dimension" />
+        <!-- 单行像是 -->
+        <attr name="tcvSingleLine" format="boolean" />
+        <!-- -->
+        <attr name="tcvShowEndText" format="boolean" />
+        <!-- -->
+        <attr name="tcvShowRightImg" format="boolean" />
+        <!-- -->
+        <attr name="tcvEndText" format="string" />
+        <!-- -->
+        <attr name="tcvRightResId" format="reference" />
+        <!-- 是否可点击 -->
+        <attr name="tcvCanTagClick" format="boolean" />
+        <!-- -->
+        <attr name="tcvTagResId" format="reference" />
+    </declare-styleable>
+
+</resources>
