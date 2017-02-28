@@ -2,36 +2,20 @@
 
 
     <declare-styleable name="TagCloudView">
+
         <!-- 背景 -->
-        <attr name="tcvBackground" format="reference" />
-        <!-- 选中是文字颜色 -->
-        <attr name="tcvSeclecTextColor" format="reference" />
-        <!-- 为选中时文字颜色 -->
-        <attr name="tcvTextColor" format="color" />
-        <!--  -->
-        <attr name="tcvBorder" format="dimension" />
+        <attr name="tagBackground" format="reference" />
+        <!-- 文字颜色 -->
+        <attr name="tagTextColor" format="color" />
         <!-- 文字大小 -->
-        <attr name="tcvTextSize" format="dimension" />
+        <attr name="tagTextSize" format="dimension" />
         <!-- -->
-        <attr name="tcvBorderItem" format="dimension" />
+        <attr name="tagVerticalMargen" format="dimension" />
         <!-- -->
-        <attr name="tcvItemBorderVertical" format="dimension" />
-        <!-- -->
-        <attr name="tcvItemBorderHorizontal" format="dimension" />
-        <!-- 单行像是 -->
-        <attr name="tcvSingleLine" format="boolean" />
-        <!-- -->
-        <attr name="tcvShowEndText" format="boolean" />
-        <!-- -->
-        <attr name="tcvShowRightImg" format="boolean" />
-        <!-- -->
-        <attr name="tcvEndText" format="string" />
-        <!-- -->
-        <attr name="tcvRightResId" format="reference" />
+        <attr name="tagHorizontalMargen" format="dimension" />
         <!-- 是否可点击 -->
-        <attr name="tcvCanTagClick" format="boolean" />
-        <!-- -->
-        <attr name="tcvTagResId" format="reference" />
+        <attr name="tagCanClick" format="boolean" />
+
     </declare-styleable>
 
 </resources>
