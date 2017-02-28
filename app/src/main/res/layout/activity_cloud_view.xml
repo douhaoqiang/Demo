@@ -18,17 +18,19 @@
             android:background="#009688"
             android:padding="5dp"
             android:text="默认样式、Tag 及整个视图都可点击、少量内容显示"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="12sp"/>
 
         <com.dhq.baselibrary.view.TagCloudView
             android:id="@+id/tag_cloud_view_0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_black_selector"
-            app:tagCanTagClick="true"
-            app:tagItemBorderHorizontal="18dp"
-            app:tagItemBorderVertical="6dp"
-            app:tagTextColor="#123455" />
+            app:tagCanClick="true"
+            app:tagHorizontalMargen="18dp"
+            app:tagVerticalMargen="6dp"
+            app:tagTextColor="#123455"
+            app:tagTextSize="12sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -43,9 +45,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_black_selector"
-            app:tagCanTagClick="true"
-            app:tagItemBorderHorizontal="8dp"
-            app:tagItemBorderVertical="6dp"
+            app:tagCanClick="true"
+            app:tagHorizontalMargen="8dp"
+            app:tagVerticalMargen="6dp"
             app:tagTextColor="#123455" />
 
         <TextView
@@ -62,9 +64,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_light_selector"
             app:tagBackground="@drawable/background_tag_selector"
-            app:tagCanTagClick="false"
-            app:tagItemBorderHorizontal="8dp"
-            app:tagItemBorderVertical="6dp"
+            app:tagCanClick="false"
+            app:tagHorizontalMargen="8dp"
+            app:tagVerticalMargen="6dp"
             app:tagTextColor="#42A5F5" />
 
         <TextView
@@ -80,8 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_light_selector"
-            app:tagCanTagClick="false"
-            app:tagTagResId="@layout/item_tag_style" />
+            app:tagCanClick="false" />
 
         <TextView
             android:layout_width="match_parent"
@@ -97,9 +98,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_light_selector"
             app:tagBackground="@drawable/background_tag_selector"
-            app:tagCanTagClick="false"
-            app:tagItemBorderHorizontal="8dp"
-            app:tagItemBorderVertical="6dp"
+            app:tagCanClick="false"
+            app:tagHorizontalMargen="8dp"
+            app:tagVerticalMargen="6dp"
             app:tagTextColor="#42A5F5" />
 
         <TextView
@@ -116,9 +117,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_light_selector"
             app:tagBackground="@drawable/background_tag_selector"
-            app:tagCanTagClick="false"
-            app:tagItemBorderHorizontal="8dp"
-            app:tagItemBorderVertical="6dp"
+            app:tagCanClick="false"
+            app:tagHorizontalMargen="8dp"
+            app:tagVerticalMargen="6dp"
             app:tagTextColor="#42A5F5" />
 
         <TextView
@@ -135,9 +136,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_light_selector"
             app:tagBackground="@drawable/background_tag_selector"
-            app:tagCanTagClick="false"
-            app:tagItemBorderHorizontal="8dp"
-            app:tagItemBorderVertical="6dp"
+            app:tagCanClick="false"
+            app:tagHorizontalMargen="8dp"
+            app:tagVerticalMargen="6dp"
             app:tagTextColor="#42A5F5" />
 
         <TextView
@@ -153,9 +154,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_black_selector"
-            app:tagCanTagClick="true"
-            app:tagItemBorderHorizontal="8dp"
-            app:tagItemBorderVertical="6dp"
+            app:tagCanClick="true"
+            app:tagHorizontalMargen="8dp"
+            app:tagVerticalMargen="6dp"
             app:tagTextColor="#123455" />
 
         <TextView
@@ -172,9 +173,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_tagcloudview_light_selector"
             app:tagBackground="@drawable/background_tag_selector"
-            app:tagCanTagClick="false"
-            app:tagItemBorderHorizontal="8dp"
-            app:tagItemBorderVertical="6dp"
+            app:tagCanClick="false"
+            app:tagHorizontalMargen="8dp"
+            app:tagVerticalMargen="6dp"
             app:tagTextColor="#42A5F5" />
 
     </LinearLayout>
