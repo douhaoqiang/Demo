@@ -151,7 +151,7 @@ public class DropDownMenu extends LinearLayout {
 
 
     public void show() {
-        mPopupWindow.showAsDropDown(this);
+        mPopupWindow.showAsDropDown(this,0,0);
     }
 
     /**
