@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.dhq.baselibrary.fragment.BaseMvpFragment;
 import com.dhq.demo.R;
+import com.dhq.demo.SlideViewActivity;
 import com.dhq.demo.cloudview.CloudViewActivity;
 import com.dhq.demo.edit.EditActivity;
 import com.dhq.demo.home.activity.HomeFragment;
@@ -59,6 +60,9 @@ public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
 
     @BindView(R.id.main_menu_cloud_view)
     Button cloudView;
+
+    @BindView(R.id.main_menu_slide_view)
+    Button slideView;
 
     private Handler handler=new Handler(){
         @Override
@@ -172,6 +176,13 @@ public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
             @Override
             public void onClick(View v) {
                 gotoActivity(CloudViewActivity.class);
+            }
+        });
+
+        slideView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoActivity(SlideViewActivity.class);
             }
         });
 
