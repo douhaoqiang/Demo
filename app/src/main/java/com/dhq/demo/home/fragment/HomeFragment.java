@@ -1,4 +1,4 @@
-package com.dhq.demo.home.activity;
+package com.dhq.demo.home.fragment;
 
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;

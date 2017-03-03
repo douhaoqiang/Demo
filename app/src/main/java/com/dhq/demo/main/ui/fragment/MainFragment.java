@@ -1,14 +1,9 @@
 package com.dhq.demo.main.ui.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.dhq.baselibrary.fragment.BaseMvpFragment;
@@ -16,7 +11,7 @@ import com.dhq.demo.R;
 import com.dhq.demo.SlideViewActivity;
 import com.dhq.demo.cloudview.CloudViewActivity;
 import com.dhq.demo.edit.EditActivity;
-import com.dhq.demo.home.activity.HomeFragment;
+import com.dhq.demo.home.fragment.HomeFragment;
 import com.dhq.demo.main.contract.MainContract;
 import com.dhq.demo.main.presenter.MainPresenterImpl;
 import com.dhq.demo.ndk.activity.NdkDemoActivity;
