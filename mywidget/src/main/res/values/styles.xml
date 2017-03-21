@@ -1,0 +1,27 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- ratingbar属性 -->
+    <declare-styleable name="MyRatingBar">
+        <!-- 星星的个数 -->
+        <attr name="starsNumber" format="integer" />
+        <!-- 星星的大小 -->
+        <attr name="starSize" format="dimension" />
+        <!-- 星星之间的间隔大小 -->
+        <attr name="starsSeparation" format="dimension" />
+        <!-- 是否仅作指示 -->
+        <attr name="starIsIndicator" format="boolean" />
+        <!-- 星星的进度 -->
+        <attr name="starRating" format="float" />
+        <!-- 星星的步辐 -->
+        <attr name="starStepSize" format="float" />
+    </declare-styleable>
+
+</resources>
