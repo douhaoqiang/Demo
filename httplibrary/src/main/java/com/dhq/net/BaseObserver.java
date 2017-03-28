@@ -11,13 +11,14 @@ import io.reactivex.disposables.Disposable;
  * DESC
  * Created by douhaoqiang on 2017/2/14.
  */
-public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
+public class BaseObserver<T> implements Observer<T> {
     private static final String TAG = "BaseObserver";
+    private ResponseCallback responseCallback;
     private Disposable mDisposable;
 
 
-    public BaseObserver(){
-
+    public BaseObserver(ResponseCallback responseCallback){
+        this.responseCallback=responseCallback;
     }
 
     @Override
@@ -26,18 +27,20 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
     }
 
     @Override
-    public void onNext(BaseResponse<T> response) {
-        if("success".equals(response.getResult())){
-            success(response.getResultMap());
-        }else{
-            fail(response.getResult());
+    public void onNext(T response) {
+        if(responseCallback!=null){
+            responseCallback.success(response);
         }
     }
 
     @Override
     public void onError(Throwable e) {
-        Log.d(TAG,e.getMessage());
-        fail("网络请求失败！");
+        Log.d(TAG,e.toString());
+        if(responseCallback!=null){
+
+            responseCallback.fail("网络请求失败！");
+        }
+
     }
 
     @Override
@@ -45,9 +48,12 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     }
 
-    public abstract void success(T result);
 
-    public abstract void fail(String msg);
+    public interface ResponseCallback<T>{
+        void success(T result);
+        void fail(String msg);
+    }
+
 
 
 }

@@ -2,15 +2,17 @@ package com.dhq.net.http;
 
 import com.dhq.net.BaseObserver;
 import com.dhq.net.MyIntercepter;
+import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.util.DataUtils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -83,11 +85,8 @@ public class HttpUtil {
      * @return
      */
     public void getHttpRequest(String url, HashMap<String, String> paramMaps, Observer observer) {
-        mApiService.getHttpRequest(url, paramMaps)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+        Observable<BaseResponse> observable = mApiService.getHttpRequest(url, paramMaps).map(new HttpResultFunc());
+        toSubscribe(observable, observer);
     }
 
     /**
@@ -97,17 +96,23 @@ public class HttpUtil {
      * @param paramMaps
      * @param observer
      */
-    public void postFormHttpRequest(String url, HashMap<String, String> paramMaps, BaseObserver observer) {
+    public void postFormHttpRequest(String url, HashMap<String, String> paramMaps, BaseObserver<BaseResponse> observer) {
         String jsonParam = DataUtils.mapToJson(paramMaps);
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("data",jsonParam);
-        mApiService.postFormHttpRequest(url, hashMap)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+        hashMap.put("data", jsonParam);
+        Observable<BaseResponse> observable = mApiService.postFormHttpRequest(url, hashMap).map(new HttpResultFunc());
+        toSubscribe(observable, observer);
+
     }
 
+
+    private class HttpResultFunc<T> implements Function<BaseResponse<T>, T> {
+
+        @Override
+        public T apply(BaseResponse<T> response) throws Exception {
+            return response.getResultMap();
+        }
+    }
 
     /**
      * post请求 添加表json参数
@@ -121,12 +126,32 @@ public class HttpUtil {
         String jsonParam = DataUtils.mapToJson(paramMaps);
         RequestBody body = RequestBody.create(mediaTypeJson, jsonParam);
 
-        mApiService.postJsonHttpRequest(url, body)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
+        toSubscribe(observable, observer);
     }
 
+
+    public <T> void toSubscribe(Observable<T> observable, Observer<T> subscriber) {
+        observable
+                /*
+                订阅关系发生在IO线程中
+                 */
+                .subscribeOn(Schedulers.io())
+                /*
+                解除订阅关系也发生在IO线程中
+                 */
+                .unsubscribeOn(Schedulers.io())
+                /*
+                指定subscriber (观察者)的回调在主线程中，
+                observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
+                由于subscriber已经能取到界面所关心的数据了，所以设定指定subscriber的回调在主线程中
+                 */
+                .observeOn(AndroidSchedulers.mainThread())
+                /*
+                订阅观察者，subscribe就相当于setOnclickListener()
+                 */
+                .subscribe(subscriber);
+        //subscribeOn影响的是它调用之前的代码（也就是observable），observeOn影响的是它调用之后的代码（也就是subscribe()）
+    }
 
 }

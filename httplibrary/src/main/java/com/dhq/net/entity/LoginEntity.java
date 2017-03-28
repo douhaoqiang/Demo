@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Created by douhaoqiang on 2017/3/28.
  */
 
-public class LoginEntity implements Serializable {
+public class LoginEntity {
 
     public String userid;
 
