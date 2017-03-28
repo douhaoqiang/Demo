@@ -1,8 +1,9 @@
 package com.dhq.net;
 
+import android.util.Log;
+
 import com.dhq.net.entity.BaseResponse;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -26,15 +27,16 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     @Override
     public void onNext(BaseResponse<T> response) {
-        if(200==response.getCode()){
-            success(response.getData());
+        if("success".equals(response.getResult())){
+            success(response.getResultMap());
         }else{
-            fail(response.getMsg());
+            fail(response.getResult());
         }
     }
 
     @Override
     public void onError(Throwable e) {
+        Log.d(TAG,e.getMessage());
         fail("网络请求失败！");
     }
 

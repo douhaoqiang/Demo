@@ -9,33 +9,33 @@ import java.io.Serializable;
 public class BaseResponse<T> implements Serializable{
 
     //  判断标示
-    private int code;
+    private String code;
     //    提示信息
-    private String msg;
+    private String result;
     //显示数据（用户需要关心的数据）
-    private T data;
+    private T resultMap;
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getResult() {
+        return result;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public T getData() {
-        return data;
+    public T getResultMap() {
+        return resultMap;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setResultMap(T resultMap) {
+        this.resultMap = resultMap;
     }
 }
