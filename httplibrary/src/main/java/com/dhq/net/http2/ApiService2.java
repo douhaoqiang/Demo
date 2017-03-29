@@ -1,12 +1,13 @@
-package com.dhq.net.http;
+package com.dhq.net.http2;
 
 import com.dhq.net.entity.BaseResponse;
-import com.dhq.net.entity.LoginEntity;
 
 import java.util.HashMap;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -20,7 +21,7 @@ import retrofit2.http.Url;
  * Created by douhaoqiang on 2017/3/28.
  */
 
-public interface ApiService {
+public interface ApiService2 {
 
 
     /**
@@ -28,7 +29,7 @@ public interface ApiService {
      * @return
      */
     @GET()
-    Observable<BaseResponse<LoginEntity>> getHttpRequest(@Url String url, @QueryMap HashMap<String,String> paramMaps);
+    Call<ResponseBody> getHttpRequest(@Url String url, @QueryMap HashMap<String, String> paramMaps);
 
 
     /**
@@ -37,7 +38,7 @@ public interface ApiService {
      */
     @POST()
     @FormUrlEncoded
-    Observable<BaseResponse<LoginEntity>> postFormHttpRequest(@Url String url, @FieldMap HashMap<String,String> paramMaps);
+    Call<ResponseBody> postFormHttpRequest(@Url String url, @FieldMap HashMap<String, String> paramMaps);
 
 
     /**
@@ -47,7 +48,7 @@ public interface ApiService {
      * @return
      */
     @POST()
-    Observable<BaseResponse<LoginEntity>> postJsonHttpRequest(@Url String url, @Body RequestBody jsonBody);
+    Call<ResponseBody> postJsonHttpRequest(@Url String url, @Body RequestBody jsonBody);
 
 
 }
