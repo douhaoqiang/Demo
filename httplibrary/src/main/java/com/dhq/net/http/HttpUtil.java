@@ -31,6 +31,7 @@ public class HttpUtil {
     private static HttpUtil mHttpUtil;
 
     private static final MediaType mediaTypeJson = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType mediaTypeForm = MediaType.parse("application/x-www-form-urlencoded;charset=utf-8");
 
 
     private static final int CONNECT_TIMEOUT = 15;

@@ -3,10 +3,14 @@ package com.dhq.net;
 import android.util.Log;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.Buffer;
 
 /**
  * DESC
@@ -32,8 +36,22 @@ public class MyIntercepter implements Interceptor {
         Request newRequest = oriRequest.newBuilder()
                 .header("token", "oneself_token")
                 .build();
-        Log.d(TAG,"RequestBody："+newRequest.body().toString());
-        Log.d(TAG,"RequestHeader："+newRequest.headers().toString());
+
+        try {
+            RequestBody requestBody = newRequest.body();
+            Buffer buffer = new Buffer();
+            requestBody.writeTo(buffer);
+            Charset charset = Charset.forName("UTF-8");
+            String paramsStr = buffer.readString(charset);
+            Log.d(TAG,"RequestUrl："+paramsStr);
+            Log.d(TAG,"RequestUrl："+newRequest.url());
+            Log.d(TAG,"RequestMethod："+newRequest.method());
+            Log.d(TAG,"RequestMethod："+newRequest.toString());
+            Log.d(TAG,"RequestHeader："+newRequest.headers().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return newRequest;
     }
 

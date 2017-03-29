@@ -37,7 +37,7 @@ public interface ApiService {
      */
     @POST()
     @FormUrlEncoded
-    Observable<BaseResponse<LoginEntity>> postFormHttpRequest(@Url String url, @FieldMap HashMap<String,String> paramMaps);
+    Observable<BaseResponse<LoginEntity>> postFormHttpRequest(@Url String url, @FieldMap(encoded=true) HashMap<String,String> paramMaps);
 
 
     /**
