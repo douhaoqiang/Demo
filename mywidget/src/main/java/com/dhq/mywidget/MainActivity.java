@@ -3,14 +3,18 @@ package com.dhq.mywidget;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
+import com.dhq.mywidget.selectview.SelectView;
 import com.dhq.net.BaseObserver;
 import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.entity.LoginEntity;
 import com.dhq.net.http.HttpUtil;
 import com.dhq.net.util.DataUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +22,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SelectView selectView = (SelectView) findViewById(R.id.main_selectview);
+
+        selectView.setSelectListener(new SelectView.SelectListener<String>() {
+            @Override
+            public String setShowValue(String item) {
+                return item;
+            }
+
+            @Override
+            public void onSelectItem(String item) {
+
+            }
+        });
+        List<String> list_year = new ArrayList<>();
+        for (int i = 1988; i <= 2056; i++) {
+            list_year.add(i + "");
+        }
+        selectView.setDatas(list_year);
+
 
         String url = "http://www.hezhongyimeng.com/nmip/bjgoodwill/loginApp_loginAPP_login.action";
         HashMap<String, String> hashMap = new HashMap<>();
@@ -27,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         //方式1
 
-        BaseObserver<BaseResponse> loginEntityBaseObserver = new BaseObserver<>(new BaseObserver.ResponseCallback<LoginEntity>() {
+        BaseObserver<BaseResponse> loginObserver = new BaseObserver<>(new BaseObserver.ResponseCallback<LoginEntity>() {
             @Override
             public void success(LoginEntity result) {
                 Log.d("info", result.userid);
@@ -37,10 +61,15 @@ public class MainActivity extends AppCompatActivity {
             public void fail(String msg) {
 
             }
+
+            @Override
+            public void onComplete() {
+
+            }
         });
 
-        HttpUtil.getInstance().postFormHttpRequest(url, hashMap, loginEntityBaseObserver);
+        HttpUtil.getInstance().postFormHttpRequest(url, hashMap, loginObserver);
 
-
+        HttpUtil.getInstance().postJsonHttpRequest(url, hashMap, loginObserver);
     }
 }

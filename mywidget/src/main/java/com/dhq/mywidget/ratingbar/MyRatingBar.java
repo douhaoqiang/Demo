@@ -16,7 +16,7 @@ import android.view.View;
 import com.dhq.mywidget.R;
 
 /**
- * A simple RatingBar for Android.
+ * RatingBar 评分条
  */
 public class MyRatingBar extends View {
 
