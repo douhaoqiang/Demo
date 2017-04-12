@@ -45,13 +45,38 @@ public class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onComplete() {
+        if(responseCallback!=null){
+            responseCallback.onComplete();
+        }
+    }
 
+
+    /**
+     * 解除网络请求绑定
+     */
+    public void cancle(){
+        mDisposable.dispose();
     }
 
 
     public interface ResponseCallback<T>{
+        /**
+         * 请求成功
+         * @param result  请求数据
+         */
         void success(T result);
+
+        /**
+         * 请求失败
+         * @param msg  失败信息
+         */
         void fail(String msg);
+
+        /**
+         * 请求结束
+         */
+        void onComplete();
+
     }
 
 

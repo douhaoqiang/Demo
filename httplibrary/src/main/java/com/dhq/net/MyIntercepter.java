@@ -37,20 +37,20 @@ public class MyIntercepter implements Interceptor {
                 .header("token", "oneself_token")
                 .build();
 
-        try {
-            RequestBody requestBody = newRequest.body();
-            Buffer buffer = new Buffer();
-            requestBody.writeTo(buffer);
-            Charset charset = Charset.forName("UTF-8");
-            String paramsStr = buffer.readString(charset);
-            Log.d(TAG,"RequestUrl："+paramsStr);
-            Log.d(TAG,"RequestUrl："+newRequest.url());
-            Log.d(TAG,"RequestMethod："+newRequest.method());
-            Log.d(TAG,"RequestMethod："+newRequest.toString());
-            Log.d(TAG,"RequestHeader："+newRequest.headers().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            RequestBody requestBody = newRequest.body();
+//            Buffer buffer = new Buffer();
+//            requestBody.writeTo(buffer);
+//            Charset charset = Charset.forName("UTF-8");
+//            String paramsStr = buffer.readString(charset);
+//            Log.d(TAG,"RequestUrl："+paramsStr);
+//            Log.d(TAG,"RequestUrl："+newRequest.url());
+//            Log.d(TAG,"RequestMethod："+newRequest.method());
+//            Log.d(TAG,"RequestMethod："+newRequest.toString());
+//            Log.d(TAG,"RequestHeader："+newRequest.headers().toString());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return newRequest;
     }
