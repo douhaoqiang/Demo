@@ -1,6 +1,6 @@
 package com.dhq.demo.cloudview;
 
-import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dhq.baselibrary.activity.BaseActivity;
@@ -14,7 +14,7 @@ import java.util.List;
  * DESC
  * Created by douhaoqiang on 2017/2/27.
  */
-public class CloudViewActivity extends BaseActivity implements TagCloudView.OnTagClickListener {
+public class CloudViewActivity extends BaseActivity implements TagCloudView.OnTagListener<String> {
     private static final String TAG = "CloudViewActivity";
 
     @Override
@@ -68,14 +68,13 @@ public class CloudViewActivity extends BaseActivity implements TagCloudView.OnTa
     }
 
     @Override
-    public void onTagClick(int position) {
-        if (position == -1) {
-            Toast.makeText(getApplicationContext(), "点击末尾文字",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "点击 position : " + position,
-                    Toast.LENGTH_SHORT).show();
-        }
+    public void convertView(String data, TextView tagView) {
+        tagView.setText(data);
     }
 
+    @Override
+    public void onTagClick(String data, int position) {
+        Toast.makeText(getApplicationContext(), "点击 position : " + position,
+                Toast.LENGTH_SHORT).show();
+    }
 }
