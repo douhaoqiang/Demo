@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.dhq.mywidget.base.UserDetailPostParams;
+import com.dhq.mywidget.circleprograss.CircleProgressView;
 import com.dhq.mywidget.selectview.SelectView;
 import com.dhq.net.BaseObserver;
 import com.dhq.net.entity.BaseResponse;
@@ -23,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         SelectView selectView = (SelectView) findViewById(R.id.main_selectview);
+        CircleProgressView progressView = (CircleProgressView) findViewById(R.id.main_circleprogressView);
+
+        progressView.setProgress(20);
 
         selectView.setSelectListener(new SelectView.SelectListener<String>() {
             @Override
@@ -68,8 +74,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        String BASE_URL = "http://112.124.3.197:8011/app/method/app_bound.php";
+
         HttpUtil.getInstance().postFormHttpRequest(url, hashMap, loginObserver);
 
         HttpUtil.getInstance().postJsonHttpRequest(url, hashMap, loginObserver);
+
+
+        UserDetailPostParams params = new UserDetailPostParams();
+
+        HttpUtil.getInstance().postJsonHttpRequest(BASE_URL, params, loginObserver);
     }
 }
