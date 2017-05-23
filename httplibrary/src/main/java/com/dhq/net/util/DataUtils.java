@@ -33,6 +33,17 @@ public class DataUtils {
         return jsonStr;
     }
 
+    /**
+     * 利用Gson将Map转化为Json
+     * @param   obj
+     * @return  String
+     */
+    public static String gsonObjectToJson(Object obj){
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(obj);
+        return jsonStr;
+    }
+
 
     /**
      * 对数据MD5加密

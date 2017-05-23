@@ -131,6 +131,22 @@ public class HttpUtil {
         toSubscribe(observable, observer);
     }
 
+    /**
+     * post请求 添加表json参数
+     *
+     * @param url
+     * @param paramMaps
+     * @return
+     */
+    public void postJsonHttpRequest(String url, Object paramMaps, Observer observer) {
+
+        String jsonParam = DataUtils.gsonObjectToJson(paramMaps);
+        RequestBody body = RequestBody.create(mediaTypeJson, jsonParam);
+
+        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
+        toSubscribe(observable, observer);
+    }
+
 
     public <T> void toSubscribe(Observable<T> observable, Observer<T> subscriber) {
         observable
