@@ -13,6 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="80dp" />
 
+    <com.dhq.mywidget.selectview.WheelView
+        android:id="@+id/main_wheelview"
+        android:layout_width="80dp"
+        android:layout_height="300dp" />
+
 
     <com.dhq.mywidget.circleprograss.CircleProgressView
         android:id="@+id/main_circleprogressView"

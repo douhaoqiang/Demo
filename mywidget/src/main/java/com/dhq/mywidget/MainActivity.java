@@ -8,6 +8,7 @@ import android.view.View;
 import com.dhq.mywidget.base.UserDetailPostParams;
 import com.dhq.mywidget.circleprograss.CircleProgressView;
 import com.dhq.mywidget.selectview.SelectView;
+import com.dhq.mywidget.selectview.WheelView;
 import com.dhq.net.BaseObserver;
 import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.entity.LoginEntity;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         SelectView selectView = (SelectView) findViewById(R.id.main_selectview);
+        WheelView wheelView = (WheelView) findViewById(R.id.main_wheelview);
         CircleProgressView progressView = (CircleProgressView) findViewById(R.id.main_circleprogressView);
 
         progressView.setProgress(20);
@@ -47,6 +49,24 @@ public class MainActivity extends AppCompatActivity {
             list_year.add(i + "");
         }
         selectView.setDatas(list_year);
+
+        wheelView.setSelectListener(new WheelView.SelectListener<String>() {
+            @Override
+            public String setShowValue(String item) {
+                return item;
+            }
+
+            @Override
+            public void onSelectItem(String item) {
+                Log.d("wheelView",item);
+            }
+        });
+        List<String> list_year2 = new ArrayList<>();
+        for (int i = 1988; i <= 2056; i++) {
+            list_year2.add(i + "");
+        }
+        wheelView.setDatas(list_year2);
+
 
 
         String url = "http://www.hezhongyimeng.com/nmip/bjgoodwill/loginApp_loginAPP_login.action";
