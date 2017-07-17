@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -110,7 +108,7 @@ public class WheelView<T> extends View {
 
         super.onDraw(canvas);
 
-        canvasBg(canvas);
+//        canvasBg(canvas);
         canvasLineAndText(canvas);
         canvasRedLine(canvas);
 
@@ -144,21 +142,21 @@ public class WheelView<T> extends View {
 
     }
 
-    /**
-     * 绘制圆角矩形背景框
-     *
-     * @param canvas
-     */
-    private void canvasBg(Canvas canvas) {
-
-        RectF rectF = new RectF();
-        rectF.top = mPadding;
-        rectF.left = mPadding;
-        rectF.bottom = getMeasuredHeight() - mPadding;
-        rectF.right = getMeasuredWidth() - mPadding;
-        canvas.drawRoundRect(rectF, dip2px(2), dip2px(2), mPaint);
-
-    }
+//    /**
+//     * 绘制圆角矩形背景框
+//     *
+//     * @param canvas
+//     */
+//    private void canvasBg(Canvas canvas) {
+//
+//        RectF rectF = new RectF();
+//        rectF.top = mPadding;
+//        rectF.left = mPadding;
+//        rectF.bottom = getMeasuredHeight() - mPadding;
+//        rectF.right = getMeasuredWidth() - mPadding;
+//        canvas.drawRoundRect(rectF, dip2px(2), dip2px(2), mPaint);
+//
+//    }
 
     /**
      * 绘制中间红色刻度线
@@ -195,6 +193,8 @@ public class WheelView<T> extends View {
                 float x = getMeasuredWidth() / 2;
 
                 mPaintText.setColor(textColor);
+                int alpha = (int) (255 * ((getMeasuredHeight() / 2 - Math.abs(getMeasuredHeight() / 2 - y)) / (getMeasuredHeight() / 2)));
+                mPaintText.setAlpha(alpha);
 
 //                //计算绝对值在某一区间内文字显示高亮
 //                if (Math.abs(mMiddleValue - current - i) < (mUnitLongLine / 2 + 1)) {
@@ -226,7 +226,6 @@ public class WheelView<T> extends View {
 
     private boolean isActionUp = false;
     private float mLastY;
-//    private boolean startAnim = true;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -278,11 +277,7 @@ public class WheelView<T> extends View {
         if (scroller.computeScrollOffset()) {
             float mPointYoff = (scroller.getFinalY() - scroller.getCurrY());
             mPointY = mPointY + mPointYoff * functionSpeed();
-            float absmPointY = Math.abs(mPointY);
-            float mmPointY = (mMaxValue - mMinValue) * mUnit / 2;
-            if (absmPointY < mmPointY) {//在视图范围内
-                startAnim();
-            }
+            startAnim();
 
         }
         super.computeScroll();
@@ -350,21 +345,30 @@ public class WheelView<T> extends View {
 
 
     private void startAnim() {
-        float absmPointY = Math.abs(mPointY);
-        float mmPointY = (mMaxValue - mMinValue) * mUnit / 2;
-        if (absmPointY > mmPointY) {//超出视图范围
-            if (mPointY > 0) {//最左
-                moveToY(mMiddleValue - mMinValue, 300);
-            } else {//最右
-                moveToY(mMiddleValue - mMaxValue, 300);
-            }
+        float mMinPointY = (mMiddleValue - mMinValue) * mUnit ;
+        float mMaxPointY = (mMaxValue - mMiddleValue) * mUnit ;
 
-
-        } else {
-            int space = (int) (Math.rint(mPointY / mUnit));//四舍五入计算出往左还是往右滑动
+        if(mPointY>0 && Math.abs(mPointY)>mMinPointY){
+            moveToY(mMiddleValue - mMinValue, 300);
+        }else if(mPointY<0 && Math.abs(mPointY)>mMaxPointY){
+            moveToY(mMiddleValue - mMaxValue, 300);
+        }else{
+            int space = (int) (Math.rint(mPointY / mUnit));//四舍五入计算出往上还是往下滑动
             moveToY(space, 200);
-
         }
+
+//        if (absmPointY > mmPointY) {//超出视图范围
+//            if (mPointY > 0) {//最上
+//                moveToY(mMiddleValue - mMinValue, 300);
+//            } else {//最右
+//                moveToY(mMiddleValue - mMaxValue, 300);
+//            }
+//
+//        } else {
+//            int space = (int) (Math.rint(mPointY / mUnit));//四舍五入计算出往上还是往下滑动
+//            moveToY(space, 200);
+//
+//        }
     }
 
 
@@ -375,9 +379,12 @@ public class WheelView<T> extends View {
         mScrolleAnim.setDuration(time);
         startAnimation(mScrolleAnim);
         if (mSelectListener != null) {
-            int index=mMiddleValue - distance - 1;
-            if(mSelectItem==null || mSelectItem!=listValue.get(index)){
-                mSelectItem=listValue.get(index);
+            int index = mMiddleValue - distance - 1;
+            if (index < 0 || index >= listValue.size()) {
+                return;
+            }
+            if (mSelectItem != listValue.get(index)) {
+                mSelectItem = listValue.get(index);
                 mSelectListener.onSelectItem(listValue.get(index));
             }
 
@@ -396,7 +403,8 @@ public class WheelView<T> extends View {
         listValue.addAll(list);
         mMaxValue = listValue.size();
         mMinValue = 1;
-        mMiddleValue = (mMaxValue + mMinValue) / 2;
+        mMiddleValue = 1;
+//        mMiddleValue = (mMaxValue + mMinValue) / 2;
 
         invalidate();
 
