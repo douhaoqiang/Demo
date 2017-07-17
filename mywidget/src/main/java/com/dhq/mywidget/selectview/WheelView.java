@@ -223,6 +223,20 @@ public class WheelView<T> extends View {
 
     }
 
+    /**
+     * 更新界面
+     */
+    public void update() {
+        mMaxValue = listValue.size();
+        if (mMiddleValue < mMinValue) {
+            mMiddleValue = mMinValue;
+        }
+        if (mMiddleValue > listValue.size()) {
+            mMiddleValue = listValue.size();
+        }
+        startAnim();
+        postInvalidate();
+    }
 
     private boolean isActionUp = false;
     private float mLastY;
@@ -345,30 +359,17 @@ public class WheelView<T> extends View {
 
 
     private void startAnim() {
-        float mMinPointY = (mMiddleValue - mMinValue) * mUnit ;
-        float mMaxPointY = (mMaxValue - mMiddleValue) * mUnit ;
+        float mMinPointY = (mMiddleValue - mMinValue) * mUnit;
+        float mMaxPointY = (mMaxValue - mMiddleValue) * mUnit;
 
-        if(mPointY>0 && Math.abs(mPointY)>mMinPointY){
+        if (mPointY > 0 && Math.abs(mPointY) > mMinPointY) {
             moveToY(mMiddleValue - mMinValue, 300);
-        }else if(mPointY<0 && Math.abs(mPointY)>mMaxPointY){
+        } else if (mPointY < 0 && Math.abs(mPointY) > mMaxPointY) {
             moveToY(mMiddleValue - mMaxValue, 300);
-        }else{
+        } else {
             int space = (int) (Math.rint(mPointY / mUnit));//四舍五入计算出往上还是往下滑动
             moveToY(space, 200);
         }
-
-//        if (absmPointY > mmPointY) {//超出视图范围
-//            if (mPointY > 0) {//最上
-//                moveToY(mMiddleValue - mMinValue, 300);
-//            } else {//最右
-//                moveToY(mMiddleValue - mMaxValue, 300);
-//            }
-//
-//        } else {
-//            int space = (int) (Math.rint(mPointY / mUnit));//四舍五入计算出往上还是往下滑动
-//            moveToY(space, 200);
-//
-//        }
     }
 
 
@@ -397,14 +398,26 @@ public class WheelView<T> extends View {
     private SelectListener mSelectListener;
 
 
+    /**
+     * 设置滑动数据（默认选中第一项）
+     *
+     * @param list 要设置的滑动数据
+     */
     public void setDatas(List<T> list) {
+        setDatas(list, 1);
+    }
 
-        listValue.clear();
-        listValue.addAll(list);
+    /**
+     * 设置滑动数据（默认选中第一项）
+     *
+     * @param list  要设置的滑动数据
+     * @param index 默认选中项坐标
+     */
+    public void setDatas(List<T> list, int index) {
+        listValue = list;
         mMaxValue = listValue.size();
         mMinValue = 1;
-        mMiddleValue = 1;
-//        mMiddleValue = (mMaxValue + mMinValue) / 2;
+        mMiddleValue = index;
 
         invalidate();
 
