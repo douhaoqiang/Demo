@@ -9,7 +9,11 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.transform.Transformer;
+
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
@@ -86,8 +90,11 @@ public class HttpUtil {
      * @return
      */
     public void getHttpRequest(String url, HashMap<String, String> paramMaps, Observer observer) {
-        Observable<BaseResponse> observable = mApiService.getHttpRequest(url, paramMaps).map(new HttpResultFunc());
-        toSubscribe(observable, observer);
+
+//        Observable<BaseResponse> observable = mApiService.getHttpRequest(url, paramMaps).map(new HttpResultFunc());
+//        toSubscribe(observable, observer);
+
+        mApiService.getHttpRequest(url, paramMaps).compose(new RxTransformer()).subscribe(observer);
     }
 
     /**
@@ -101,8 +108,7 @@ public class HttpUtil {
         String jsonParam = DataUtils.mapToJson(paramMaps);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("data", jsonParam);
-        Observable<BaseResponse> observable = mApiService.postFormHttpRequest(url, hashMap).map(new HttpResultFunc());
-        toSubscribe(observable, observer);
+        mApiService.postFormHttpRequest(url, hashMap).compose(new RxTransformer()).subscribe(observer);
 
     }
 
@@ -127,8 +133,11 @@ public class HttpUtil {
         String jsonParam = DataUtils.mapToJson(paramMaps);
         RequestBody body = RequestBody.create(mediaTypeJson, jsonParam);
 
-        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
-        toSubscribe(observable, observer);
+//        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
+//        toSubscribe(observable, observer);
+
+        mApiService.postJsonHttpRequest(url, body).compose(new RxTransformer<>()).subscribe(observer);
+
     }
 
     /**
@@ -169,6 +178,29 @@ public class HttpUtil {
                  */
                 .subscribe(subscriber);
         //subscribeOn影响的是它调用之前的代码（也就是observable），observeOn影响的是它调用之后的代码（也就是subscribe()）
+    }
+
+    public class RxTransformer<T> implements ObservableTransformer<T,T>{
+
+        @Override
+        public ObservableSource apply(Observable<T> observable) {
+            Observable<T> tObservable = observable
+                /*
+                订阅关系发生在IO线程中
+                 */
+                    .subscribeOn(Schedulers.io())
+                /*
+                解除订阅关系也发生在IO线程中
+                 */
+                    .unsubscribeOn(Schedulers.io())
+                /*
+                指定subscriber (观察者)的回调在主线程中，
+                observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
+                由于subscriber已经能取到界面所关心的数据了，所以设定指定subscriber的回调在主线程中
+                 */
+                    .observeOn(AndroidSchedulers.mainThread());
+            return tObservable;
+        }
     }
 
 }
