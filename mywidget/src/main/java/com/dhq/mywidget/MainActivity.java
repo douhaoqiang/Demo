@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void fail(String msg) {
-
+                Log.e("错误信息", msg);
             }
 
             @Override
