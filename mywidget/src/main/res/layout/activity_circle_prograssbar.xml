@@ -7,8 +7,6 @@
     android:padding="10dp"
     tools:context="com.dhq.mywidget.MainActivity">
 
-    <com.dhq.mywidget.CirclePrograssBarBar
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+
 
 </LinearLayout>

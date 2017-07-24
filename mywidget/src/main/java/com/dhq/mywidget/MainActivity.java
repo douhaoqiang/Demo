@@ -1,108 +1,56 @@
 package com.dhq.mywidget;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
-import com.dhq.mywidget.base.UserDetailPostParams;
-import com.dhq.mywidget.circleprograss.CircleProgressView;
-import com.dhq.mywidget.selectview.SelectView;
-import com.dhq.mywidget.selectview.WheelView;
-import com.dhq.net.BaseObserver;
-import com.dhq.net.entity.BaseResponse;
-import com.dhq.net.entity.LoginEntity;
-import com.dhq.net.http.HttpUtil;
-import com.dhq.net.util.DataUtils;
+import com.dhq.mywidget.ui.CircleProgressActivity;
+import com.dhq.mywidget.ui.HttpTestActivity;
+import com.dhq.mywidget.ui.SelectActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.btn_circle_prograss)
+    Button btnCirclePrograss;
+    @BindView(R.id.btn_select_view)
+    Button btnSelectView;
+    @BindView(R.id.btn_http_test)
+    Button btnHttpTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        SelectView selectView = (SelectView) findViewById(R.id.main_selectview);
-        WheelView wheelView = (WheelView) findViewById(R.id.main_wheelview);
-        CircleProgressView progressView = (CircleProgressView) findViewById(R.id.main_circleprogressView);
-
-        progressView.setProgress(20);
-
-        selectView.setSelectListener(new SelectView.SelectListener<String>() {
+        ButterKnife.bind(this);
+        btnCirclePrograss.setOnClickListener(new View.OnClickListener() {
             @Override
-            public String setShowValue(String item) {
-                return item;
-            }
-
-            @Override
-            public void onSelectItem(String item) {
-
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CircleProgressActivity.class);
+                startActivity(intent);
             }
         });
-        List<String> list_year = new ArrayList<>();
-        for (int i = 1988; i <= 2056; i++) {
-            list_year.add(i + "");
-        }
-        selectView.setDatas(list_year);
-
-        wheelView.setSelectListener(new WheelView.SelectListener<String>() {
+        btnSelectView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public String setShowValue(String item) {
-                return item;
-            }
-
-            @Override
-            public void onSelectItem(String item) {
-                Log.d("wheelView",item);
+            public void onClick(View v) {
+                Intent intent2 = new Intent(MainActivity.this, SelectActivity.class);
+                startActivity(intent2);
             }
         });
-        List<String> list_year2 = new ArrayList<>();
-        for (int i = 1988; i <= 2056; i++) {
-            list_year2.add(i + "");
-        }
-        wheelView.setDatas(list_year2);
-
-
-
-        String url = "http://www.hezhongyimeng.com/nmip/bjgoodwill/loginApp_loginAPP_login.action";
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("useraccount", "15555555555");
-        hashMap.put("password", DataUtils.MD5("a111111"));
-        hashMap.put("menutypecode", "phone");
-
-        //方式1
-
-        BaseObserver<BaseResponse> loginObserver = new BaseObserver<>(new BaseObserver.ResponseCallback<LoginEntity>() {
+        btnHttpTest.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void success(LoginEntity result) {
-                Log.d("info", result.userid);
-            }
-
-            @Override
-            public void fail(String msg) {
-                Log.e("错误信息", msg);
-            }
-
-            @Override
-            public void onComplete() {
-
+            public void onClick(View v) {
+                Intent intent3 = new Intent(MainActivity.this, HttpTestActivity.class);
+                startActivity(intent3);
             }
         });
 
-        String BASE_URL = "http://112.124.3.197:8011/app/method/app_bound.php";
-
-        HttpUtil.getInstance().postFormHttpRequest(url, hashMap, loginObserver);
-
-        HttpUtil.getInstance().postJsonHttpRequest(url, hashMap, loginObserver);
-
-
-        UserDetailPostParams params = new UserDetailPostParams();
-
-        HttpUtil.getInstance().postJsonHttpRequest(BASE_URL, params, loginObserver);
     }
+
+
 }
