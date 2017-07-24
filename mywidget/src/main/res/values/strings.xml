@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyWidget</string>
+
+    <string name="test"><Data><![CDATA[ <p><font color="#0ACFFE">ABC</font>时空裂缝了看电视</p><p><font color="#0ACFFE">ABC</font>时空裂缝了看电视</p> ]]></Data></string>
+    <string name="recharge_desc"><Data><![CDATA[ <p>预存金额满<font color="#0ACFFE">N</font>元，<font color="#0ACFFE">M</font>个<font color="#0ACFFE">N/M</font>元的等值本金券(本金券面额固定，消费时可以自动扣款生成余额)，从预存的第<font color="#0ACFFE">N</font>天/月开始生效，永久有效</p><p><font color="#0ACFFE">M</font>个<font color="#0ACFFE">N/M</font>元的等值奖励券从预存的第<font color="#0ACFFE">N</font>天/月开始生效，并且当月有效，过期作废</p> ]]></Data></string>
+    <string name="recharge_desc2"><Data><![CDATA[ <p><font color="#0ACFFE">%1$d</font>张￥<font color="#0ACFFE">%2$d</font>面额的本金券</p> ]]></Data></string>
+
 </resources>

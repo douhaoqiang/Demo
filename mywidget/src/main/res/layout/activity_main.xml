@@ -27,6 +27,16 @@
         android:text="网络接口测试" />
 
 
+    <TextView
+        android:id="@+id/tv_html_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_html_text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
     <com.dhq.mywidget.dropdown.DropDownView
         android:layout_width="100dp"
