@@ -19,14 +19,14 @@ import java.util.List;
 /**
  * Created by NeXT on 15-7-29.
  */
-public class TagCloudView extends ViewGroup {
+public class TagCloudView<T> extends ViewGroup {
 
     private static final String TAG = TagCloudView.class.getSimpleName();
     private static final int TYPE_TEXT_NORMAL = 1;
-    private List<String> tags;
+    private List<T> tags;
 
     private LayoutInflater mInflater;
-    private OnTagClickListener onTagClickListener;
+    private OnTagListener onTagClickListener;
 
     private int sizeWidth;
     private int sizeHeight;
@@ -183,25 +183,29 @@ public class TagCloudView extends ViewGroup {
      *
      * @param tagList 标签列表内容
      */
-    public void setTags(List<String> tagList) {
+    public void setTags(List<T> tagList) {
         this.tags = tagList;
         this.removeAllViews();
         if (tags != null && tags.size() > 0) {
             for (int i = 0; i < tags.size(); i++) {
+                final T data = tags.get(i);
                 TextView tagView = (TextView) mInflater.inflate(R.layout.item_tag, null);
                 tagView.setBackgroundResource(mBackground);
                 tagView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTagSize);
                 tagView.setTextColor(mTagColor);
                 LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                 tagView.setLayoutParams(layoutParams);
-                tagView.setText(tags.get(i));
+                if (onTagClickListener != null) {
+                    onTagClickListener.convertView(data,tagView);
+                }
+
                 tagView.setTag(TYPE_TEXT_NORMAL);
                 final int finalI = i;
                 tagView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (onTagClickListener != null) {
-                            onTagClickListener.onTagClick(finalI);
+                            onTagClickListener.onTagClick(data,finalI);
                         }
                     }
                 });
@@ -211,12 +215,15 @@ public class TagCloudView extends ViewGroup {
         postInvalidate();
     }
 
-    public void setOnTagClickListener(OnTagClickListener onTagClickListener) {
+    public void setOnTagClickListener(OnTagListener onTagClickListener) {
         this.onTagClickListener = onTagClickListener;
     }
 
-    public interface OnTagClickListener {
-        void onTagClick(int position);
+    public interface OnTagListener<T> {
+
+        void convertView(T data,TextView tagView);
+
+        void onTagClick( T data,int position);
     }
 
 }
