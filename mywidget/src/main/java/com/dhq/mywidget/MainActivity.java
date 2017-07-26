@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.dhq.mywidget.ui.CircleProgressActivity;
 import com.dhq.mywidget.ui.HttpTestActivity;
 import com.dhq.mywidget.ui.SelectActivity;
+import com.dhq.mywidget.ui.StarActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnSelectView;
     @BindView(R.id.btn_http_test)
     Button btnHttpTest;
+    @BindView(R.id.btn_star)
+    Button btnStar;
     @BindView(R.id.tv_html_text)
     TextView tvHtmlView;
     @BindView(R.id.tv_html_text2)
@@ -42,20 +45,39 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         btnSelectView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(MainActivity.this, SelectActivity.class);
-                startActivity(intent2);
+                Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+                startActivity(intent);
             }
         });
+
         btnHttpTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent3 = new Intent(MainActivity.this, HttpTestActivity.class);
-                startActivity(intent3);
+                Intent intent = new Intent(MainActivity.this, HttpTestActivity.class);
+                startActivity(intent);
             }
         });
+
+        btnHttpTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HttpTestActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, StarActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
 //        %n$ms：代表输出的是字符串，n代表是第几个参数，设置m的值可以在输出之前放置空格

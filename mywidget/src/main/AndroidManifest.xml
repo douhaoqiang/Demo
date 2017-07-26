@@ -22,6 +22,7 @@
         <activity android:name=".ui.CircleProgressActivity"/>
         <activity android:name=".ui.SelectActivity"/>
         <activity android:name=".ui.HttpTestActivity"/>
+        <activity android:name=".ui.StarActivity"/>
 
     </application>
 

@@ -15,6 +15,12 @@
         <attr name="starRating" format="float" />
         <!-- 星星的步辐 -->
         <attr name="starStepSize" format="float" />
+        <!-- 星星的默认图片 -->
+        <attr name="starNormalImg" format="reference" />
+        <!-- 星星的选中图片 -->
+        <attr name="starSelectImg" format="reference" />
+
+
     </declare-styleable>
 
 

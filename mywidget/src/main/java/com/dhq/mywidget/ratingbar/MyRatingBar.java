@@ -20,11 +20,14 @@ import com.dhq.mywidget.R;
  */
 public class MyRatingBar extends View {
 
-    private int numberOfStars;
-    private float desiredStarSize;
-    private float stepSize;
-    private float rating;
-    private boolean isIndicator;
+    private int numberOfStars;      //星星的数量
+    private int spaceStar;          //星星间距
+    private float stepSize;         //每步的大小
+    private float rating;           //现在的进度
+    private boolean isIndicator;    //是否仅是指示
+
+    private int starNormalImgId;    //星星的默认图片
+    private int starSelectImgId;    //星星的选择图片
 
     private Paint paintStar;
     private OnRatingBarChangeListener listener;
@@ -32,11 +35,15 @@ public class MyRatingBar extends View {
 
     private Bitmap star_default;//底部默认五角星
     private Bitmap star_selected;//选中状态五角星
-    private int spaceStar;//星星间距
-    private int starHeight;//星星高度
-    private int starWidth;//星星宽度
+
+    private int starRealHeight;//星星真实高度
+    private int starRealWidth;//星星真实宽度
+
+    private int starShowHeight;//星星显示高度
+    private int starShowWidth;//星星显示宽度
 
     private int totleWith;
+
 
     public MyRatingBar(Context context) {
         super(context);
@@ -65,14 +72,23 @@ public class MyRatingBar extends View {
         paintStar.setAntiAlias(true);
         paintStar.setColor(Color.BLACK);
 
-        star_default = BitmapFactory.decodeResource(getResources(), R.mipmap.star_default);
-        star_selected = BitmapFactory.decodeResource(getResources(), R.mipmap.star_selected);
+        star_default = BitmapFactory.decodeResource(getResources(), starNormalImgId == -1 ? R.mipmap.star_default : starNormalImgId);
+        star_selected = BitmapFactory.decodeResource(getResources(), starSelectImgId == -1 ? R.mipmap.star_selected : starSelectImgId);
 
-        starHeight = star_default.getHeight();
+        starRealHeight = star_default.getHeight();
 
-        starWidth = star_default.getWidth();
+        starRealWidth = star_default.getWidth();
 
-        totleWith = starWidth * numberOfStars + spaceStar * (numberOfStars - 1);
+        if (starShowWidth == 0) {
+            starShowWidth = starRealWidth;
+            starShowHeight = starRealHeight;
+        } else {
+            //根据显示宽度，计算星星显示高度
+            starShowHeight = starRealHeight * starShowWidth / starRealWidth;
+        }
+
+        //计算占据的宽度大小
+        totleWith = starShowWidth * numberOfStars + spaceStar * (numberOfStars - 1);
     }
 
     /**
@@ -84,7 +100,7 @@ public class MyRatingBar extends View {
         //星星的数量
         numberOfStars = arr.getInteger(R.styleable.MyRatingBar_starsNumber, 5);
         //星星的尺寸
-        desiredStarSize = arr.getDimensionPixelSize(R.styleable.MyRatingBar_starSize, Integer.MAX_VALUE);
+        starShowWidth = arr.getDimensionPixelSize(R.styleable.MyRatingBar_starSize, 0);
         //星星间隔
         spaceStar = arr.getDimensionPixelSize(R.styleable.MyRatingBar_starsSeparation, 20);
         //每步的大小
@@ -93,6 +109,10 @@ public class MyRatingBar extends View {
         rating = normalizeRating(arr.getFloat(R.styleable.MyRatingBar_starRating, 0f));
         //是否仅是指示
         isIndicator = arr.getBoolean(R.styleable.MyRatingBar_starIsIndicator, false);
+
+        starNormalImgId = arr.getResourceId(R.styleable.MyRatingBar_starNormalImg, -1);
+
+        starSelectImgId = arr.getResourceId(R.styleable.MyRatingBar_starSelectImg, -1);
 
         arr.recycle();
 
@@ -126,7 +146,7 @@ public class MyRatingBar extends View {
             //Must be this size
             width = widthSize;
         } else {
-            width = numberOfStars * starWidth + spaceStar * (starWidth - 1);
+            width = numberOfStars * starShowWidth + spaceStar * (starRealWidth - 1);
         }
 
         //Measure Height
@@ -134,7 +154,7 @@ public class MyRatingBar extends View {
             //Must be this size
             height = heightSize;
         } else {
-            height = starHeight;
+            height = starShowHeight;
         }
 
         //MUST CALL THIS
@@ -144,15 +164,15 @@ public class MyRatingBar extends View {
     @Override
     public void onDraw(Canvas canvas) {
 
-        Rect srcRect = new Rect(0, 0, starWidth, starHeight);// 截取bmp1中的矩形区域
+        Rect srcRect = new Rect(0, 0, starRealWidth, starRealHeight);// 截取bmp1中的矩形区域
 
         //绘制五个底部默认五角星
         for (int i = 0; i < numberOfStars; i++) {
 
-            int left = spaceStar * i + starWidth * i;
+            int left = spaceStar * i + starShowWidth * i;
             int top = 0;
-            int right = left + starWidth;
-            int bottom = starHeight;
+            int right = left + starShowWidth;
+            int bottom = starShowHeight;
             Rect dstRect = new Rect(left, top, right, bottom);
             canvas.drawBitmap(star_default, srcRect, dstRect, paintStar);
 
@@ -161,22 +181,23 @@ public class MyRatingBar extends View {
         //绘制选择的五角星
         for (int i = 1; i <= numberOfStars; i++) {
 
-            int selectLeft = (spaceStar + starWidth) * (i - 1);
+            int selectLeft = (spaceStar + starShowWidth) * (i - 1);
             int selectTop = 0;
-            int selectBottom = starHeight;
+            int selectBottom = starShowHeight;
             int selectRight;
             if (rating / i >= 1) {
                 //绘制整个星星
-                selectRight = selectLeft + starWidth;
+                selectRight = selectLeft + starShowWidth;
                 Rect selectDstRect = new Rect(selectLeft, selectTop, selectRight, selectBottom);// bmp1在目标画布中的位置
                 canvas.drawBitmap(star_selected, srcRect, selectDstRect, paintStar);
             } else {
                 //计算需要绘制的部分星星的比例
                 float pressgra = rating - i + 1;
                 if (pressgra > 0) {
-                    float starHalf = starWidth * pressgra;//计算部分星星的大小
-                    selectRight = (int) (selectLeft + starHalf);
-                    Rect srcRect2 = new Rect(0, 0, (int) starHalf, starHeight);// 截取bmp1中的矩形区域
+                    float starSelectSize = starRealWidth * pressgra;//计算星星选择部分的大小
+                    float starShowSize = starShowWidth * pressgra;//计算星星选择部分的大小
+                    selectRight = (int) (selectLeft + starShowSize);
+                    Rect srcRect2 = new Rect(0, 0, (int) starSelectSize, starRealHeight);// 截取bmp1中的矩形区域
                     Rect selectDstRect = new Rect(selectLeft, selectTop, selectRight, selectBottom);// bmp1在目标画布中的位置
                     canvas.drawBitmap(star_selected, srcRect2, selectDstRect, paintStar);
                 }
@@ -226,7 +247,6 @@ public class MyRatingBar extends View {
         }
 
         rating = (float) numberOfStars / totleWith * x;
-
 
 
         if (stepSize != Float.MAX_VALUE) {
