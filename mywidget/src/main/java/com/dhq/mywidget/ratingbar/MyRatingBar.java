@@ -210,15 +210,15 @@ public class MyRatingBar extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
+        if(isIndicator){
+            return false;
+        }
+
         int action = event.getAction() & MotionEvent.ACTION_MASK;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                if (!isIndicator) {
-                    setNewRatingFromTouch(event.getX(), event.getY());
-                } else {
-                    return false;
-                }
+                setNewRatingFromTouch(event.getX(), event.getY());
             case MotionEvent.ACTION_UP:
                 setNewRatingFromTouch(event.getX(), event.getY());
             case MotionEvent.ACTION_CANCEL:
@@ -247,7 +247,6 @@ public class MyRatingBar extends View {
         }
 
         rating = (float) numberOfStars / totleWith * x;
-
 
         if (stepSize != Float.MAX_VALUE) {
             float mod = rating % stepSize;
