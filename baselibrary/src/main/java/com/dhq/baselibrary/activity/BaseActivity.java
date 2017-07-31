@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.dhq.baselibrary.R;
+import com.dhq.baselibrary.util.PermissionUtils;
 
 /**
  * DESC 基础Activity
@@ -115,6 +116,15 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void showToast(int resId) {
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
+    }
+
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, String[] permissions, int[] grantResults) {
+        PermissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 
 }
