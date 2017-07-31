@@ -1,5 +1,6 @@
 package com.dhq.mywidget;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.util.PermissionUtils;
 import com.dhq.mywidget.ui.CircleProgressActivity;
 import com.dhq.mywidget.ui.HttpTestActivity;
 import com.dhq.mywidget.ui.SelectActivity;
@@ -17,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.btn_circle_prograss)
     Button btnCirclePrograss;
@@ -32,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_html_text2)
     TextView tvHtmlView2;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initialize() {
+        ButterKnife.bind(this);
         btnCirclePrograss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +96,23 @@ public class MainActivity extends AppCompatActivity {
         tvHtmlView2.setText(Html.fromHtml(String.format(getResources().getString(R.string.recharge_desc2),2,3)));
 
 
+        PermissionUtils.requestPermissions(this, 2, new String[]{Manifest.permission.CAMERA}, new PermissionUtils.OnPermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                //通过
+
+            }
+
+            @Override
+            public void onPermissionDenied() {
+                //拒绝
+
+            }
+        });
     }
+
+
+
 
 
 }
