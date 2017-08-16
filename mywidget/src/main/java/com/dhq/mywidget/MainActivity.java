@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.baselibrary.util.PermissionUtils;
 import com.dhq.mywidget.ui.CircleProgressActivity;
+import com.dhq.mywidget.ui.DateSelectActivity;
 import com.dhq.mywidget.ui.HttpTestActivity;
 import com.dhq.mywidget.ui.SelectActivity;
 import com.dhq.mywidget.ui.StarActivity;
@@ -34,6 +36,9 @@ public class MainActivity extends BaseActivity {
     TextView tvHtmlView;
     @BindView(R.id.tv_html_text2)
     TextView tvHtmlView2;
+
+    @BindView(R.id.btn_date_select)
+    Button btn_date;
 
 
     @Override
@@ -80,6 +85,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, StarActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DateSelectActivity.class);
                 startActivity(intent);
             }
         });
