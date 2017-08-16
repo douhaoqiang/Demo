@@ -1,7 +1,6 @@
 package com.dhq.mywidget.selectview;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +43,10 @@ public class DateDownView {
 
     private String startTime;//开始时间
     private String[] startDates;//开始时间
+    private String[] currentDateArray;
+
+    int monthIndex = 0;
+    int dayIndex = 0;
 
     /**
      * 默认时间选择（往前显示10年数据）
@@ -73,6 +76,7 @@ public class DateDownView {
             startDates = startTime.split("-");
             initDates();
         } catch (Exception e) {
+            e.printStackTrace();
             LogUtil.d("时间格式错误 必须为yyyy-MM-dd格式");
         }
 
@@ -99,63 +103,46 @@ public class DateDownView {
      */
     private void initDates() {
 
-        int monthIndex = 0;
-        int dayIndex = 0;
-
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();//获取现在的时间
         String dateStr = valueSf.format(currentDate);//获取现在的时间(yyyy-MM-dd)
 
-        String[] dateArray = dateStr.split("-");
+        currentDateArray = dateStr.split("-");
 
-        mYear = dateArray[0];
-        //获取最近10年列表
-        for (int i = 0; i < mYearCount; i++) {
-            int year = Integer.valueOf(dateArray[0]) - i;
-            if (startDates != null) {
-                if (isLastDayOfYear(startTime)) {
-                    if (year <= Integer.valueOf(startDates[0])) {
-                        break;
-                    }
-                } else {
-                    if (year < Integer.valueOf(startDates[0])) {
-                        break;
-                    }
-                }
-            }
+        initYear();
 
-            yearList.add(String.valueOf(year));
-        }
 
-        //添加12个月数据
-        for (int i = 1; i <= 12; i++) {
-            String monthStr = "";
-            if (i < 10) {
-                monthStr = "0" + i;
-            } else {
-                monthStr = String.valueOf(i);
-            }
-            if (dateArray[1].equals(monthStr)) {
-                monthIndex = i;
-                mMonth = monthStr;
-            }
-            monthList.add(monthStr);
-        }
+//        //添加12个月数据
+//        for (int i = 1; i <= 12; i++) {
+//            String monthStr = "";
+//            if (i < 10) {
+//                monthStr = "0" + i;
+//            } else {
+//                monthStr = String.valueOf(i);
+//            }
+//            if (currentDateArray[1].equals(monthStr)) {
+//                monthIndex = i;
+//                mMonth = monthStr;
+//            }
+//            monthList.add(monthStr);
+//        }
+        initMonth(mYear);
+        initDay(mYear, mMonth);
 
-        //默认天数
-        for (int i = 1; i <= 31; i++) {
-            String dayStr = "";
-            if (i < 10) {
-                dayStr = "0" + i;
-            } else {
-                dayStr = String.valueOf(i);
-            }
-            if (dateArray[2].equals(dayStr)) {
-                dayIndex = i;
-                mDay = dayStr;
-            }
-            dayList.add(dayStr);
-        }
+//        //默认天数
+//        for (int i = 1; i <= 31; i++) {
+//            String dayStr = "";
+//            if (i < 10) {
+//                dayStr = "0" + i;
+//            } else {
+//                dayStr = String.valueOf(i);
+//            }
+//            if (currentDateArray[2].equals(dayStr)) {
+//                dayIndex = i;
+//                mDay = dayStr;
+//            }
+//            dayList.add(dayStr);
+//        }
 
 
         rootView = LayoutInflater.from(mContext).inflate(R.layout.date_select_view, null);
@@ -179,7 +166,9 @@ public class DateDownView {
             public void onSelectItem(String item) {
                 mYear = item;
                 Log.d("date", item);
-                updateDayWheel();
+                initMonth(mYear);
+                updateMonthWheel();
+//                updateDayWheel();
             }
         });
 
@@ -192,6 +181,7 @@ public class DateDownView {
             @Override
             public void onSelectItem(String item) {
                 mMonth = item;
+                initDay(mYear,mMonth);
                 updateDayWheel();
             }
         });
@@ -228,6 +218,106 @@ public class DateDownView {
         });
     }
 
+    /**
+     * 初始化年
+     */
+    private void initYear() {
+        //获取最近10年列表
+        for (int i = 0; i < mYearCount; i++) {
+            int year = Integer.valueOf(currentDateArray[0]) - i;
+            if (startDates != null) {
+                if (year < Integer.valueOf(startDates[0])) {
+                    break;
+                } else if (year == Integer.valueOf(startDates[0])) {
+                    if (isLastDayOfYear()) {
+                        break;
+                    }
+                }
+            }
+            yearList.add(String.valueOf(year));
+        }
+        mYear = yearList.get(0);
+    }
+
+
+    /**
+     * 初始化月数据
+     *
+     * @param year
+     */
+    private void initMonth(String year) {
+
+        monthList.clear();
+
+        //添加12个月数据
+        for (int i = 1; i <= 12; i++) {
+            String monthStr = "";
+            if (i < 10) {
+                monthStr = "0" + i;
+            } else {
+                monthStr = String.valueOf(i);
+            }
+
+            if (startDates != null && year.equals(startDates[0])) {
+                //于开始时间的年相同 判断应该显示几月
+                if (Integer.valueOf(monthStr) > Integer.valueOf(startDates[1])) {
+                    monthList.add(monthStr);
+                } else if (Integer.valueOf(monthStr) == Integer.valueOf(startDates[1])) {
+                    if (!isLastDayOfMonth(year, monthStr)) {
+                        monthList.add(monthStr);
+                    }
+                }
+            } else {
+                if (monthIndex == 0 && currentDateArray[1].equals(monthStr)) {
+                    monthIndex = i;
+                    mMonth = monthStr;
+                }
+                monthList.add(monthStr);
+            }
+
+        }
+
+        if (monthIndex == 0) {
+            monthIndex = 1;
+            mMonth = monthList.get(0);
+        }
+    }
+
+    /**
+     * 初始化天数据
+     */
+    private void initDay(String year, String month) {
+        dayList.clear();
+        int daysOfMonth = getDaysOfMonth(year, month);
+        //默认天数
+        for (int i = 1; i <= daysOfMonth; i++) {
+            String dayStr = "";
+            if (i < 10) {
+                dayStr = "0" + i;
+            } else {
+                dayStr = String.valueOf(i);
+            }
+
+            if (startDates != null && year.equals(startDates[0]) && month.equals(startDates[1])) {
+                //于开始时间的日期相同 判断应该显示多少天
+                if (Integer.valueOf(dayStr) > Integer.valueOf(startDates[2])) {
+                    dayList.add(dayStr);
+                }
+            } else {
+                if (dayIndex == 0 && currentDateArray[2].equals(dayStr)) {
+                    dayIndex = i;
+                    mDay = dayStr;
+                }
+                dayList.add(dayStr);
+            }
+
+        }
+        if (dayIndex == 0) {
+            dayIndex = 1;
+            mDay = dayList.get(0);
+        }
+
+    }
 
     public void show(View view) {
 //        int viewWidth = view.getMeasuredWidth();
@@ -238,6 +328,9 @@ public class DateDownView {
     }
 
     public void show(View view, int xOff) {
+        if (rootView == null) {
+            return;
+        }
         this.mView = view;
         popWindow = new CustomPopWindow.PopupWindowBuilder(mContext)
                 .setView(rootView)//显示的布局，还可以通过设置一个View
@@ -252,17 +345,26 @@ public class DateDownView {
     /**
      * 更新天
      */
+    private void updateMonthWheel() {
+
+        mWheelMonth.update();
+
+    }
+
+    /**
+     * 更新天
+     */
     private void updateDayWheel() {
-        int daysOfMonth = getDaysOfMonth(mYear, mMonth);
-        if (dayList.size() > daysOfMonth) {
-            for (int i = dayList.size() - 1; i >= daysOfMonth; i--) {
-                dayList.remove(i);
-            }
-        } else if (dayList.size() < daysOfMonth) {
-            for (int i = dayList.size() + 1; i <= daysOfMonth; i++) {
-                dayList.add(String.valueOf(i));
-            }
-        }
+//        int daysOfMonth = getDaysOfMonth(mYear, mMonth);
+//        if (dayList.size() > daysOfMonth) {
+//            for (int i = dayList.size() - 1; i >= daysOfMonth; i--) {
+//                dayList.remove(i);
+//            }
+//        } else if (dayList.size() < daysOfMonth) {
+//            for (int i = dayList.size() + 1; i <= daysOfMonth; i++) {
+//                dayList.add(String.valueOf(i));
+//            }
+//        }
         mWheelDay.update();
 
     }
@@ -288,26 +390,22 @@ public class DateDownView {
     /**
      * 判断日期是否是今年的最后一天
      *
-     * @param dateDay
      * @return
      */
-    private boolean isLastDayOfYear(String dateDay) {
-        if (TextUtils.isEmpty(dateDay)) {
-            return false;
-        }
+    private boolean isLastDayOfYear() {
+
         Calendar cal = Calendar.getInstance();
 
 //        cal.set(Calendar.DAY_OF_YEAR, 1);
 //        cal.getTime();
 //        //一年的第一天
 //        String firstDay = valueSf.format(cal.getTime());
-        String[] dateArray = dateDay.split("-");
-        cal.set(Calendar.YEAR, Integer.valueOf(dateArray[0]));
+        cal.set(Calendar.YEAR, Integer.valueOf(startDates[0]));
         cal.set(Calendar.DAY_OF_YEAR,
                 cal.getActualMaximum(Calendar.DAY_OF_YEAR));
         //一年的最后一天
         String lastDay = valueSf.format(cal.getTime());
-        if (dateDay.equals(lastDay)) {
+        if (lastDay.equals(startTime)) {
             return true;
         }
         return false;
@@ -316,19 +414,13 @@ public class DateDownView {
     /**
      * 判断日期是否是这个月的最后一天
      *
-     * @param dateDay
      * @return
      */
-    private boolean isLastDayOfMonth(String dateDay) {
-        if (TextUtils.isEmpty(dateDay)) {
-            return false;
-        }
-
+    private boolean isLastDayOfMonth(String year, String month) {
 
         Calendar cal = Calendar.getInstance();
-        String[] dateArray = dateDay.split("-");
-        cal.set(Calendar.YEAR, Integer.valueOf(dateArray[0]));
-        cal.set(Calendar.MONTH, Integer.valueOf(dateArray[1]));
+        cal.set(Calendar.YEAR, Integer.valueOf(year));
+        cal.set(Calendar.MONTH, Integer.valueOf(month) - 1);
 //        cal.set(Calendar.DAY_OF_MONTH, 1);
 //        cal.getTime();
 //        start_time.setText(dateFormater.format(cal.getTime()) + "");
@@ -338,7 +430,7 @@ public class DateDownView {
 
         //一个月的最后一天
         String lastDay = valueSf.format(cal.getTime());
-        if (dateDay.equals(lastDay)) {
+        if (lastDay.equals(startTime)) {
             return true;
         }
         return false;

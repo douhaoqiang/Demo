@@ -227,12 +227,20 @@ public class WheelView<T> extends View {
      * 更新界面
      */
     public void update() {
+        update(mMiddleValue);
+    }
+
+    /**
+     * 更新界面
+     */
+    public void update(int selectIndex) {
         mMaxValue = listValue.size();
-        if (mMiddleValue < mMinValue) {
+        if (selectIndex < mMinValue) {
             mMiddleValue = mMinValue;
-        }
-        if (mMiddleValue > listValue.size()) {
+        } else if (selectIndex > listValue.size()) {
             mMiddleValue = listValue.size();
+        } else {
+            mMiddleValue = selectIndex;
         }
         startAnim();
         postInvalidate();
