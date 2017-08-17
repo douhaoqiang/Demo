@@ -38,6 +38,12 @@
         android:layout_height="wrap_content"
         android:text="日期选择" />
 
+    <Button
+        android:id="@+id/btn_iamge_compress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="图片压缩" />
+
 
     <TextView
         android:id="@+id/tv_html_text"

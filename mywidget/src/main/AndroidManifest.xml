@@ -25,6 +25,7 @@
         <activity android:name=".ui.HttpTestActivity"/>
         <activity android:name=".ui.StarActivity"/>
         <activity android:name=".ui.DateSelectActivity"/>
+        <activity android:name=".ui.CompressActivity"/>
 
     </application>
 

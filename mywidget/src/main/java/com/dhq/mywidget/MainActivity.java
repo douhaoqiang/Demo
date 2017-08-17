@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.baselibrary.util.PermissionUtils;
 import com.dhq.mywidget.ui.CircleProgressActivity;
+import com.dhq.mywidget.ui.CompressActivity;
 import com.dhq.mywidget.ui.DateSelectActivity;
 import com.dhq.mywidget.ui.HttpTestActivity;
 import com.dhq.mywidget.ui.SelectActivity;
@@ -39,6 +40,9 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.btn_date_select)
     Button btn_date;
+
+    @BindView(R.id.btn_iamge_compress)
+    Button btn_compress;
 
 
     @Override
@@ -93,6 +97,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DateSelectActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_compress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CompressActivity.class);
                 startActivity(intent);
             }
         });
