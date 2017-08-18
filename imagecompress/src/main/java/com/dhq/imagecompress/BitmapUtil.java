@@ -60,7 +60,7 @@ public class BitmapUtil {
             }
         }
 
-        //自定义的图片存储大小
+        //自定义的图片存储尺寸
         int actualHeight = options.outHeight;
         int actualWidth = options.outWidth;
 
