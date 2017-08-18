@@ -47,8 +47,6 @@ public class BitmapUtil {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
 
-        //by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
-        //you try the use the bitmap here, you will get null.
         options.inJustDecodeBounds = true;
         Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
         if (bmp == null) {
@@ -57,13 +55,12 @@ public class BitmapUtil {
                 inputStream = new FileInputStream(filePath);
                 BitmapFactory.decodeStream(inputStream, null, options);
                 inputStream.close();
-            } catch (FileNotFoundException exception) {
-                exception.printStackTrace();
-            } catch (IOException exception) {
-                exception.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
+        //自定义的图片存储大小
         int actualHeight = options.outHeight;
         int actualWidth = options.outWidth;
 

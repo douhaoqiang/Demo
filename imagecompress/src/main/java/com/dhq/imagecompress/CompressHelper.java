@@ -40,7 +40,7 @@ public class CompressHelper {
      */
     private int quality = 80;
     /**
-     * 存储路径
+     * 存储路径(储存在缓存文件目录下)
      */
     private String destinationDirectoryPath;
     /**
