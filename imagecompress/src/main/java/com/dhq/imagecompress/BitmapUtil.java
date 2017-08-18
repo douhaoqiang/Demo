@@ -31,6 +31,16 @@ public class BitmapUtil {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
+
+    /**
+     * 缩放图片
+     * @param context
+     * @param imageUri
+     * @param maxWidth
+     * @param maxHeight
+     * @param bitmapConfig
+     * @return
+     */
     static Bitmap getScaledBitmap(Context context, Uri imageUri, float maxWidth, float maxHeight, Bitmap.Config bitmapConfig) {
         String filePath = FileUtil.getRealPathFromURI(context, imageUri);
         Bitmap scaledBitmap = null;
@@ -166,6 +176,20 @@ public class BitmapUtil {
         return scaledBitmap;
     }
 
+    /**
+     * 压缩图片返回文件
+     * @param context
+     * @param imageUri
+     * @param maxWidth
+     * @param maxHeight
+     * @param compressFormat
+     * @param bitmapConfig
+     * @param quality
+     * @param parentPath
+     * @param prefix
+     * @param fileName
+     * @return
+     */
     static File compressImage(Context context, Uri imageUri, float maxWidth, float maxHeight,
                               Bitmap.CompressFormat compressFormat, Bitmap.Config bitmapConfig,
                               int quality, String parentPath, String prefix, String fileName) {
@@ -190,6 +214,16 @@ public class BitmapUtil {
         return new File(filename);
     }
 
+    /**
+     * 获取图片的存储路径
+     * @param context
+     * @param parentPath  文件所在文件夹
+     * @param uri         图片Uri
+     * @param extension
+     * @param prefix
+     * @param fileName    文件名
+     * @return
+     */
     private static String generateFilePath(Context context, String parentPath, Uri uri,
                                            String extension, String prefix, String fileName) {
         File file = new File(parentPath);
