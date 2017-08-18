@@ -254,7 +254,7 @@ public class BitmapUtil {
 
         final float totalPixels = width * height;
         final float totalReqPixelsCap = reqWidth * reqHeight * 2;
-
+        //13909505018
         while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
             inSampleSize++;
         }
