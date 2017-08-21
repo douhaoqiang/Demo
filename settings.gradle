@@ -1,6 +1,5 @@
 include ':app'
 include ':banner'
-include ':downloadfile'
 include ':imagecompress'
 include ':refleshlibrary'
 include ':baselibrary'
