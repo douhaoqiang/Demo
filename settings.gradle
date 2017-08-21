@@ -10,5 +10,4 @@ include ':filter'
 include ':popuplist'
 include ':mywidget'
 include ':paylibrary'
-include ':permissionlibrary'
 

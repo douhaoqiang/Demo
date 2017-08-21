@@ -1,4 +1,4 @@
-package com.dhq.permissionlibrary;
+package com.dhq.baselibrary.util.PermissionUtil;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;

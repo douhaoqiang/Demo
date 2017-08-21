@@ -1,6 +1,4 @@
-package com.dhq.permissionlibrary;
-
-import java.util.List;
+package com.dhq.baselibrary.util.PermissionUtil;
 
 /**
  * DESC
