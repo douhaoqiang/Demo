@@ -8,7 +8,6 @@ include ':httplibrary'
 include ':dialoglibrary'
 include ':filter'
 include ':popuplist'
-include ':selectpic'
 include ':mywidget'
 include ':paylibrary'
 
