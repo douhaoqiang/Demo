@@ -11,7 +11,11 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.Scroller;
+
+import com.aspsine.swipetoloadlayout.view.footerview.ClassicLoadMoreFooterView;
+import com.aspsine.swipetoloadlayout.view.headerview.TwitterRefreshHeaderView;
 
 /**
  * Created by Aspsine on 2015/8/13.
@@ -235,6 +239,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     private int mDefaultToLoadingMoreScrollingDuration = DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION;
 
+
     /**
      * the style enum
      */
@@ -244,6 +249,14 @@ public class SwipeToLoadLayout extends ViewGroup {
         public static final int BLEW = 2;
         public static final int SCALE = 3;
     }
+
+    private ViewGroup mEmptyViewContainer;
+    private View mEmptyView;
+    private int targetLeft;
+    private int targetTop;
+    private int targetRight;
+    private int targetBottom;
+
 
     public SwipeToLoadLayout(Context context) {
         this(context, null);
@@ -325,6 +338,8 @@ public class SwipeToLoadLayout extends ViewGroup {
          * 如果小于这个距离就不触发移动控件，如viewpager就是用这个距离来判断用户是否翻页
          */
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+
+
         mAutoScroller = new AutoScroller();
     }
 
@@ -332,20 +347,32 @@ public class SwipeToLoadLayout extends ViewGroup {
     protected void onFinishInflate() {
         super.onFinishInflate();
         final int childNum = getChildCount();
-        if (childNum == 0) {
-            // no child return
-            return;
-        } else if (0 < childNum && childNum < 4) {
-            mHeaderView = getChildAt(0);
-            mTargetView = getChildAt(1);
-            mFooterView = getChildAt(2);
-//            mHeaderView = findViewById(R.id.swipe_refresh_header);
-//            mTargetView = findViewById(R.id.swipe_target);
-//            mFooterView = findViewById(R.id.swipe_load_more_footer);
+
+
+        if (childNum != 1) {
+            throw new IllegalStateException("Children num must equal 1");
         } else {
-            // more than three children: unsupported!
-            throw new IllegalStateException("Children num must equal or less than 3");
+
+            mTargetView = getChildAt(0);
+
+            //添加空数据view
+            mEmptyViewContainer = new FrameLayout(getContext());
+            mEmptyViewContainer.setLayoutParams(new MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            this.addView(mEmptyViewContainer, 0);
+            //添加头部刷新view
+            mHeaderView = new SwipeRefreshHeaderLayout(getContext());
+            mHeaderView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            this.addView(mHeaderView, 1);
+            //添加空底部加载view
+            mFooterView = new SwipeLoadMoreFooterLayout(getContext());
+            mFooterView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            this.addView(mFooterView, 3);
+
         }
+
         if (mTargetView == null) {
             return;
         }
@@ -360,28 +387,35 @@ public class SwipeToLoadLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        // header
+        // header测量
         if (mHeaderView != null) {
             final View headerView = mHeaderView;
-            measureChildWithMargins(headerView, widthMeasureSpec, 0, heightMeasureSpec, 0);
-            MarginLayoutParams lp = ((MarginLayoutParams) headerView.getLayoutParams());
+//            measureChildWithMargins(headerView, widthMeasureSpec, 0, heightMeasureSpec, 0);
+            measureChild(headerView, widthMeasureSpec, heightMeasureSpec);
+//            MarginLayoutParams lp = ((MarginLayoutParams) headerView.getLayoutParams());
             //get header height
-            mHeaderHeight = headerView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
+            mHeaderHeight = headerView.getMeasuredHeight();
             if (mRefreshTriggerOffset < mHeaderHeight) {
                 mRefreshTriggerOffset = mHeaderHeight;
             }
         }
-        // target
+        // target测量
         if (mTargetView != null) {
             final View targetView = mTargetView;
             measureChildWithMargins(targetView, widthMeasureSpec, 0, heightMeasureSpec, 0);
         }
-        // footer
+        // emptyView测量
+        if (mEmptyViewContainer != null) {
+            final View emptyViewContainer = mEmptyViewContainer;
+            measureChildWithMargins(emptyViewContainer, widthMeasureSpec, 0, heightMeasureSpec, 0);
+        }
+        // footer测量
         if (mFooterView != null) {
             final View footerView = mFooterView;
-            measureChildWithMargins(footerView, widthMeasureSpec, 0, heightMeasureSpec, 0);
-            MarginLayoutParams lp = ((MarginLayoutParams) footerView.getLayoutParams());
-            mFooterHeight = footerView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
+//            measureChildWithMargins(footerView, widthMeasureSpec, 0, heightMeasureSpec, 0);
+            measureChild(footerView, widthMeasureSpec, heightMeasureSpec);
+//            MarginLayoutParams lp = ((MarginLayoutParams) footerView.getLayoutParams());
+            mFooterHeight = footerView.getMeasuredHeight();
             if (mLoadMoreTriggerOffset < mFooterHeight) {
                 mLoadMoreTriggerOffset = mFooterHeight;
             }
@@ -424,7 +458,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
-        return new SwipeToLoadLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        return new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     /**
@@ -432,7 +466,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     @Override
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
-        return new SwipeToLoadLayout.LayoutParams(p);
+        return new LayoutParams(p);
     }
 
     /**
@@ -440,7 +474,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return new SwipeToLoadLayout.LayoutParams(getContext(), attrs);
+        return new LayoutParams(getContext(), attrs);
     }
 
     @Override
@@ -511,9 +545,9 @@ public class SwipeToLoadLayout extends ViewGroup {
                 boolean moved = Math.abs(yInitDiff) > Math.abs(xInitDiff);
                 boolean triggerCondition =
                         // refresh trigger condition
-                        (yInitDiff > 0 && moved && onCheckCanRefresh()) ||
+                        (yInitDiff > 0 && moved && onCheckCanRefresh() && Math.abs(yInitDiff) > mTouchSlop / 2) ||
                                 //load more trigger condition
-                                (yInitDiff < 0 && moved && onCheckCanLoadMore());
+                                (yInitDiff < 0 && moved && onCheckCanLoadMore() && Math.abs(yInitDiff) > mTouchSlop / 2);
                 if (triggerCondition) {
                     // if the refresh's or load more's trigger condition  is true,
                     // intercept the move action event and pass it to SwipeToLoadLayout#onTouchEvent()
@@ -554,11 +588,12 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mLastY = y;
                 mLastX = x;
 
-                if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > mTouchSlop) {
+                if ((Math.abs(xDiff) > Math.abs(yDiff))) {
                     return false;
                 }
 
                 if (STATUS.isStatusDefault(mStatus)) {
+                    // now is default status
                     if (yDiff > 0 && onCheckCanRefresh()) {
                         mRefreshCallback.onPrepare();
                         setStatus(STATUS.STATUS_SWIPING_TO_REFRESH);
@@ -962,6 +997,27 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
     }
 
+    public void setRefreshLoadingComplete() {
+        if (STATUS.isLoadingMore(mStatus)) {
+            mLoadMoreCallback.onComplete();
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    scrollLoadingMoreToDefault();
+                }
+            }, mLoadMoreCompleteDelayDuration);
+        } else if (STATUS.isRefreshing(mStatus)) {
+            mRefreshCallback.onComplete();
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    scrollRefreshingToDefault();
+                }
+            }, mRefreshCompleteDelayDuration);
+        }
+    }
+
+
     /**
      * copy from {@link android.support.v4.widget.SwipeRefreshLayout#canChildScrollUp()}
      *
@@ -973,7 +1029,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             if (mTargetView instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) mTargetView;
                 return absListView.getChildCount() > 0
-                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+                        && (absListView.getFirstVisiblePosition() > 0 || mHeaderView
                         .getTop() < absListView.getPaddingTop());
             } else {
                 return ViewCompat.canScrollVertically(mTargetView, -1) || mTargetView.getScrollY() > 0;
@@ -1023,29 +1079,29 @@ public class SwipeToLoadLayout extends ViewGroup {
         // layout header
         if (mHeaderView != null) {
             final View headerView = mHeaderView;
-            MarginLayoutParams lp = (MarginLayoutParams) headerView.getLayoutParams();
-            final int headerLeft = paddingLeft + lp.leftMargin;
+//            MarginLayoutParams lp = (MarginLayoutParams) headerView.getLayoutParams();
+            final int headerLeft = paddingLeft;
             final int headerTop;
             switch (mStyle) {
                 case STYLE.CLASSIC:
                     // classic
-                    headerTop = paddingTop + lp.topMargin - mHeaderHeight + mHeaderOffset;
+                    headerTop = paddingTop - mHeaderHeight + mHeaderOffset;
                     break;
                 case STYLE.ABOVE:
                     // classic
-                    headerTop = paddingTop + lp.topMargin - mHeaderHeight + mHeaderOffset;
+                    headerTop = paddingTop - mHeaderHeight + mHeaderOffset;
                     break;
                 case STYLE.BLEW:
                     // blew
-                    headerTop = paddingTop + lp.topMargin;
+                    headerTop = paddingTop;
                     break;
                 case STYLE.SCALE:
                     // scale
-                    headerTop = paddingTop + lp.topMargin - mHeaderHeight / 2 + mHeaderOffset / 2;
+                    headerTop = paddingTop - mHeaderHeight / 2 + mHeaderOffset / 2;
                     break;
                 default:
                     // classic
-                    headerTop = paddingTop + lp.topMargin - mHeaderHeight + mHeaderOffset;
+                    headerTop = paddingTop - mHeaderHeight + mHeaderOffset;
                     break;
             }
             final int headerRight = headerLeft + headerView.getMeasuredWidth();
@@ -1058,8 +1114,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         if (mTargetView != null) {
             final View targetView = mTargetView;
             MarginLayoutParams lp = (MarginLayoutParams) targetView.getLayoutParams();
-            final int targetLeft = paddingLeft + lp.leftMargin;
-            final int targetTop;
+            targetLeft = paddingLeft + lp.leftMargin;
 
             switch (mStyle) {
                 case STYLE.CLASSIC:
@@ -1083,37 +1138,38 @@ public class SwipeToLoadLayout extends ViewGroup {
                     targetTop = paddingTop + lp.topMargin + mTargetOffset;
                     break;
             }
-            final int targetRight = targetLeft + targetView.getMeasuredWidth();
-            final int targetBottom = targetTop + targetView.getMeasuredHeight();
+            targetRight = targetLeft + targetView.getMeasuredWidth();
+            targetBottom = targetTop + targetView.getMeasuredHeight();
             targetView.layout(targetLeft, targetTop, targetRight, targetBottom);
+            mEmptyViewContainer.layout(targetLeft, targetTop, targetRight, targetBottom);
         }
 
         // layout footer
         if (mFooterView != null) {
             final View footerView = mFooterView;
-            MarginLayoutParams lp = (MarginLayoutParams) footerView.getLayoutParams();
-            final int footerLeft = paddingLeft + lp.leftMargin;
+//            MarginLayoutParams lp = (MarginLayoutParams) footerView.getLayoutParams();
+            final int footerLeft = paddingLeft;
             final int footerBottom;
             switch (mStyle) {
                 case STYLE.CLASSIC:
                     // classic
-                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight + mFooterOffset;
+                    footerBottom = height - paddingBottom + mFooterHeight + mFooterOffset;
                     break;
                 case STYLE.ABOVE:
                     // classic
-                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight + mFooterOffset;
+                    footerBottom = height - paddingBottom + mFooterHeight + mFooterOffset;
                     break;
                 case STYLE.BLEW:
                     // blew
-                    footerBottom = height - paddingBottom - lp.bottomMargin;
+                    footerBottom = height - paddingBottom;
                     break;
                 case STYLE.SCALE:
                     // scale
-                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight / 2 + mFooterOffset / 2;
+                    footerBottom = height - paddingBottom + mFooterHeight / 2 + mFooterOffset / 2;
                     break;
                 default:
                     // classic
-                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight + mFooterOffset;
+                    footerBottom = height - paddingBottom + mFooterHeight + mFooterOffset;
                     break;
             }
             final int footerTop = footerBottom - footerView.getMeasuredHeight();
@@ -1614,20 +1670,45 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
     }
 
+    public void setEmptyView(View emptyView) {
+        this.mEmptyView = emptyView;
+        if (mEmptyView != null) {
+            mEmptyViewContainer.addView(mEmptyView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mEmptyView.setVisibility(View.GONE);
+        }
+
+    }
+
+    public void setEmptyViewVisible() {
+        if (mEmptyView != null) {
+            this.mEmptyView.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    public void setEmptyViewGone() {
+
+        if (mEmptyView != null) {
+            this.mEmptyView.setVisibility(View.GONE);
+        }
+
+    }
+
+
     /**
      * an inner util class.
      * enum of status
      */
     private final static class STATUS {
-        private static final int STATUS_REFRESH_RETURNING = -4;
-        private static final int STATUS_REFRESHING = -3;
-        private static final int STATUS_RELEASE_TO_REFRESH = -2;
-        private static final int STATUS_SWIPING_TO_REFRESH = -1;
-        private static final int STATUS_DEFAULT = 0;
-        private static final int STATUS_SWIPING_TO_LOAD_MORE = 1;
-        private static final int STATUS_RELEASE_TO_LOAD_MORE = 2;
-        private static final int STATUS_LOADING_MORE = 3;
-        private static final int STATUS_LOAD_MORE_RETURNING = 4;
+        private static final int STATUS_REFRESH_RETURNING = -4;//刷新返回
+        private static final int STATUS_REFRESHING = -3;//正在刷新
+        private static final int STATUS_RELEASE_TO_REFRESH = -2;//释放刷新
+        private static final int STATUS_SWIPING_TO_REFRESH = -1;//下拉刷新
+        private static final int STATUS_DEFAULT = 0;//初始状态
+        private static final int STATUS_SWIPING_TO_LOAD_MORE = 1;//上拉加载更多
+        private static final int STATUS_RELEASE_TO_LOAD_MORE = 2;//释放加载更多
+        private static final int STATUS_LOADING_MORE = 3;//正在加载更多
+        private static final int STATUS_LOAD_MORE_RETURNING = 4;//加载更多返回
 
         private static boolean isRefreshing(final int status) {
             return status == STATUS.STATUS_REFRESHING;
