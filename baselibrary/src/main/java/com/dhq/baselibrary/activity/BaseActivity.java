@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.dhq.baselibrary.R;
-import com.dhq.baselibrary.util.PermissionUtils;
 
 /**
  * DESC 基础Activity
@@ -119,12 +118,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(final int requestCode, String[] permissions, int[] grantResults) {
-        PermissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
-    }
+//    /**
+//     * Callback received when a permissions request has been completed.
+//     */
+//    @Override
+//    public void onRequestPermissionsResult(final int requestCode, String[] permissions, int[] grantResults) {
+//        PermissionUtils.onRequestPermissionsResult(requestCode,permissions,grantResults);
+//    }
 
 }

@@ -1,7 +1,6 @@
 package com.dhq.baselibrary.activity;
 
 import com.dhq.baselibrary.presenter.BasePresenter;
-import com.dhq.baselibrary.util.PermissionUtils;
 
 /**
  * DESC MVP模式Activity
