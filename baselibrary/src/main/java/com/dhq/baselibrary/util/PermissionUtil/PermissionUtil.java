@@ -21,8 +21,8 @@ public class PermissionUtil {
 
     private PermissionFragment getRxPermissionsFragment(FragmentActivity activity) {
         PermissionFragment fragment = (PermissionFragment)activity.getSupportFragmentManager().findFragmentByTag(TAG);
-        boolean isNewInstance = fragment == null;
-        if(isNewInstance) {
+
+        if(fragment==null) {
             fragment = new PermissionFragment();
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             fragmentManager.beginTransaction().add(fragment, TAG).commit();
