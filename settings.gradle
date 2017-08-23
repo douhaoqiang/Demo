@@ -1,4 +1,4 @@
-include ':app'
+include ':app', ':cardswipelibrary'
 include ':banner'
 include ':imagecompress'
 include ':refleshlibrary'

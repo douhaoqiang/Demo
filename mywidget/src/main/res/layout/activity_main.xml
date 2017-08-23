@@ -45,6 +45,13 @@
         android:text="图片压缩" />
 
 
+    <Button
+        android:id="@+id/btn_card_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="卡片的左滑右滑" />
+
+
     <TextView
         android:id="@+id/tv_html_text"
         android:layout_width="match_parent"

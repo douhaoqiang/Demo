@@ -8,14 +8,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.util.PermissionUtil.PermissionListener;
+import com.dhq.baselibrary.util.PermissionUtil.PermissionUtil;
+import com.dhq.mywidget.cardswipe.CardSwipeActivity;
 import com.dhq.mywidget.ui.CircleProgressActivity;
 import com.dhq.mywidget.ui.CompressActivity;
 import com.dhq.mywidget.ui.DateSelectActivity;
 import com.dhq.mywidget.ui.HttpTestActivity;
 import com.dhq.mywidget.ui.SelectActivity;
 import com.dhq.mywidget.ui.StarActivity;
-import com.dhq.permissionlibrary.PermissionListener;
-import com.dhq.permissionlibrary.PermissionUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +41,9 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.btn_iamge_compress)
     Button btn_compress;
+
+    @BindView(R.id.btn_card_swipe)
+    Button btnCardSwipe;
 
 
     @Override
@@ -102,6 +106,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CompressActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnCardSwipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CardSwipeActivity.class);
                 startActivity(intent);
             }
         });

@@ -46,7 +46,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.9'
 //    compile 'com.android.support:recyclerview-v7:23.4.0'
 //    compile 'com.android.support:cardview-v7:23.4.0'
-    compile var.SupportV7
+    compile var.SupportRecyclerview
     compile var.SupportDesign
     compile var.SupportCardview
     compile var.SupportDesign

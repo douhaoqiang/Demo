@@ -1,13 +1,11 @@
-apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.dhq.mywidget"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -24,16 +22,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile var.SupportRecyclerview
+    compile var.SupportDesign
+    compile var.SupportCardview
+    compile var.SupportDesign
     testCompile 'junit:junit:4.12'
-    compile project(':baselibrary')
-    compile project(':httplibrary')
-    compile 'com.jakewharton:butterknife:8.7.0'
-    apt 'com.jakewharton:butterknife-compiler:8.7.0'
-    compile project(path: ':imagecompress')
-    compile project(':cardswipelibrary')
 }
