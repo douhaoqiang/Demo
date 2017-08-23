@@ -53,9 +53,6 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
     private CardViewAdapter adapter;
 
 
-    private int cardWidth;
-    private int cardHeight;
-
 
     @Override
     protected int getLayoutId() {
@@ -69,10 +66,6 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
     }
     private void initView() {
 
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        float density = dm.density;
-        cardWidth = (int) (dm.widthPixels - (2 * 18 * density));
-        cardHeight = (int) (dm.heightPixels - (338 * density));
 
         swipeView = (SwipeFlingView) findViewById(R.id.swipe_view);
         if (swipeView != null) {
@@ -88,9 +81,6 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
 
                 @Override
                 public void drawView(Talent talent,int position,ViewHolder holder) {
-
-                    holder.getConvertview().getLayoutParams().width = cardWidth;
-                    holder.getConvertview().getLayoutParams().height = cardHeight;
 
                     ImageView portraitView = holder.getView(R.id.portrait);
                     TextView nameView = holder.getView(R.id.name);
@@ -124,14 +114,9 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
             swipeView.setAdapter(adapter);
         }
 
-        View v = findViewById(R.id.swipeLeft);
-        if (v != null) {
-            v.setOnClickListener(this);
-        }
-        v = findViewById(R.id.swipeRight);
-        if (v != null) {
-            v.setOnClickListener(this);
-        }
+        findViewById(R.id.swipeLeft).setOnClickListener(this);
+
+        findViewById(R.id.swipeRight).setOnClickListener(this);
 
     }
 
@@ -155,9 +140,9 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
 
     @Override
     public void onAdapterAboutToEmpty(int itemsInAdapter) {
-        if (itemsInAdapter == 3) {
-            loadData();
-        }
+//        if (itemsInAdapter == 3) {
+//            loadData();
+//        }
     }
 
     @Override
