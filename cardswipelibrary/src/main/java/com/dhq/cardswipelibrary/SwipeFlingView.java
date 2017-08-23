@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +62,7 @@ public class SwipeFlingView extends ViewGroup {
 
     /**
      * 获取自定义参数变量
+     *
      * @param attrs
      */
     private void init(AttributeSet attrs) {
@@ -142,6 +142,7 @@ public class SwipeFlingView extends ViewGroup {
 
     /**
      * 移除或者添加进缓存
+     *
      * @param remain
      */
     private void removeAndAddToCache(int remain) {
@@ -155,37 +156,22 @@ public class SwipeFlingView extends ViewGroup {
 
     /**
      * 加载需要显示的卡片
+     *
      * @param startingIndex 显示的开始下标
      * @param adapterCount  需要显示所有数量
      */
     private void layoutChildren(int startingIndex, int adapterCount) {
-        while (startingIndex < Math.min(adapterCount, MAX_VISIBLE) ) {
+        while (startingIndex < Math.min(adapterCount, MAX_VISIBLE)) {
             View item = null;
             if (cacheItems.size() > 0) {
                 item = cacheItems.get(0);
                 cacheItems.remove(item);
             }
             View newUnderChild = mAdapter.getView(startingIndex, item, this);
-            if (newUnderChild.getVisibility() != GONE) {
-                makeAndAddView(newUnderChild, startingIndex);
-                LAST_OBJECT_IN_STACK = startingIndex;
-            }
+            makeAndAddView(newUnderChild, startingIndex);
+            LAST_OBJECT_IN_STACK = startingIndex;
             startingIndex++;
         }
-//        while (startingIndex < Math.min(adapterCount, MAX_VISIBLE)) {
-//            View item = null;
-//            if(cacheItems.size()>0){
-//                //清除以前显示的view
-//                item = cacheItems.get(0);
-//                cacheItems.remove(item);
-//            }
-//            View newUnderChild = mAdapter.getView(startingIndex, item, this);
-//            if (newUnderChild.getVisibility() != GONE) {
-//                makeAndAddView(newUnderChild, startingIndex);
-//                LAST_OBJECT_IN_STACK = startingIndex;
-//            }
-//            startingIndex++;
-//        }
     }
 
 
@@ -193,9 +179,10 @@ public class SwipeFlingView extends ViewGroup {
     private void makeAndAddView(View child, int index) {
 
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) child.getLayoutParams();
+        //将view插入到第一个view的位置(true表示不会重新加载测量child参数)
         addViewInLayout(child, 0, lp, true);
 
-        final boolean needToMeasure = child.isLayoutRequested();
+        boolean needToMeasure = child.isLayoutRequested();
         if (needToMeasure) {
             int childWidthSpec = getChildMeasureSpec(widthMeasureSpec,
                     getPaddingLeft() + getPaddingRight() + lp.leftMargin + lp.rightMargin,
@@ -208,58 +195,34 @@ public class SwipeFlingView extends ViewGroup {
             cleanupLayoutState(child);
         }
 
-        int w = child.getMeasuredWidth();
-        int h = child.getMeasuredHeight();
+        int width = child.getMeasuredWidth();
+        int height = child.getMeasuredHeight();
 
-        int gravity = lp.gravity;
-        if (gravity == -1) {
-            gravity = Gravity.TOP | Gravity.START;
-        }
 
-        int layoutDirection = 0;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN)
-            layoutDirection = getLayoutDirection();
-        final int absoluteGravity = Gravity.getAbsoluteGravity(gravity, layoutDirection);
-        final int verticalGravity = gravity & Gravity.VERTICAL_GRAVITY_MASK;
+        int childLeft = (getWidth() + getPaddingLeft() - getPaddingRight() - width) / 2 +
+                lp.leftMargin - lp.rightMargin;
 
-        int childLeft;
-        int childTop;
-        switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
-            case Gravity.CENTER_HORIZONTAL:
-                childLeft = (getWidth() + getPaddingLeft() - getPaddingRight() - w) / 2 +
-                        lp.leftMargin - lp.rightMargin;
-                break;
-            case Gravity.END:
-                childLeft = getWidth() + getPaddingRight() - w - lp.rightMargin;
-                break;
-            case Gravity.START:
-            default:
-                childLeft = getPaddingLeft() + lp.leftMargin;
-                break;
-        }
-        switch (verticalGravity) {
-            case Gravity.CENTER_VERTICAL:
-                childTop = (getHeight() + getPaddingTop() - getPaddingBottom() - h) / 2 +
-                        lp.topMargin - lp.bottomMargin;
-                break;
-            case Gravity.BOTTOM:
-                childTop = getHeight() - getPaddingBottom() - h - lp.bottomMargin;
-                break;
-            case Gravity.TOP:
-            default:
-                childTop = getPaddingTop() + lp.topMargin;
-                break;
-        }
-        child.layout(childLeft, childTop, childLeft + w, childTop + h);
+        int childTop = getPaddingTop() + lp.topMargin;
+
+        child.layout(childLeft, childTop, childLeft + width, childTop + height);
         // 缩放层叠效果
-        adjustChildView(child, index);
+        scaleChildView(child, index);
     }
 
-    private void adjustChildView(View child, int index) {
-        if (index > -1 && index < MAX_VISIBLE) {
+    /**
+     * 缩放卡片的大小
+     * @param child
+     * @param index
+     */
+    private void scaleChildView(View child, int index) {
+        //最多显示3张卡片的叠加效果
+        if (index >= 0 && index < MAX_VISIBLE) {
             int multiple;
-            if (index > 2) multiple = 2;
-            else multiple = index;
+            if (index > 2) {
+                multiple = 2;
+            } else {
+                multiple = index;
+            }
             child.offsetTopAndBottom(yOffsetStep * multiple);
             child.setScaleX(1 - SCALE_STEP * multiple);
             child.setScaleY(1 - SCALE_STEP * multiple);
@@ -291,10 +254,10 @@ public class SwipeFlingView extends ViewGroup {
 
     /**
      * Set the top view and add the fling listener
+     * 设置头部view 和 增加滑动监听
      */
     private void setTopView() {
         if (getChildCount() > 0) {
-
             mActiveCard = getChildAt(LAST_OBJECT_IN_STACK);
             if (mActiveCard != null && mFlingListener != null) {
 
@@ -334,6 +297,7 @@ public class SwipeFlingView extends ViewGroup {
                 // 设置是否支持左右滑
                 flingCardListener.setIsNeedSwipe(isNeedSwipe);
 
+                //将view的touch事件交给FlingCardListener处理
                 mActiveCard.setOnTouchListener(flingCardListener);
             }
         }
