@@ -1,12 +1,8 @@
 package com.dhq.mywidget.cardswipe;
 
 import android.os.AsyncTask;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,8 +22,7 @@ import java.util.Random;
  * Create by 2017/8/23.
  */
 
-public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.onFlingListener,
-        SwipeFlingView.OnItemClickListener, View.OnClickListener{
+public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.OnItemClickListener, View.OnClickListener{
 
     int [] headerIcons = {
             R.mipmap.i1,
@@ -69,8 +64,8 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
 
         swipeView = (SwipeFlingView) findViewById(R.id.swipe_view);
         if (swipeView != null) {
+
             swipeView.setIsNeedSwipe(true);
-            swipeView.setFlingListener(this);
             swipeView.setOnItemClickListener(this);
 
             adapter = new CardViewAdapter<Talent>(this, new CardViewAdapter.CardViewListener<Talent>() {
@@ -80,7 +75,7 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
                 }
 
                 @Override
-                public void drawView(Talent talent,int position,ViewHolder holder) {
+                public void drawView(final Talent talent, int position, ViewHolder holder) {
 
                     ImageView portraitView = holder.getView(R.id.portrait);
                     TextView nameView = holder.getView(R.id.name);
@@ -108,7 +103,12 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
                     workView.setText(talent.workYearName);
                     workView.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.home01_icon_work_year, 0, 0);
 
-
+                    portraitView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showToast("我选择了"+talent.nickname);
+                        }
+                    });
                 }
             });
             swipeView.setAdapter(adapter);
@@ -118,35 +118,12 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
 
         findViewById(R.id.swipeRight).setOnClickListener(this);
 
+
     }
 
 
     @Override
     public void onItemClicked(MotionEvent event, View v, Object dataObject) {
-    }
-
-    @Override
-    public void removeFirstObjectInAdapter() {
-        adapter.remove(0);
-    }
-
-    @Override
-    public void onLeftCardExit(Object dataObject) {
-    }
-
-    @Override
-    public void onRightCardExit(Object dataObject) {
-    }
-
-    @Override
-    public void onAdapterAboutToEmpty(int itemsInAdapter) {
-//        if (itemsInAdapter == 3) {
-//            loadData();
-//        }
-    }
-
-    @Override
-    public void onScroll(float progress, float scrollXProgress) {
     }
 
     @Override
@@ -183,7 +160,7 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.on
             @Override
             protected void onPostExecute(List<Talent> list) {
                 super.onPostExecute(list);
-                adapter.addAll(list);
+                adapter.addAllData(list);
             }
         }.execute();
     }
