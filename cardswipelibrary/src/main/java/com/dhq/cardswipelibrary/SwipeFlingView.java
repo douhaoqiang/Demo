@@ -8,6 +8,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.FrameLayout;
@@ -15,7 +16,8 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 
 
-public class SwipeFlingView extends ViewGroup {
+public class SwipeFlingView<T> extends ViewGroup {
+
 
     private ArrayList<View> cacheItems = new ArrayList<>();
 
@@ -27,10 +29,11 @@ public class SwipeFlingView extends ViewGroup {
     private int MAX_VISIBLE = 4; // 最大显示数， 值建议最小为4
     private int MIN_ADAPTER_STACK = 6;
     private float ROTATION_DEGREES = 2f;
-    private int LAST_OBJECT_IN_STACK = 0;
 
-    private Adapter mAdapter;
-    private onFlingListener mFlingListener;
+    private int lastCardIndex = 0;//显示的最后一张卡片下标
+
+    private CardViewAdapter<T> mAdapter;
+    private onFlingListener<T> mFlingListener;
     private AdapterDataSetObserver mDataSetObserver;
     private boolean mInLayout = false;//表示是否正在加载界面
     private View mActiveCard = null;
@@ -57,6 +60,35 @@ public class SwipeFlingView extends ViewGroup {
         super(context, attrs, defStyle);
 
         init(attrs);
+
+        mFlingListener=new onFlingListener<T>() {
+            @Override
+            public void removeFirstObjectInAdapter() {
+                mAdapter.remove(0);
+            }
+
+            @Override
+            public void onLeftCardExit(T data) {
+
+            }
+
+            @Override
+            public void onRightCardExit(T data) {
+
+            }
+
+            @Override
+            public void onAdapterAboutToEmpty(int itemsInAdapter) {
+                //adapter中剩余view的数量
+
+
+            }
+
+            @Override
+            public void onScroll(float progress, float scrollXProgress) {
+
+            }
+        };
 
     }
 
@@ -115,7 +147,7 @@ public class SwipeFlingView extends ViewGroup {
         if (adapterCount == 0) {
             removeAndAddToCache(0);
         } else {
-            View topCard = getChildAt(LAST_OBJECT_IN_STACK);
+            View topCard = getChildAt(lastCardIndex);
             if (mActiveCard != null && topCard != null && topCard == mActiveCard) {
                 removeAndAddToCache(1);
                 layoutChildren(1, adapterCount);
@@ -169,7 +201,7 @@ public class SwipeFlingView extends ViewGroup {
             }
             View newUnderChild = mAdapter.getView(startingIndex, item, this);
             makeAndAddView(newUnderChild, startingIndex);
-            LAST_OBJECT_IN_STACK = startingIndex;
+            lastCardIndex = startingIndex;
             startingIndex++;
         }
     }
@@ -211,6 +243,7 @@ public class SwipeFlingView extends ViewGroup {
 
     /**
      * 缩放卡片的大小
+     *
      * @param child
      * @param index
      */
@@ -224,8 +257,10 @@ public class SwipeFlingView extends ViewGroup {
                 multiple = index;
             }
             child.offsetTopAndBottom(yOffsetStep * multiple);
-            child.setScaleX(1 - SCALE_STEP * multiple);
-            child.setScaleY(1 - SCALE_STEP * multiple);
+            //计算卡片的缩放倍数
+            float scale = 1 - SCALE_STEP * multiple;
+            child.setScaleX(scale);
+            child.setScaleY(scale);
         }
     }
 
@@ -235,19 +270,20 @@ public class SwipeFlingView extends ViewGroup {
             int i;
             int multiple;
             if (count == 2) {
-                i = LAST_OBJECT_IN_STACK - 1;
+                i = lastCardIndex - 1;
                 multiple = 1;
             } else {
-                i = LAST_OBJECT_IN_STACK - 2;
+                i = lastCardIndex - 2;
                 multiple = 2;
             }
-            float rate = Math.abs(scrollRate);
-            for (; i < LAST_OBJECT_IN_STACK; i++, multiple--) {
-                View underTopView = getChildAt(i);
-                int offset = (int) (yOffsetStep * (multiple - rate));
-                underTopView.offsetTopAndBottom(offset - underTopView.getTop() + initTop);
-                underTopView.setScaleX(1 - SCALE_STEP * multiple + SCALE_STEP * rate);
-                underTopView.setScaleY(1 - SCALE_STEP * multiple + SCALE_STEP * rate);
+
+            for (; i < lastCardIndex; i++, multiple--) {
+                View childView = getChildAt(i);
+                int offset = (int) (yOffsetStep * (multiple - scrollRate));
+                childView.offsetTopAndBottom(offset - childView.getTop() + initTop);
+                float scale = 1 - SCALE_STEP * multiple + SCALE_STEP * scrollRate;
+                childView.setScaleX(scale);
+                childView.setScaleY(scale);
             }
         }
     }
@@ -258,11 +294,11 @@ public class SwipeFlingView extends ViewGroup {
      */
     private void setTopView() {
         if (getChildCount() > 0) {
-            mActiveCard = getChildAt(LAST_OBJECT_IN_STACK);
+            mActiveCard = getChildAt(lastCardIndex);
             if (mActiveCard != null && mFlingListener != null) {
 
                 flingCardListener = new FlingCardListener(mActiveCard, mAdapter.getItem(0),
-                        ROTATION_DEGREES, new FlingCardListener.FlingListener() {
+                        ROTATION_DEGREES, new FlingCardListener.FlingListener<T>() {
 
                     @Override
                     public void onCardExited() {
@@ -272,13 +308,13 @@ public class SwipeFlingView extends ViewGroup {
                     }
 
                     @Override
-                    public void leftExit(Object dataObject) {
-                        mFlingListener.onLeftCardExit(dataObject);
+                    public void leftExit(T data) {
+                        mFlingListener.onLeftCardExit(data);
                     }
 
                     @Override
-                    public void rightExit(Object dataObject) {
-                        mFlingListener.onRightCardExit(dataObject);
+                    public void rightExit(T data) {
+                        mFlingListener.onRightCardExit(data);
                     }
 
                     @Override
@@ -341,7 +377,7 @@ public class SwipeFlingView extends ViewGroup {
     }
 
 
-    public void setAdapter(Adapter adapter) {
+    public void setAdapter(CardViewAdapter adapter) {
         if (mAdapter != null && mDataSetObserver != null) {
             mAdapter.unregisterDataSetObserver(mDataSetObserver);
             mDataSetObserver = null;
@@ -392,17 +428,18 @@ public class SwipeFlingView extends ViewGroup {
     /**
      * 滑动事件监听接口
      */
-    public interface onFlingListener {
+    public interface onFlingListener<T> {
         void removeFirstObjectInAdapter();
 
-        void onLeftCardExit(Object dataObject);
+        void onLeftCardExit(T dataObject);
 
-        void onRightCardExit(Object dataObject);
+        void onRightCardExit(T dataObject);
 
         void onAdapterAboutToEmpty(int itemsInAdapter);
 
         void onScroll(float progress, float scrollXProgress);
     }
+
 
 
 }

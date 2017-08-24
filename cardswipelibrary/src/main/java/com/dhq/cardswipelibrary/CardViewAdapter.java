@@ -21,7 +21,7 @@ public class CardViewAdapter<T> extends BaseAdapter {
 
     private CardViewListener mListener;
 
-    ArrayList<T> objs;
+    private ArrayList<T> objs;
 
     public CardViewAdapter(Context context, CardViewListener listener) {
         this.mContext = context;
@@ -31,7 +31,13 @@ public class CardViewAdapter<T> extends BaseAdapter {
 
     }
 
-    public void addAll(Collection<T> collection) {
+    public void setData(Collection<T> collection) {
+        objs.clear();
+        objs.addAll(collection);
+        notifyDataSetChanged();
+    }
+
+    public void addAllData(Collection<T> collection) {
         if (isEmpty()) {
             objs.addAll(collection);
             notifyDataSetChanged();
@@ -50,7 +56,7 @@ public class CardViewAdapter<T> extends BaseAdapter {
     }
 
     public void remove(int index) {
-        if (index > -1 && index < objs.size()) {
+        if (index >= 0 && index < objs.size()) {
             objs.remove(index);
             notifyDataSetChanged();
         }
