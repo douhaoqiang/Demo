@@ -3,7 +3,6 @@ package com.dhq.cardswipelibrary;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -28,8 +27,6 @@ public class FlingCardListener implements View.OnTouchListener {
     private float aPosY;
     private float aDownTouchX;
     private float aDownTouchY;
-    private float mLastX;
-    private float mLastY;
     private static final int INVALID_POINTER_ID = -1;
 
     // The active pointer is the one currently moving our object.
@@ -76,7 +73,6 @@ public class FlingCardListener implements View.OnTouchListener {
         this.isNeedSwipe = isNeedSwipe;
     }
 
-
     @Override
     public boolean onTouch(View view, MotionEvent event) {
 
@@ -96,9 +92,6 @@ public class FlingCardListener implements View.OnTouchListener {
                     aDownTouchX = event.getX(mActivePointerId);
                     aDownTouchY = event.getY(mActivePointerId);
 
-                    mLastX=aDownTouchX;
-                    mLastY=aDownTouchY;
-
                     // 控件所在位置坐标
                     aPosX = frame.getX();
                     aPosY = frame.getY();
@@ -112,21 +105,13 @@ public class FlingCardListener implements View.OnTouchListener {
 
                 case MotionEvent.ACTION_MOVE:
 
-                    // Find the index of the active pointer and fetch its position
-                    int pointerIndexMove = event.findPointerIndex(mActivePointerId);
-                    float currentX = event.getX(pointerIndexMove);
-                    float currentY = event.getY(pointerIndexMove);
-//                    float moveX = mLastX-currentX;
-//                    float moveY = mLastY-currentY ;
-//                    mLastX=currentX;
-//                    mLastY=currentY;
-//                    if(Math.abs(moveX) < mMinTouchSlop/4 && Math.abs(moveY)< mMinTouchSlop/4){
-//                        //最小敏感度（处理滑动跟子view点击事件的冲突问题）
-//                        return false;
-//                    }
+                    float currentX = event.getX(mActivePointerId);
+                    float currentY = event.getY(mActivePointerId);
+
+
                     // Calculate the coordinate of frame
-                    aPosX += currentX - aDownTouchX;
-                    aPosY += currentY - aDownTouchY;
+                    aPosX = aPosX + currentX - aDownTouchX;
+                    aPosY = aPosY + currentY - aDownTouchY;
 
                     // calculate the rotation degrees of frame
                     float distObjectX = aPosX - objectX;

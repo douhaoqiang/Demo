@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -319,6 +320,7 @@ public class SwipeFlingView<T> extends ViewGroup {
 
                     @Override
                     public void onClick(MotionEvent event, View v, Object dataObject) {
+                        Log.e("click","点击事件");
                         if (mOnItemClickListener != null)
                             mOnItemClickListener.onItemClicked(event, v, dataObject);
                     }
