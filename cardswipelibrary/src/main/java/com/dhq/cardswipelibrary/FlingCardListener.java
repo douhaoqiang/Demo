@@ -105,7 +105,7 @@ public class FlingCardListener implements View.OnTouchListener {
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-                    float y = event.getY();
+
                     float currentX = event.getX(mActivePointerId);
                     float currentY = event.getY(mActivePointerId);
 
