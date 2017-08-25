@@ -2,6 +2,7 @@ package com.dhq.cardswipelibrary;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -104,12 +105,10 @@ public class FlingCardListener implements View.OnTouchListener {
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-
+                    float y = event.getY();
                     float currentX = event.getX(mActivePointerId);
                     float currentY = event.getY(mActivePointerId);
 
-
-                    // Calculate the coordinate of frame
                     aPosX = aPosX + currentX - aDownTouchX;
                     aPosY = aPosY + currentY - aDownTouchY;
 
