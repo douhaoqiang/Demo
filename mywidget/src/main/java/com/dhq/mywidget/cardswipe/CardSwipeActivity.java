@@ -22,7 +22,7 @@ import java.util.Random;
  * Create by 2017/8/23.
  */
 
-public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.OnItemClickListener, View.OnClickListener{
+public class CardSwipeActivity extends BaseActivity implements View.OnClickListener{
 
     int [] headerIcons = {
             R.mipmap.i1,
@@ -66,7 +66,7 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.On
         if (swipeView != null) {
 
             swipeView.setIsNeedSwipe(true);
-            swipeView.setOnItemClickListener(this);
+//            swipeView.setOnItemClickListener(this);
 
             adapter = new CardViewAdapter<Talent>(this, new CardViewAdapter.CardViewListener<Talent>() {
                 @Override
@@ -123,10 +123,6 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.On
 
 
     @Override
-    public void onItemClicked(MotionEvent event, View v, Object dataObject) {
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.swipeLeft:
@@ -148,7 +144,7 @@ public class CardSwipeActivity extends BaseActivity implements SwipeFlingView.On
                 for (int i = 0; i < 10; i++) {
                     talent = new Talent();
                     talent.headerIcon = headerIcons[i % headerIcons.length];
-                    talent.nickname = names[ran.nextInt(names.length-1)];
+                    talent.nickname = names[i % names.length];
                     talent.cityName = citys[ran.nextInt(citys.length-1)];
                     talent.educationName = edus[ran.nextInt(edus.length-1)];
                     talent.workYearName = years[ran.nextInt(years.length-1)];
