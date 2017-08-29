@@ -27,6 +27,7 @@
         <activity android:name=".ui.DateSelectActivity"/>
         <activity android:name=".ui.CompressActivity"/>
         <activity android:name=".cardswipe.CardSwipeActivity"/>
+        <activity android:name=".cardswipe.CardSwipeActivity2"/>
 
     </application>
 
