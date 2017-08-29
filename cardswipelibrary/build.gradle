@@ -30,5 +30,6 @@ dependencies {
     compile var.SupportDesign
     compile var.SupportCardview
     compile var.SupportDesign
+    compile 'com.facebook.rebound:rebound:0.3.8'
     testCompile 'junit:junit:4.12'
 }
