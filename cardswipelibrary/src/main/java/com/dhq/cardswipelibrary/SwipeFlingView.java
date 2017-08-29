@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.os.Build;
+import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class SwipeFlingView<T> extends ViewGroup {
 
 
+    private final int mTouchSlop;
     private ArrayList<View> cacheItems = new ArrayList<>();
 
     //缩放层叠效果
@@ -38,7 +39,6 @@ public class SwipeFlingView<T> extends ViewGroup {
     private AdapterDataSetObserver mDataSetObserver;
     private boolean mInLayout = false;//表示是否正在加载界面
     private View mActiveCard = null;
-    private OnItemClickListener mOnItemClickListener;
     private FlingCardListener flingCardListener;
 
     // 支持左右滑
@@ -61,8 +61,8 @@ public class SwipeFlingView<T> extends ViewGroup {
         super(context, attrs, defStyle);
 
         init(attrs);
-
-        mFlingListener=new onFlingListener<T>() {
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        mFlingListener = new onFlingListener<T>() {
             @Override
             public void removeFirstObjectInAdapter() {
                 mAdapter.remove(0);
@@ -224,6 +224,7 @@ public class SwipeFlingView<T> extends ViewGroup {
                     getPaddingTop() + getPaddingBottom() + lp.topMargin + lp.bottomMargin,
                     lp.height);
             child.measure(childWidthSpec, childHeightSpec);
+
         } else {
             cleanupLayoutState(child);
         }
@@ -252,11 +253,12 @@ public class SwipeFlingView<T> extends ViewGroup {
         //最多显示3张卡片的叠加效果
         if (index >= 0 && index < MAX_VISIBLE) {
             int multiple;
-            if (index > 2) {
-                multiple = 2;
+            if (index > MAX_VISIBLE - 2) {
+                multiple = MAX_VISIBLE - 2;
             } else {
                 multiple = index;
             }
+            //卡片向下移动的距离
             child.offsetTopAndBottom(yOffsetStep * multiple);
             //计算卡片的缩放倍数
             float scale = 1 - SCALE_STEP * multiple;
@@ -320,9 +322,9 @@ public class SwipeFlingView<T> extends ViewGroup {
 
                     @Override
                     public void onClick(MotionEvent event, View v, Object dataObject) {
-                        Log.e("click","点击事件");
-                        if (mOnItemClickListener != null)
-                            mOnItemClickListener.onItemClicked(event, v, dataObject);
+                        Log.e("click", "点击事件" + lastCardIndex);
+//                        if (mOnItemClickListener != null)
+//                            mOnItemClickListener.onItemClicked(event, v, dataObject);
                     }
 
                     @Override
@@ -398,10 +400,6 @@ public class SwipeFlingView<T> extends ViewGroup {
         this.mFlingListener = onFlingListener;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
-    }
-
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -423,8 +421,9 @@ public class SwipeFlingView<T> extends ViewGroup {
     }
 
 
-    public interface OnItemClickListener {
-        void onItemClicked(MotionEvent event, View v, Object dataObject);
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
     }
 
     /**
@@ -441,7 +440,6 @@ public class SwipeFlingView<T> extends ViewGroup {
 
         void onScroll(float progress, float scrollXProgress);
     }
-
 
 
 }
