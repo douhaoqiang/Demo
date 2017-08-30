@@ -22,13 +22,49 @@ android {
         }
 
     }
+
+
+    signingConfigs {
+        debug {
+            storeFile file("../dhqsign.jks")
+            storePassword "dhq2017"
+            keyAlias "demo"
+            keyPassword "dhq2017"
+        }
+
+        release {
+            storeFile file("../dhqsign.jks")
+            storePassword "dhq2017"
+            keyAlias "demo"
+            keyPassword "dhq2017"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false//是否混淆
-            shrinkResources true//是否取出无效资源
+            shrinkResources false//是否取出无效资源
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 软件名-版本名称-编译时间.apk
+                        def fileName = "demo-${defaultConfig.versionName}-${releaseTime()}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+
         }
     }
+}
+
+
+//生成打包时间
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
 tasks.withType(JavaCompile) {
