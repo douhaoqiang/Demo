@@ -17,7 +17,7 @@ android {
             ldLibs "log"
         }
 
-        sourceSets.main{
+        sourceSets.main {
             jniLibs.srcDirs = ['libs']
         }
 
@@ -41,10 +41,27 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            buildConfigField("boolean", "LOG_ON", "true")    //通过编译类型配置日志开关
+            versionNameSuffix "-debug"                       //包名后缀为“-debug”
+
+            minifyEnabled false                              //是否混淆
+            zipAlignEnabled false                            //Zipalign优化
+            shrinkResources false                            // 移除无用的resource文件
+            signingConfig signingConfigs.debug               //使用debug证书签名
+        }
+
         release {
-            minifyEnabled false//是否混淆
-            shrinkResources false//是否取出无效资源
+
+            buildConfigField("boolean", "LOG_ON", "false")   //通过编译类型配置日志开关
+
+            minifyEnabled false                              //是否混淆
+            zipAlignEnabled true                             //开启Zipalign优化
+            shrinkResources false                            //移除无用的resource文件，此项只有在开启混淆时才生效
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
 
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
@@ -60,7 +77,6 @@ android {
         }
     }
 }
-
 
 //生成打包时间
 def releaseTime() {
