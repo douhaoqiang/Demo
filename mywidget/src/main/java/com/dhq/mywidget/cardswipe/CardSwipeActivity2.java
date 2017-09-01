@@ -15,6 +15,8 @@ import com.dhq.mywidget.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dhq.cardswipelibrary.good.CardSlideLayout.VANISH_TYPE_LEFT;
+
 /**
  * DESC
  * Author douhaoqiang
@@ -99,7 +101,13 @@ public class CardSwipeActivity2 extends BaseActivity{
 
         slidePanel.setAdapter(cardAdapter);
 
-
+        // 添加新的卡片
+        findViewById(R.id.remove).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slidePanel.vanishOnBtnClick(VANISH_TYPE_LEFT);
+            }
+        });
         // 添加新的卡片
         findViewById(R.id.notify_change).setOnClickListener(new View.OnClickListener() {
             @Override

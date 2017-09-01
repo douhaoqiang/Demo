@@ -8,11 +8,12 @@
     <com.dhq.mywidget.ratingbar.MyRatingBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         app:starNormalImg="@mipmap/star_default"
         app:starRating="2.5"
         app:starSelectImg="@mipmap/star_selected"
-        app:starSize="50dp"
-        app:starsNumber="4"
+        app:starSize="30dp"
+        app:starsNumber="5"
         app:starsSeparation="5dp" />
 
 </LinearLayout>

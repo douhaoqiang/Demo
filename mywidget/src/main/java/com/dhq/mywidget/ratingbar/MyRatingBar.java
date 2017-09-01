@@ -79,12 +79,12 @@ public class MyRatingBar extends View {
 
         starRealWidth = star_default.getWidth();
 
-        if (starShowWidth == 0) {
+        if (starShowHeight == 0) {
             starShowWidth = starRealWidth;
             starShowHeight = starRealHeight;
         } else {
             //根据显示宽度，计算星星显示高度
-            starShowHeight = starRealHeight * starShowWidth / starRealWidth;
+            starShowWidth = starRealWidth * starShowHeight / starRealHeight;
         }
 
         //计算占据的宽度大小
@@ -100,7 +100,7 @@ public class MyRatingBar extends View {
         //星星的数量
         numberOfStars = arr.getInteger(R.styleable.MyRatingBar_starsNumber, 5);
         //星星的尺寸
-        starShowWidth = arr.getDimensionPixelSize(R.styleable.MyRatingBar_starSize, 0);
+        starShowHeight = arr.getDimensionPixelSize(R.styleable.MyRatingBar_starSize, 0);
         //星星间隔
         spaceStar = arr.getDimensionPixelSize(R.styleable.MyRatingBar_starsSeparation, 20);
         //每步的大小

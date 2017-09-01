@@ -12,6 +12,17 @@
         android:background="#cd4827">
 
         <TextView
+            android:id="@+id/remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="移除"
+            android:padding="16dp"
+            android:textColor="#fff"
+            android:textSize="17sp" />
+
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
