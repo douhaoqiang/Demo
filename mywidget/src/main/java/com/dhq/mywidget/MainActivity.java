@@ -11,7 +11,6 @@ import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.baselibrary.util.PermissionUtil.PermissionListener;
 import com.dhq.baselibrary.util.PermissionUtil.PermissionUtil;
 import com.dhq.mywidget.cardswipe.CardSwipeActivity;
-import com.dhq.mywidget.cardswipe.CardSwipeActivity2;
 import com.dhq.mywidget.ui.CircleProgressActivity;
 import com.dhq.mywidget.ui.CompressActivity;
 import com.dhq.mywidget.ui.DateSelectActivity;
@@ -114,7 +113,7 @@ public class MainActivity extends BaseActivity {
         btnCardSwipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CardSwipeActivity2.class);
+                Intent intent = new Intent(MainActivity.this, CardSwipeActivity.class);
                 startActivity(intent);
             }
         });
