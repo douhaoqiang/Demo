@@ -402,7 +402,7 @@ public class CardSlideLayout extends ViewGroup {
     /**
      * 点击按钮消失动画
      */
-    private void vanishOnBtnClick(int type) {
+    public void vanishOnBtnClick(int type) {
         View animateView = viewList.get(0);
         if (animateView.getVisibility() != View.VISIBLE || releasedViewList.contains(animateView)) {
             return;
