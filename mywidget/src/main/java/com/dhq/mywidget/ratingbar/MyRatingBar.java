@@ -146,7 +146,7 @@ public class MyRatingBar extends View {
             //Must be this size
             width = widthSize;
         } else {
-            width = numberOfStars * starShowWidth + spaceStar * (starRealWidth - 1);
+            width = totleWith;
         }
 
         //Measure Height
@@ -210,7 +210,7 @@ public class MyRatingBar extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if(isIndicator){
+        if (isIndicator) {
             return false;
         }
 
