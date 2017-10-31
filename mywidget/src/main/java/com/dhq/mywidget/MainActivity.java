@@ -124,7 +124,10 @@ public class MainActivity extends BaseActivity {
 //        %n$mf：代表输出的是浮点数，n代表是第几个参数，设置m的值可以控制小数位数，如m=2.2时，输出格式为00.00
 
         //显示html文本
-        tvHtmlView.setText(Html.fromHtml(getResources().getString(R.string.recharge_desc)));
+//        tvHtmlView.setText(Html.fromHtml(getResources().getString(R.string.recharge_desc)));
+        tvHtmlView.setText(Html.fromHtml(getResources().getString(R.string.recharge_desc3)));
+//        tvHtmlView.setText(Html.fromHtml(getResources().getString(R.string.recharge_desc3), null, new MxgsaTagHandler(this)));
+
         //显示带参数的html文本
         tvHtmlView2.setText(Html.fromHtml(String.format(getResources().getString(R.string.recharge_desc2), 2, 3)));
 

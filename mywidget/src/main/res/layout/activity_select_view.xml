@@ -12,6 +12,6 @@
     <com.dhq.mywidget.selectview.WheelView
         android:id="@+id/main_wheelview"
         android:layout_width="80dp"
-        android:layout_height="300dp" />
+        android:layout_height="200dp" />
 
 </LinearLayout>

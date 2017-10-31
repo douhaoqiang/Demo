@@ -46,7 +46,7 @@ public class HttpTestActivity extends BaseActivity {
 
 
     private void formRequest() {
-        String url = "http://www.hezhongyimeng.com/nmip/bjgoodwill/loginApp_loginAPP_login.action";
+        String url = "http://192.168.12.44/login";
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("useraccount", "15555555555");
         hashMap.put("password", DataUtils.MD5("a111111"));
