@@ -4,21 +4,21 @@
     <!-- ratingbar属性 -->
     <declare-styleable name="MyRatingBar">
         <!-- 星星的个数 -->
-        <attr name="starsNumber" format="integer" />
+        <attr name="starsNumber" format="integer"/>
         <!-- 星星的大小 -->
-        <attr name="starSize" format="dimension" />
+        <attr name="starSize" format="dimension"/>
         <!-- 星星之间的间隔大小 -->
-        <attr name="starsSeparation" format="dimension" />
+        <attr name="starsSeparation" format="dimension"/>
         <!-- 是否仅作指示 -->
-        <attr name="starIsIndicator" format="boolean" />
+        <attr name="starIsIndicator" format="boolean"/>
         <!-- 星星的进度 -->
-        <attr name="starRating" format="float" />
+        <attr name="starRating" format="float"/>
         <!-- 星星的步辐 -->
-        <attr name="starStepSize" format="float" />
+        <attr name="starStepSize" format="float"/>
         <!-- 星星的默认图片 -->
-        <attr name="starNormalImg" format="reference" />
+        <attr name="starNormalImg" format="reference"/>
         <!-- 星星的选中图片 -->
-        <attr name="starSelectImg" format="reference" />
+        <attr name="starSelectImg" format="reference"/>
 
 
     </declare-styleable>
@@ -40,6 +40,20 @@
         <attr name="unitSize" format="dimension"/>
         <!-- 长刻度的间隔数 -->
         <attr name="unitLongLine" format="integer"/>
+
+    </declare-styleable>
+
+    <!-- 滚轮属性 -->
+    <declare-styleable name="WheelView">
+
+        <!-- 文字尺寸 -->
+        <attr name="wheelTextSize" format="dimension"/>
+        <!-- 文字颜色 -->
+        <attr name="wheelTextColor" format="color"/>
+        <!-- 选中文字颜色 -->
+        <attr name="wheelTextSelectColor" format="color"/>
+        <!-- 中间线颜色 -->
+        <attr name="wheelLineColor" format="color"/>
 
     </declare-styleable>
 

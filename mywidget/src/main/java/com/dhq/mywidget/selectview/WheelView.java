@@ -1,6 +1,7 @@
 package com.dhq.mywidget.selectview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -23,11 +24,9 @@ import java.util.List;
  */
 public class WheelView<T> extends View {
 
-    private Paint mPaint;//背景刻度画笔
-    private Paint mPaintRed;//中间刻度画笔
-
+    private Paint mPaintLine;//中间刻度画笔
     private Paint mPaintText;//文字画笔
-    private Paint mPaintUnit;//文字画笔
+
     private float mTextSize = 0;
     private float mPointY = 0f;
     private float mPointYoff = 0f;
@@ -39,7 +38,7 @@ public class WheelView<T> extends View {
     private int mMaxValue = 200;
     private int mMinValue = 150;
     private int mDefaultIndex = (mMaxValue + mMinValue) / 2;//默认选中项下标
-    private int bgColor = Color.rgb(228, 228, 228);//背景颜色
+    private int lineColor = Color.rgb(228, 228, 228);//背景颜色
     private int textColor = Color.rgb(151, 151, 151);//文字的颜色
     private int textSelectColor = Color.rgb(151, 151, 151);//选中文字的颜色
 
@@ -70,43 +69,37 @@ public class WheelView<T> extends View {
         init(attrs);
     }
 
-
     private void init(AttributeSet attrs) {
-        mTextSize = dip2px(36);
-        bgColor = Color.rgb(228, 228, 228);
-        textColor = Color.rgb(151, 151, 151);
+
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.WheelView);
+        if (typedArray != null) {
+            mTextSize = typedArray.getDimension(R.styleable.WheelView_wheelTextSize, dip2px(30));
+            lineColor = typedArray.getColor(R.styleable.WheelView_wheelLineColor, getResources().getColor(R.color.line_gray));
+            textColor = typedArray.getColor(R.styleable.WheelView_wheelTextColor, getResources().getColor(R.color.text_gray));
+            textSelectColor = typedArray.getColor(R.styleable.WheelView_wheelTextSelectColor, getResources().getColor(R.color.line_gray));
+            typedArray.recycle();
+        }
         mUnit = mTextSize + 50;
-        textSelectColor = Color.rgb(151, 151, 151);
         initPaint();
     }
 
 
+    /**
+     * 初始化画笔
+     */
     private void initPaint() {
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setColor(bgColor);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(dip2px(1));
 
-
-        mPaintRed = new Paint();
-        mPaintRed.setAntiAlias(true);
-        mPaintRed.setColor(Color.RED);
-        mPaintRed.setStrokeWidth(dip2px(1) * 3 / 2);
-        mPaintRed.setStyle(Paint.Style.STROKE);
+        mPaintLine = new Paint();
+        mPaintLine.setAntiAlias(true);
+        mPaintLine.setColor(lineColor);
+        mPaintLine.setStrokeWidth(dip2px(1) * 3 / 2);
+        mPaintLine.setStyle(Paint.Style.STROKE);
 
         mPaintText = new Paint();
         mPaintText.setAntiAlias(true);
         mPaintText.setColor(textColor);
         mPaintText.setTextSize(mTextSize);
         mPaintText.setStyle(Paint.Style.FILL);
-
-        mPaintUnit = new Paint();
-        mPaintUnit.setAntiAlias(true);
-        mPaintUnit.setColor(getResources().getColor(R.color.colorAccent));
-        mPaintUnit.setTextSize(mTextSize);
-        mPaintUnit.setStyle(Paint.Style.FILL);
-
 
     }
 
@@ -116,10 +109,8 @@ public class WheelView<T> extends View {
 
         super.onDraw(canvas);
 
-        canvas.drawColor(Color.parseColor("#00FFFF"));
-
-        canvasLineAndText(canvas);
-        canvasRedLine(canvas);
+        canvasCenterLine(canvas);
+        canvasShowText(canvas);
 
     }
 
@@ -157,22 +148,22 @@ public class WheelView<T> extends View {
      *
      * @param canvas
      */
-    private void canvasRedLine(Canvas canvas) {
+    private void canvasCenterLine(Canvas canvas) {
 
         float centerY = mHeight / 2;
 
-        canvas.drawLine(0, centerY - mUnit / 2, mWidth, centerY - mUnit / 2, mPaintRed);
-        canvas.drawLine(0, centerY + mUnit / 2, mWidth, centerY + mUnit / 2, mPaintRed);
+        canvas.drawLine(0, centerY - mUnit / 2, mWidth, centerY - mUnit / 2, mPaintLine);
+        canvas.drawLine(0, centerY + mUnit / 2, mWidth, centerY + mUnit / 2, mPaintLine);
 
     }
 
 
     /**
-     * 绘制刻度和文字
+     * 绘制滚轮显示文字
      *
      * @param canvas
      */
-    private void canvasLineAndText(Canvas canvas) {
+    private void canvasShowText(Canvas canvas) {
 
         for (int i = 1; i <= listValue.size(); i++) {
 
@@ -180,13 +171,13 @@ public class WheelView<T> extends View {
             int space = mDefaultIndex - i;
 
             //计算刻度的纵坐标位置
-            float centerY = mHeight / 2 - space * mUnit + mPointY;
+            float itemCenterY = mHeight / 2 - space * mUnit + mPointY;
 
             //判断该点坐标是否在视图范围内
-            if (isCanShow(centerY)) {
+            if (isCanShow(itemCenterY)) {
 
                 float centerX = mWidth / 2;
-                int alpha = (int) (255 * ((mHeight / 2 - Math.abs(mHeight / 2 - centerY)) / (mHeight / 2)));
+                int alpha = (int) (255 * ((mHeight / 2 - Math.abs(mHeight / 2 - itemCenterY)) / (mHeight / 2)));
                 mPaintText.setAlpha(alpha);
 
                 String text = "";
@@ -194,12 +185,7 @@ public class WheelView<T> extends View {
                     text = mSelectListener.setShowValue(listValue.get(i - 1));
                 }
 
-                float topY=centerY -mUnit/2;
-
-//                canvas.drawRect(0,topY+(mUnit-getFontHeight(mPaintText))/2,
-//                        mWidth,
-//                        bottomY - (mUnit-getFontHeight(mPaintText))/2,
-//                        mPaintUnit);
+                float topY = itemCenterY - mUnit / 2;
 
                 canvas.drawText(text,
                         centerX - getFontlength(mPaintText, text) / 2,
@@ -215,7 +201,7 @@ public class WheelView<T> extends View {
     /**
      * 判断该项是否应该显示到界面上
      *
-     * @param itemCenterY item的中心线高度坐标
+     * @param itemCenterY item的中心线纵坐标
      * @return
      */
     private boolean isCanShow(float itemCenterY) {
@@ -340,15 +326,26 @@ public class WheelView<T> extends View {
         return paint.measureText(str);
     }
 
+    /**
+     * 计算文字的高度
+     *
+     * @param paint
+     * @return
+     */
     public float getFontHeight(Paint paint) {
         Paint.FontMetrics fm = paint.getFontMetrics();
         return fm.descent - fm.ascent;
-//        return fm.leading - fm.ascent;
     }
 
+    /**
+     * 计算文字基础线的高度
+     *
+     * @param paint
+     * @return
+     */
     public float getFontBaseLineHeight(Paint paint) {
         Paint.FontMetrics fm = paint.getFontMetrics();
-        return (mUnit - fm.descent - fm.ascent) / 2 ;
+        return (mUnit - fm.descent - fm.ascent) / 2;
     }
 
 
