@@ -57,4 +57,21 @@
 
     </declare-styleable>
 
+
+    <!-- 球形波浪线进度条 -->
+    <declare-styleable name="WaveProgressView">
+
+        <attr name="waveradius" format="dimension"/>
+        <attr name="waveprogress" format="integer"/>
+        <attr name="wavetextColor" format="color"/>
+        <attr name="waveColor" format="color"/>
+        <attr name="waveborderColor" format="color"/>
+        <attr name="wavehideText" format="boolean"/>
+        <attr name="waveborderWidth" format="dimension"/>
+        <attr name="wavetextSize" format="dimension"/>
+        <attr name="waveHeight" format="dimension"/>
+
+    </declare-styleable>
+
+
 </resources>

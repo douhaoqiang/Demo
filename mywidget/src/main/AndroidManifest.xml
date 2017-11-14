@@ -20,11 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.CircleProgressActivity"/>
-        <activity android:name=".ui.SelectActivity"/>
         <activity android:name=".ui.HttpTestActivity"/>
-        <activity android:name=".ui.StarActivity"/>
-        <activity android:name=".ui.DateSelectActivity"/>
         <activity android:name=".ui.CompressActivity"/>
         <activity android:name=".cardswipe.CardSwipeActivity"/>
 

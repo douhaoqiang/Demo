@@ -4,39 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
-    tools:context="com.dhq.mywidget.MainActivity">
+    android:padding="10dp">
 
-
-    <Button
-        android:id="@+id/btn_circle_prograss"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="圆形进度条" />
-
-    <Button
-        android:id="@+id/btn_select_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="滑动选择控件" />
 
     <Button
         android:id="@+id/btn_http_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="网络接口测试" />
-
-    <Button
-        android:id="@+id/btn_star"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="评价控件" />
-
-    <Button
-        android:id="@+id/btn_date_select"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="日期选择" />
 
     <Button
         android:id="@+id/btn_iamge_compress"
@@ -49,7 +24,8 @@
         android:id="@+id/btn_card_swipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="卡片的左滑右滑" />
+        android:text="卡片的左滑右滑"/>
+
 
 
     <TextView

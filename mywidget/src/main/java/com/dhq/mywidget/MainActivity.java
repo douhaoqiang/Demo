@@ -11,33 +11,21 @@ import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.baselibrary.util.PermissionUtil.PermissionListener;
 import com.dhq.baselibrary.util.PermissionUtil.PermissionUtil;
 import com.dhq.mywidget.cardswipe.CardSwipeActivity;
-import com.dhq.mywidget.ui.CircleProgressActivity;
 import com.dhq.mywidget.ui.CompressActivity;
-import com.dhq.mywidget.ui.DateSelectActivity;
 import com.dhq.mywidget.ui.HttpTestActivity;
-import com.dhq.mywidget.ui.SelectActivity;
-import com.dhq.mywidget.ui.StarActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.btn_circle_prograss)
-    Button btnCirclePrograss;
-    @BindView(R.id.btn_select_view)
-    Button btnSelectView;
     @BindView(R.id.btn_http_test)
     Button btnHttpTest;
-    @BindView(R.id.btn_star)
-    Button btnStar;
     @BindView(R.id.tv_html_text)
     TextView tvHtmlView;
     @BindView(R.id.tv_html_text2)
     TextView tvHtmlView2;
 
-    @BindView(R.id.btn_date_select)
-    Button btn_date;
 
     @BindView(R.id.btn_iamge_compress)
     Button btn_compress;
@@ -54,21 +42,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initialize() {
         ButterKnife.bind(this);
-        btnCirclePrograss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CircleProgressActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnSelectView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-                startActivity(intent);
-            }
-        });
 
         btnHttpTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,22 +55,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HttpTestActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnStar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, StarActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btn_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DateSelectActivity.class);
                 startActivity(intent);
             }
         });
