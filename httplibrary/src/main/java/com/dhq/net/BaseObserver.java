@@ -1,7 +1,10 @@
 package com.dhq.net;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
+import com.dhq.dialoglibrary.MyDialog;
 import com.dhq.net.entity.BaseResponse;
 
 import io.reactivex.Observer;
@@ -13,10 +16,38 @@ import io.reactivex.disposables.Disposable;
  */
 public class BaseObserver<T> implements Observer<BaseResponse<T>> {
     private static final String TAG = "BaseObserver";
+    private Context mContext;
     private ResponseCallback responseCallback;
     private Disposable mDisposable;
+    private MyDialog myDialog;
 
+    /**
+     * 显示弹框
+     *
+     * @param context
+     * @param responseCallback
+     */
+    public BaseObserver(Context context, ResponseCallback responseCallback) {
+        mContext = context;
+        this.responseCallback = responseCallback;
+        myDialog = new MyDialog(mContext, MyDialog.WARNING_TYPE)
+                .setContentText("加载中。。。");
 
+        myDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                //弹框消失，取消网络请求
+                cancle();
+            }
+        });
+
+    }
+
+    /**
+     * 不显示弹框
+     *
+     * @param responseCallback
+     */
     public BaseObserver(ResponseCallback responseCallback) {
         this.responseCallback = responseCallback;
     }
@@ -24,11 +55,11 @@ public class BaseObserver<T> implements Observer<BaseResponse<T>> {
     @Override
     public void onSubscribe(Disposable d) {
         this.mDisposable = d;
+        showWaitingDialog();
     }
 
     @Override
     public void onNext(BaseResponse<T> response) {
-
         if (response == null) {
             responseCallback.fail("请求数据错误");
             return;
@@ -54,6 +85,7 @@ public class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     @Override
     public void onComplete() {
+        hintWaitingDialog();
         if (responseCallback != null) {
             responseCallback.onComplete();
         }
@@ -65,6 +97,21 @@ public class BaseObserver<T> implements Observer<BaseResponse<T>> {
      */
     public void cancle() {
         mDisposable.dispose();
+    }
+
+
+    /**
+     * 显示网络请求等待框
+     */
+    private void showWaitingDialog() {
+        myDialog.show();
+    }
+
+    /**
+     * 取消等待框
+     */
+    private void hintWaitingDialog() {
+        myDialog.cancel();
     }
 
 
