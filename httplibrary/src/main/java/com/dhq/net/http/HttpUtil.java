@@ -4,6 +4,12 @@ import com.dhq.net.BaseObserver;
 import com.dhq.net.MyIntercepter;
 import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.util.DataUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.internal.bind.CollectionTypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.HashMap;
@@ -72,15 +78,25 @@ public class HttpUtil {
                 .addNetworkInterceptor(new MyIntercepter())
                 .build();
 
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(new GsonBuilder().registerTypeAdapterFactory(new TypeAdapterFactory() {
+            @Override
+            public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+                Class<T> rawType = (Class<T>) type.getRawType();
+                if (rawType != String.class) {
+                    return null;
+                }
+                return (TypeAdapter<T>) new StringNullAdapter();
+            }
+        }).create());
+
         retrofit = new Retrofit.Builder()
                 .client(httpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(gsonConverterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(baseUrl)
                 .build();
         mApiService = retrofit.create(ApiService.class);
     }
-
 
     /**
      * get请求 添加参数

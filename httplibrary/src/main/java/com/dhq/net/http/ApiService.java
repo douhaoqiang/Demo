@@ -2,6 +2,7 @@ package com.dhq.net.http;
 
 import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.entity.LoginEntity;
+import com.dhq.net.entity.UserInfo;
 
 import java.util.HashMap;
 
@@ -37,7 +38,7 @@ public interface ApiService {
      */
     @POST()
     @FormUrlEncoded
-    Observable<BaseResponse<LoginEntity>> postFormHttpRequest(@Url String url, @FieldMap(encoded=true) HashMap<String,String> paramMaps);
+    Observable<BaseResponse<UserInfo>> postFormHttpRequest(@Url String url, @FieldMap(encoded=true) HashMap<String,String> paramMaps);
 
 
     /**

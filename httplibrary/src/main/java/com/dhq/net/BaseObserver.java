@@ -33,7 +33,7 @@ public class BaseObserver<T> implements Observer<BaseResponse<T>> {
             responseCallback.fail("请求数据错误");
             return;
         }
-        if (!"success".equals(response.getCode())) {
+        if (!"200".equals(response.getCode())) {
             responseCallback.fail(response.getResult());
             return;
         }
