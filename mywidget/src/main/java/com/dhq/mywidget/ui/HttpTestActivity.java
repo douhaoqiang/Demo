@@ -9,8 +9,8 @@ import com.dhq.mywidget.base.UserDetailPostParams;
 import com.dhq.net.BaseObserver;
 import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.entity.LoginEntity;
+import com.dhq.net.entity.UserInfo;
 import com.dhq.net.http.HttpUtil;
-import com.dhq.net.util.DataUtils;
 
 import java.util.HashMap;
 
@@ -46,17 +46,15 @@ public class HttpTestActivity extends BaseActivity {
 
 
     private void formRequest() {
-        String url = "http://192.168.12.44/login";
+
+        String url = "http://192.168.12.42/nullStringTest";
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("useraccount", "15555555555");
-        hashMap.put("password", DataUtils.MD5("a111111"));
-        hashMap.put("menutypecode", "phone");
 
 
-        BaseObserver<BaseResponse> loginObserver = new BaseObserver<>(new BaseObserver.ResponseCallback<LoginEntity>() {
+        BaseObserver<BaseResponse> loginObserver = new BaseObserver<>(new BaseObserver.ResponseCallback<UserInfo>() {
             @Override
-            public void success(LoginEntity result) {
-                Log.d("info", result.userid);
+            public void success(UserInfo result) {
+                Log.d("info", result.toString());
             }
 
             @Override

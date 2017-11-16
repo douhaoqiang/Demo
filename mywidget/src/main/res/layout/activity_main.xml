@@ -39,16 +39,6 @@
         android:layout_height="wrap_content" />
 
 
-    <com.dhq.mywidget.dropdown.DropDownView
-        android:layout_width="100dp"
-        android:layout_height="50dp"></com.dhq.mywidget.dropdown.DropDownView>
-
-
-
-
-    <com.dhq.mywidget.dropdown.DropDownView
-        android:layout_width="100dp"
-        android:layout_height="50dp"></com.dhq.mywidget.dropdown.DropDownView>
 
 
 </LinearLayout>
