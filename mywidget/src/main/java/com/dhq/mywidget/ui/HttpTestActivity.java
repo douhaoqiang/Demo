@@ -51,7 +51,7 @@ public class HttpTestActivity extends BaseActivity {
         HashMap<String, String> hashMap = new HashMap<>();
 
 
-        BaseObserver<BaseResponse> loginObserver = new BaseObserver<>(new BaseObserver.ResponseCallback<UserInfo>() {
+        BaseObserver<BaseResponse> loginObserver = new BaseObserver<>(this,new BaseObserver.ResponseCallback<UserInfo>() {
             @Override
             public void success(UserInfo result) {
                 Log.d("info", result.toString());
