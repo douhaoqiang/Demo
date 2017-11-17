@@ -32,7 +32,7 @@ public abstract class RecycleViewBaseAdapter<T> extends RecyclerView.Adapter<Rec
      * @param datas 列表数据
      */
     public void setDatas(ArrayList<T> datas) {
-        this.datas = datas;
+        this.datas.addAll(datas);
         notifyDataSetChanged();
     }
 
