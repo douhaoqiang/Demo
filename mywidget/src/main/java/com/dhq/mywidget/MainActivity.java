@@ -11,6 +11,7 @@ import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.baselibrary.util.PermissionUtil.PermissionListener;
 import com.dhq.baselibrary.util.PermissionUtil.PermissionUtil;
 import com.dhq.mywidget.cardswipe.CardSwipeActivity;
+import com.dhq.mywidget.divider.DividerActivity;
 import com.dhq.mywidget.ui.CompressActivity;
 import com.dhq.mywidget.ui.HttpTestActivity;
 
@@ -25,6 +26,8 @@ public class MainActivity extends BaseActivity {
     TextView tvHtmlView;
     @BindView(R.id.tv_html_text2)
     TextView tvHtmlView2;
+    @BindView(R.id.btn_divider)
+    Button btnDivider;
 
 
     @BindView(R.id.btn_iamge_compress)
@@ -71,6 +74,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CardSwipeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnDivider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DividerActivity.class);
                 startActivity(intent);
             }
         });

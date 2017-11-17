@@ -7,4 +7,8 @@
     <color name="text_blue">#236adc</color>
     <color name="text_gray">#cccccc</color>
     <color name="line_gray">#969696</color>
+
+
+    <color name="divider">#303F9F</color>
+
 </resources>
