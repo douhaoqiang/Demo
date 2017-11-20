@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/blue_btn_bg_color"
+        android:gravity="center"
         android:text="大金额欧冠"/>
     
 </LinearLayout>

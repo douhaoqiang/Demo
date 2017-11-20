@@ -18,21 +18,16 @@ public class GridMangerDivider extends DividerManger {
     private final Rect mBounds = new Rect();
     private final Drawable mDivider;
     private final int mStrokeWidth;
-    private final int mLeftMargin;
-    private final int mRightMargin;
-    private final int mTopMargin;
-    private final int mBottomMargin;
+    private final int mStrokeHeight;
     private final boolean mHideRoundDivider;//是否显示四周分割线
     private int mSpanCount = 1;
 
     public GridMangerDivider(Builder builder) {
         this.mDivider = builder.getDrawable();
-        this.mStrokeWidth = builder.getStrokeWidth();
-        this.mLeftMargin = builder.getLeftMargin();
-        this.mRightMargin = builder.getRightMargin();
-        this.mTopMargin = builder.getTopMargin();
-        this.mBottomMargin = builder.getBottomMargin();
+        this.mStrokeWidth = builder.getHorizontalSpace();
+        this.mStrokeHeight = builder.getVerticalSpace();
         this.mHideRoundDivider = builder.isHideLastDivider();
+//        this.mHideRoundDivider = false;
     }
 
     @Override
@@ -46,8 +41,9 @@ public class GridMangerDivider extends DividerManger {
         if (layoutManager instanceof GridLayoutManager) {
             //获取列数
             mSpanCount = ((GridLayoutManager) layoutManager).getSpanCount();
-            drawHorizontal(c, parent);
-            drawVertical(c, parent);
+
+            drawSpace(c, parent);
+
         }
     }
 
@@ -57,95 +53,63 @@ public class GridMangerDivider extends DividerManger {
         GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
         mSpanCount = layoutManager.getSpanCount();
         final int position = getAdapterPosition(view);
+        int childCount = parent.getAdapter().getItemCount();
         if (mDivider == null && null == getDivider()) {
             outRect.set(0, 0, 0, 0);
             return;
         }
 
-        if (position % mSpanCount == 0) {
-            //第一列数据
-            if (position < mSpanCount) {
-                outRect.set(0, 0, getIntrinsicWidth(position), 0);
-            } else {
-                outRect.set(0, getIntrinsicWidth(position), getIntrinsicWidth(position), 0);
-            }
-        } else if (position % mSpanCount == mSpanCount - 1) {
-            //最后一列数据
-            if (position < mSpanCount) {
-                outRect.set(0, 0, 0, 0);
-            } else {
-                outRect.set(0, getIntrinsicWidth(position), 0, 0);
-            }
-        } else {
-            //其他数据
-            if (position < mSpanCount) {
-                outRect.set(0, 0, getIntrinsicWidth(position), 0);
-            } else {
-                outRect.set(0, getIntrinsicWidth(position), getIntrinsicWidth(position), 0);
-            }
+        int left = getLeftSpaceWidth(position);
+        int top = getTopSpaceWidth(position);
+        int right = getRightSpaceWidth(position);
+        int bottom = getBottomSpaceWidth(childCount, position);
+        outRect.set(left,
+                top,
+                right,
+                bottom);
+    }
+
+
+    private void drawSpace(Canvas canvas, RecyclerView parent) {
+
+        GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
+        mSpanCount = layoutManager.getSpanCount();
+        int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+
+            View child = parent.getChildAt(i);
+            int position = getAdapterPosition(child);
+            Drawable leftDrawable = getDivider();
+            leftDrawable.setBounds(child.getLeft() - getLeftSpaceWidth(position),
+                    child.getTop(),
+                    child.getLeft(),
+                    child.getBottom());
+            leftDrawable.draw(canvas);
+
+            Drawable topDrawable = getDivider();
+            topDrawable.setBounds(child.getLeft() - getLeftSpaceWidth(position),
+                    child.getTop() - getTopSpaceWidth(position),
+                    child.getRight() + getRightSpaceWidth(position),
+                    child.getTop());
+            topDrawable.draw(canvas);
+//
+            Drawable rightDrawable = getDivider();
+            rightDrawable.setBounds(child.getRight(),
+                    child.getTop() - getTopSpaceWidth(position),
+                    child.getRight() + getRightSpaceWidth(position),
+                    child.getBottom());
+            rightDrawable.draw(canvas);
+
+            Drawable bottomDrawable = getDivider();
+            bottomDrawable.setBounds(child.getLeft() - getLeftSpaceWidth(position),
+                    child.getBottom(),
+                    child.getRight() + getRightSpaceWidth(position),
+                    child.getBottom() + getBottomSpaceWidth(childCount, position));
+            bottomDrawable.draw(canvas);
+
         }
+
     }
-
-
-    private void drawVertical(Canvas canvas, RecyclerView parent) {
-
-//        canvas.save();
-//        int left;
-//        int right;
-//        GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
-//        int spanCount = layoutManager.getSpanCount();
-//        final int childCount = parent.getChildCount();
-//        for (int i = 0; i < childCount; i += spanCount) {
-//            final View child = parent.getChildAt(i);
-//            final int position = getAdapterPosition(child);
-//
-//            final int leftMargin = getLeftMargin();
-//            final int rightMargin = getRightMargin();
-//
-//            left = parent.getPaddingLeft() + leftMargin;
-//            right = parent.getWidth() - parent.getPaddingRight() - rightMargin;
-//
-//            final int top = child.getBottom();
-//            final int bottom = top + getIntrinsicHeight(position);
-//
-//            Drawable drawable = getDivider();
-//            drawable.setBounds(left, top, right, bottom);
-//            drawable.draw(canvas);
-//        }
-//        canvas.restore();
-    }
-
-    private void drawHorizontal(Canvas canvas, RecyclerView parent) {
-
-//        canvas.save();
-//        int top;
-//        int bottom;
-//
-//        final int childCount = mHideLastDivider ? parent.getChildCount() - 1 : parent.getChildCount();
-//        for (int i = 0; i < childCount; i++) {
-//            final View child = parent.getChildAt(i);
-//            final int position = getAdapterPosition(child);
-//
-//            //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
-//            final int topMargin = getTopMargin();
-//            final int bottomMargin = getBottomMargin();
-//
-//            top = parent.getPaddingTop();
-//            bottom = parent.getHeight() - parent.getPaddingBottom() - bottomMargin;
-//            canvas.clipRect(parent.getPaddingLeft(), top, parent.getWidth() - parent.getPaddingRight(),
-//                    bottom);
-//            top = top + topMargin;
-//
-//            parent.getLayoutManager().getDecoratedBoundsWithMargins(child, mBounds);
-//            final int right = mBounds.right + Math.round(child.getTranslationX());
-//            final int left = right - getIntrinsicWidth(position);
-//            Drawable drawable = getDivider();
-//            drawable.setBounds(left, top, right, bottom);
-//            drawable.draw(canvas);
-//        }
-//        canvas.restore();
-    }
-
 
     private int getAdapterPosition(View view) {
         return ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewAdapterPosition();
@@ -156,15 +120,44 @@ public class GridMangerDivider extends DividerManger {
 
     }
 
-    private int getIntrinsicHeight(int position) {
 
-        if (mDivider instanceof ColorDrawable) {
-            return mStrokeWidth;
+    private int getLeftSpaceWidth(int position) {
+        if (position % mSpanCount == 0) {
+            return getEdgeWidth();
         }
-        return mDivider.getIntrinsicHeight();
+        return 0;
     }
 
-    private int getIntrinsicWidth(int position) {
+    private int getTopSpaceWidth(int position) {
+        if (position < mSpanCount) {
+            return getEdgeHeight();
+        }
+        return 0;
+    }
+
+    private int getRightSpaceWidth(int position) {
+        if (position % mSpanCount == mSpanCount - 1) {
+            return getEdgeWidth();
+        }
+        return getSpaceWidth();
+    }
+
+    private int getBottomSpaceWidth(int totalCount, int position) {
+        int totalRow = (totalCount - 1) / mSpanCount + 1;
+        int currentRow = position / mSpanCount + 1;
+        if (totalRow == currentRow) {
+            return getEdgeWidth();
+        }
+        return getSpaceHeight();
+    }
+
+
+    /**
+     * 获取分割线宽度
+     *
+     * @return
+     */
+    private int getSpaceWidth() {
 
         if (mDivider instanceof ColorDrawable) {
             return mStrokeWidth;
@@ -172,21 +165,43 @@ public class GridMangerDivider extends DividerManger {
         return mDivider.getIntrinsicWidth();
     }
 
-    private int getLeftMargin() {
-        return mLeftMargin;
+    /**
+     * 获取分割线高度
+     *
+     * @return
+     */
+    private int getSpaceHeight() {
+
+        if (mDivider instanceof ColorDrawable) {
+            return mStrokeHeight;
+        }
+        return mDivider.getIntrinsicHeight();
     }
 
-    private int getRightMargin() {
-        return mRightMargin;
+    /**
+     * 获取边缘分割线宽度
+     *
+     * @return
+     */
+    private int getEdgeWidth() {
+        if (mHideRoundDivider) {
+            return 0;
+        }
+
+        return getSpaceWidth();
     }
 
-    private int getTopMargin() {
-        return mTopMargin;
-    }
+    /**
+     * 获取边缘分割线高度
+     *
+     * @return
+     */
+    private int getEdgeHeight() {
 
-    private int getBottomMargin() {
-        return mBottomMargin;
+        if (mHideRoundDivider) {
+            return 0;
+        }
+        return getSpaceHeight();
     }
-
 
 }

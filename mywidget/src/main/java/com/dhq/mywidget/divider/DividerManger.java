@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.GridView;
 
 /**
  * DESC 分割线工具
@@ -72,11 +73,8 @@ public abstract class DividerManger extends RecyclerView.ItemDecoration {
 
         private final Context context;
         private Drawable drawable;
-        private int strokeWidth = 0;
-        private int leftMargin = 0;
-        private int rightMargin = 0;
-        private int topMargin = 0;
-        private int bottomMargin = 0;
+        private int horizontalSpace = 0;
+        private int verticalSpace = 0;
         private boolean hideLastDivider = true;
 
         private Builder(Context context) {
@@ -91,9 +89,19 @@ public abstract class DividerManger extends RecyclerView.ItemDecoration {
             return new GridMangerDivider(this);
         }
 
-        public Builder setColor(@ColorRes int id, @DimenRes int strokeWidth) {
+        public Builder setSpaceColor(@ColorRes int id, @DimenRes int strokeWidth) {
             this.drawable = new ColorDrawable(ContextCompat.getColor(context, id));
-            this.strokeWidth = context.getResources().getDimensionPixelSize(strokeWidth);
+            this.horizontalSpace =this.verticalSpace = context.getResources().getDimensionPixelSize(strokeWidth);
+            return this;
+        }
+        public Builder setHorizontalColor(@ColorRes int id, @DimenRes int strokeWidth) {
+            this.drawable = new ColorDrawable(ContextCompat.getColor(context, id));
+            this.horizontalSpace = context.getResources().getDimensionPixelSize(strokeWidth);
+            return this;
+        }
+        public Builder setVerticalColor(@ColorRes int id, @DimenRes int strokeWidth) {
+            this.drawable = new ColorDrawable(ContextCompat.getColor(context, id));
+            this.verticalSpace = context.getResources().getDimensionPixelSize(strokeWidth);
             return this;
         }
 
@@ -110,48 +118,21 @@ public abstract class DividerManger extends RecyclerView.ItemDecoration {
             return this;
         }
 
-        public int getStrokeWidth() {
-            return strokeWidth;
+        public int getHorizontalSpace() {
+            return horizontalSpace;
         }
 
-        public Builder setStrokeWidth(@DimenRes int id) {
-            this.strokeWidth = context.getResources().getDimensionPixelSize(id);
+        public Builder setHorizontalSpace(int horizontalSpace) {
+            this.horizontalSpace = horizontalSpace;
             return this;
         }
 
-        public int getLeftMargin() {
-            return leftMargin;
+        public int getVerticalSpace() {
+            return verticalSpace;
         }
 
-        public Builder setLeftMargin(@DimenRes int id) {
-            this.leftMargin = context.getResources().getDimensionPixelSize(id);
-            return this;
-        }
-
-        public int getRightMargin() {
-            return rightMargin;
-        }
-
-        public Builder setRightMargin(@DimenRes int id) {
-            this.rightMargin = context.getResources().getDimensionPixelSize(id);
-            return this;
-        }
-
-        public int getTopMargin() {
-            return topMargin;
-        }
-
-        public Builder setTopMargin(@DimenRes int id) {
-            this.topMargin = context.getResources().getDimensionPixelSize(id);
-            return this;
-        }
-
-        public int getBottomMargin() {
-            return bottomMargin;
-        }
-
-        public Builder setBottomMargin(@DimenRes int id) {
-            this.bottomMargin = context.getResources().getDimensionPixelSize(id);
+        public Builder setVerticalSpace(int verticalSpace) {
+            this.verticalSpace = verticalSpace;
             return this;
         }
 

@@ -21,10 +21,7 @@ public class LinearMangerDivider extends DividerManger {
     private final Rect mBounds = new Rect();
     private final Drawable mDivider;
     private final int mStrokeWidth;
-    private final int mLeftMargin;
-    private final int mRightMargin;
-    private final int mTopMargin;
-    private final int mBottomMargin;
+    private final int mStrokeHeight;
     private final boolean mHideLastDivider;
     private int orientation = VERTICAL;
 
@@ -32,11 +29,8 @@ public class LinearMangerDivider extends DividerManger {
 
     public LinearMangerDivider(Builder builder) {
         this.mDivider = builder.getDrawable();
-        this.mStrokeWidth = builder.getStrokeWidth();
-        this.mLeftMargin = builder.getLeftMargin();
-        this.mRightMargin = builder.getRightMargin();
-        this.mTopMargin = builder.getTopMargin();
-        this.mBottomMargin = builder.getBottomMargin();
+        this.mStrokeWidth = builder.getHorizontalSpace();
+        this.mStrokeHeight = builder.getVerticalSpace();
         this.mHideLastDivider = builder.isHideLastDivider();
     }
 
@@ -85,11 +79,8 @@ public class LinearMangerDivider extends DividerManger {
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
             final int position = getAdapterPosition(child);
-            final int leftMargin = getLeftMargin();
-            final int rightMargin = getRightMargin();
-
-            left = parent.getPaddingLeft()+ leftMargin;
-            right = parent.getWidth() - parent.getPaddingRight() - rightMargin;
+            left = parent.getPaddingLeft();
+            right = parent.getWidth() - parent.getPaddingRight();
 
             parent.getDecoratedBoundsWithMargins(child, mBounds);
             final int bottom = mBounds.bottom + Math.round(child.getTranslationY());
@@ -112,15 +103,10 @@ public class LinearMangerDivider extends DividerManger {
             final View child = parent.getChildAt(i);
             final int position = getAdapterPosition(child);
 
-            //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
-            final int topMargin = getTopMargin();
-            final int bottomMargin = getBottomMargin();
-
             top = parent.getPaddingTop();
-            bottom = parent.getHeight() - parent.getPaddingBottom() - bottomMargin;
+            bottom = parent.getHeight() - parent.getPaddingBottom();
             canvas.clipRect(parent.getPaddingLeft(), top, parent.getWidth() - parent.getPaddingRight(),
                     bottom);
-            top = top + topMargin;
 
             parent.getLayoutManager().getDecoratedBoundsWithMargins(child, mBounds);
             final int right = mBounds.right + Math.round(child.getTranslationX());
@@ -148,7 +134,7 @@ public class LinearMangerDivider extends DividerManger {
         }
 
         if (mDivider instanceof ColorDrawable) {
-            return mStrokeWidth;
+            return mStrokeHeight;
         }
         return mDivider.getIntrinsicHeight();
     }
@@ -161,22 +147,6 @@ public class LinearMangerDivider extends DividerManger {
             return mStrokeWidth;
         }
         return mDivider.getIntrinsicWidth();
-    }
-
-    private int getLeftMargin() {
-        return mLeftMargin;
-    }
-
-    private int getRightMargin() {
-        return mRightMargin;
-    }
-
-    private int getTopMargin() {
-        return mTopMargin;
-    }
-
-    private int getBottomMargin() {
-        return mBottomMargin;
     }
 
 
