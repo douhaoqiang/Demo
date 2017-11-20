@@ -14,14 +14,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.GridView;
 
 /**
  * DESC 分割线工具
  * Created by douhaoqiang on 2017/11/17.
  */
 
-public abstract class DividerManger extends RecyclerView.ItemDecoration {
+public abstract class DividerFactory extends RecyclerView.ItemDecoration {
 
 
     @Override
@@ -81,24 +80,26 @@ public abstract class DividerManger extends RecyclerView.ItemDecoration {
             this.context = context;
         }
 
-        public LinearMangerDivider buildLinearDivider() {
-            return new LinearMangerDivider(this);
+        public LinearDivider buildLinearDivider() {
+            return new LinearDivider(this);
         }
 
-        public GridMangerDivider buildGridDivider() {
-            return new GridMangerDivider(this);
+        public GridDivider buildGridDivider() {
+            return new GridDivider(this);
         }
 
         public Builder setSpaceColor(@ColorRes int id, @DimenRes int strokeWidth) {
             this.drawable = new ColorDrawable(ContextCompat.getColor(context, id));
-            this.horizontalSpace =this.verticalSpace = context.getResources().getDimensionPixelSize(strokeWidth);
+            this.horizontalSpace = this.verticalSpace = context.getResources().getDimensionPixelSize(strokeWidth);
             return this;
         }
+
         public Builder setHorizontalColor(@ColorRes int id, @DimenRes int strokeWidth) {
             this.drawable = new ColorDrawable(ContextCompat.getColor(context, id));
             this.horizontalSpace = context.getResources().getDimensionPixelSize(strokeWidth);
             return this;
         }
+
         public Builder setVerticalColor(@ColorRes int id, @DimenRes int strokeWidth) {
             this.drawable = new ColorDrawable(ContextCompat.getColor(context, id));
             this.verticalSpace = context.getResources().getDimensionPixelSize(strokeWidth);

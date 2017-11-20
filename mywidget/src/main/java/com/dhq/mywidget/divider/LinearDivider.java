@@ -16,7 +16,7 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
  * Created by douhaoqiang on 2017/11/17.
  */
 
-public class LinearMangerDivider extends DividerManger {
+public class LinearDivider extends DividerFactory {
 
     private final Rect mBounds = new Rect();
     private final Drawable mDivider;
@@ -27,7 +27,7 @@ public class LinearMangerDivider extends DividerManger {
 
     private int lastPosition = -1;
 
-    public LinearMangerDivider(Builder builder) {
+    public LinearDivider(Builder builder) {
         this.mDivider = builder.getDrawable();
         this.mStrokeWidth = builder.getHorizontalSpace();
         this.mStrokeHeight = builder.getVerticalSpace();

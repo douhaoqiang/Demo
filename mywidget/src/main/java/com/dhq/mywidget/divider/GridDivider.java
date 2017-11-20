@@ -13,7 +13,7 @@ import android.view.View;
  * Created by douhaoqiang on 2017/11/17.
  */
 
-public class GridMangerDivider extends DividerManger {
+public class GridDivider extends DividerFactory {
 
     private final Rect mBounds = new Rect();
     private final Drawable mDivider;
@@ -22,7 +22,7 @@ public class GridMangerDivider extends DividerManger {
     private final boolean mHideRoundDivider;//是否显示四周分割线
     private int mSpanCount = 1;
 
-    public GridMangerDivider(Builder builder) {
+    public GridDivider(Builder builder) {
         this.mDivider = builder.getDrawable();
         this.mStrokeWidth = builder.getHorizontalSpace();
         this.mStrokeHeight = builder.getVerticalSpace();

@@ -36,7 +36,7 @@ public class DividerActivity extends BaseActivity {
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 //
-//        LinearMangerDivider itemDecoration = DividerManger.builder(this)
+//        LinearDivider itemDecoration = DividerFactory.builder(this)
 ////                .setLeftMargin(R.dimen.divider_left)
 ////                .setRightMargin(R.dimen.divider_right)
 ////                .setTopMargin(R.dimen.divider_top)
@@ -49,7 +49,7 @@ public class DividerActivity extends BaseActivity {
 
         recyclerView.setLayoutManager(new GridLayoutManager(this,3));
 
-        GridMangerDivider itemDecoration = DividerManger.builder(this)
+        GridDivider itemDecoration = DividerFactory.builder(this)
                 .setSpaceColor(R.color.divider, R.dimen.divider_stroke_width)
 //                .setDrawable(R.drawable.divider)
 //                .setHideLastDivider(false)
