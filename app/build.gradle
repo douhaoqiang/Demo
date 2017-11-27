@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+//apply plugin: 'android-apt'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
         applicationId "com.dhq.demo"
@@ -64,18 +63,20 @@ android {
             signingConfig signingConfigs.release
 
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
+                variant.outputs.all { output ->
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         // 软件名-版本名称-编译时间.apk
                         def fileName = "demo-${defaultConfig.versionName}-${releaseTime()}.apk"
-                        output.outputFile = new File(outputFile.parent, fileName)
+//                        output.outputFile = new File(outputFile.parent, fileName)
+                        outputFileName = fileName
                     }
                 }
             }
 
         }
     }
+    buildToolsVersion '26.0.2'
 }
 
 //生成打包时间
@@ -94,12 +95,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
 //    compile 'com.android.support:design:25.2.0'
     compile 'com.jakewharton:butterknife:8.2.1'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'io.reactivex:rxjava:1.1.9'
 //    compile 'com.android.support:recyclerview-v7:23.4.0'
 //    compile 'com.android.support:cardview-v7:23.4.0'
     compile var.SupportRecyclerview
-    compile var.SupportDesign
+    compile var.SupportV7
     compile var.SupportCardview
     compile var.SupportDesign
     compile 'io.reactivex:rxandroid:1.2.1'
