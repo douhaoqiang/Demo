@@ -47,11 +47,11 @@ public class HttpTestActivity extends BaseActivity {
 
     private void formRequest() {
 
-        String url = "http://192.168.12.42/nullStringTest";
+        String url = "http://192.168.12.38/hecsp/elder/queryFoodInfo";
         HashMap<String, String> hashMap = new HashMap<>();
 
 
-        BaseObserver<BaseResponse> loginObserver = new BaseObserver<>(this,new BaseObserver.ResponseCallback<UserInfo>() {
+        BaseObserver loginObserver = new BaseObserver<UserInfo>("foodInfo") {
             @Override
             public void success(UserInfo result) {
                 Log.d("info", result.toString());
@@ -62,11 +62,7 @@ public class HttpTestActivity extends BaseActivity {
                 Log.e("错误信息", msg);
             }
 
-            @Override
-            public void onComplete() {
-
-            }
-        });
+        };
 
 
         //表单形式传参
@@ -75,31 +71,27 @@ public class HttpTestActivity extends BaseActivity {
 
     private void jsonRequest() {
 
-        BaseObserver<BaseResponse> loginObserver = new BaseObserver<>(new BaseObserver.ResponseCallback<LoginEntity>() {
-            @Override
-            public void success(LoginEntity result) {
-                Log.d("info", result.userid);
-            }
-
-            @Override
-            public void fail(String msg) {
-                Log.e("错误信息", msg);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
+//        BaseObserver<BaseResponse> loginObserver = new BaseObserver<LoginEntity>() {
+//            @Override
+//            public void success(LoginEntity result) {
+//                Log.d("info", result.userid);
+//            }
+//
+//            @Override
+//            public void fail(String msg) {
+//                Log.e("错误信息", msg);
+//            }
+//
+//        };
 
         //json传参
 //        HttpUtil.getInstance().postJsonHttpRequest(url, hashMap, loginObserver);
 
 
-        String BASE_URL = "http://112.124.3.197:8011/app/method/app_bound.php";
-        UserDetailPostParams params = new UserDetailPostParams();
-        //json传参
-        HttpUtil.getInstance().postJsonHttpRequest(BASE_URL, params, loginObserver);
+//        String BASE_URL = "http://112.124.3.197:8011/app/method/app_bound.php";
+//        UserDetailPostParams params = new UserDetailPostParams();
+//        //json传参
+//        HttpUtil.getInstance().postJsonHttpRequest(BASE_URL, params, loginObserver);
     }
 
 
