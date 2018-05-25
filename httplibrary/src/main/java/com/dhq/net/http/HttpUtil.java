@@ -6,6 +6,7 @@ import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.util.DataUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.CollectionTypeAdapterFactory;
@@ -120,7 +121,7 @@ public class HttpUtil {
      * @param paramMaps
      * @param observer
      */
-    public void postFormHttpRequest(String url, HashMap<String, String> paramMaps, BaseObserver<BaseResponse> observer) {
+    public void postFormHttpRequest(String url, HashMap<String, String> paramMaps, BaseObserver observer) {
         String jsonParam = DataUtils.mapToJson(paramMaps);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("data", jsonParam);
@@ -129,10 +130,10 @@ public class HttpUtil {
     }
 
 
-    private class HttpResultFunc<T> implements Function<BaseResponse<T>, T> {
+    private class HttpResultFunc implements Function<BaseResponse, JsonObject> {
 
         @Override
-        public T apply(BaseResponse<T> response) throws Exception {
+        public JsonObject apply(BaseResponse response) throws Exception {
             return response.getResultMap();
         }
     }
@@ -165,11 +166,11 @@ public class HttpUtil {
      */
     public void postJsonHttpRequest(String url, Object paramMaps, Observer observer) {
 
-        String jsonParam = DataUtils.gsonObjectToJson(paramMaps);
-        RequestBody body = RequestBody.create(mediaTypeJson, jsonParam);
-
-        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
-        toSubscribe(observable, observer);
+//        String jsonParam = DataUtils.gsonObjectToJson(paramMaps);
+//        RequestBody body = RequestBody.create(mediaTypeJson, jsonParam);
+//
+//        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
+//        toSubscribe(observable, observer);
     }
 
 

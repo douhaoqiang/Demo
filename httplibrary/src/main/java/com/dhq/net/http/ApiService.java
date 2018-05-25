@@ -29,7 +29,7 @@ public interface ApiService {
      * @return
      */
     @GET()
-    Observable<BaseResponse<LoginEntity>> getHttpRequest(@Url String url, @QueryMap HashMap<String,String> paramMaps);
+    Observable<BaseResponse> getHttpRequest(@Url String url, @QueryMap HashMap<String,String> paramMaps);
 
 
     /**
@@ -38,7 +38,7 @@ public interface ApiService {
      */
     @POST()
     @FormUrlEncoded
-    Observable<BaseResponse<UserInfo>> postFormHttpRequest(@Url String url, @FieldMap(encoded=true) HashMap<String,String> paramMaps);
+    Observable<BaseResponse> postFormHttpRequest(@Url String url, @FieldMap(encoded=true) HashMap<String,String> paramMaps);
 
 
     /**
@@ -48,7 +48,7 @@ public interface ApiService {
      * @return
      */
     @POST()
-    Observable<BaseResponse<LoginEntity>> postJsonHttpRequest(@Url String url, @Body RequestBody jsonBody);
+    Observable<BaseResponse> postJsonHttpRequest(@Url String url, @Body RequestBody jsonBody);
 
 
 }

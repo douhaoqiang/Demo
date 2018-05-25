@@ -2,10 +2,16 @@ package com.dhq.net;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.dhq.dialoglibrary.MyDialog;
 import com.dhq.net.entity.BaseResponse;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -14,22 +20,21 @@ import io.reactivex.disposables.Disposable;
  * DESC
  * Created by douhaoqiang on 2017/2/14.
  */
-public class BaseObserver<T> implements Observer<BaseResponse<T>> {
+public abstract class BaseObserver<T> implements Observer<BaseResponse> {
     private static final String TAG = "BaseObserver";
+    private Gson gson = new Gson();
     private Context mContext;
-    private ResponseCallback responseCallback;
     private Disposable mDisposable;
     private MyDialog myDialog;
+    private String mEntityName;
 
     /**
      * 显示弹框
      *
      * @param context
-     * @param responseCallback
      */
-    public BaseObserver(Context context, ResponseCallback responseCallback) {
+    public BaseObserver(Context context) {
         mContext = context;
-        this.responseCallback = responseCallback;
         myDialog = new MyDialog(mContext, MyDialog.WARNING_TYPE)
                 .setContentText("加载中。。。");
 
@@ -45,11 +50,16 @@ public class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     /**
      * 不显示弹框
-     *
-     * @param responseCallback
      */
-    public BaseObserver(ResponseCallback responseCallback) {
-        this.responseCallback = responseCallback;
+    public BaseObserver() {
+
+    }
+
+    /**
+     * 不显示弹框
+     */
+    public BaseObserver(String entityName) {
+        mEntityName = entityName;
     }
 
     @Override
@@ -59,36 +69,47 @@ public class BaseObserver<T> implements Observer<BaseResponse<T>> {
     }
 
     @Override
-    public void onNext(BaseResponse<T> response) {
+    public void onNext(BaseResponse response) {
         if (response == null) {
-            responseCallback.fail("请求数据错误");
+            fail("请求数据错误");
             return;
         }
-        if (!"200".equals(response.getCode())) {
-            responseCallback.fail(response.getResult());
+        if (!"success".equals(response.getResult())) {
+            fail(response.getResult());
             return;
         }
 
-        if (responseCallback != null) {
-            responseCallback.success(response.getResultMap());
+        try {
+            Class<T> entityClass = getEntityClass();
+            if (entityClass != null) {
+                if (TextUtils.isEmpty(mEntityName)) {
+                    T result = gson.fromJson(response.getResult(), getEntityClass());
+                    success(result);
+                } else {
+                    T result = gson.fromJson(response.getResultMap().getAsJsonObject(mEntityName), getEntityClass());
+                    success(result);
+                }
+
+            }
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+            fail("解析数据失败！");
         }
     }
 
     @Override
     public void onError(Throwable e) {
         Log.d(TAG, e.toString());
-        if (responseCallback != null) {
-            responseCallback.fail("网络请求失败！");
-        }
+        fail("网络请求失败！");
 
     }
 
     @Override
     public void onComplete() {
         hintWaitingDialog();
-        if (responseCallback != null) {
-            responseCallback.onComplete();
-        }
+//        if (responseCallback != null) {
+//            responseCallback.onComplete();
+//        }
     }
 
 
@@ -104,38 +125,48 @@ public class BaseObserver<T> implements Observer<BaseResponse<T>> {
      * 显示网络请求等待框
      */
     private void showWaitingDialog() {
-        myDialog.show();
+        if (myDialog != null)
+            myDialog.show();
     }
 
     /**
      * 取消等待框
      */
     private void hintWaitingDialog() {
-        myDialog.cancel();
+        if (myDialog != null)
+            myDialog.cancel();
     }
 
 
-    public interface ResponseCallback<T> {
-        /**
-         * 请求成功
-         *
-         * @param result 请求数据
-         */
-        void success(T result);
-
-        /**
-         * 请求失败
-         *
-         * @param msg 失败信息
-         */
-        void fail(String msg);
-
-        /**
-         * 请求结束
-         */
-        void onComplete();
-
+    /**
+     * 获取泛型T的Class
+     *
+     * @return
+     */
+    public Class<T> getEntityClass() {
+        Type t = getClass().getGenericSuperclass();
+        Class<T> entityClass = null;
+        if (t instanceof ParameterizedType) {
+            Type[] p = ((ParameterizedType) t).getActualTypeArguments();
+            entityClass = (Class<T>) p[0];
+        }
+        return entityClass;
     }
+
+
+    /**
+     * 请求成功
+     *
+     * @param result 请求数据
+     */
+    public abstract void success(T result);
+
+    /**
+     * 请求失败
+     *
+     * @param msg 失败信息
+     */
+    public abstract void fail(String msg);
 
 
 }
