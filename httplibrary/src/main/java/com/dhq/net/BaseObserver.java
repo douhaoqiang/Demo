@@ -99,6 +99,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
 
     @Override
     public void onError(Throwable e) {
+        hintWaitingDialog();
         Log.d(TAG, e.toString());
         fail("网络请求失败！");
 
