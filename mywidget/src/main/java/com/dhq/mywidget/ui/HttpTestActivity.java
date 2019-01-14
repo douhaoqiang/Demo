@@ -5,12 +5,11 @@ import android.view.View;
 
 import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.mywidget.R;
-import com.dhq.mywidget.base.UserDetailPostParams;
 import com.dhq.net.BaseObserver;
-import com.dhq.net.entity.LoginEntity;
-import com.dhq.net.entity.UserInfo;
+import com.dhq.net.DownLoadObserver;
 import com.dhq.net.http.HttpUtil;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -37,7 +36,8 @@ public class HttpTestActivity extends BaseActivity {
         findViewById(R.id.tv_json_request).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jsonRequest();
+//                jsonRequest();
+                uploadFile();
             }
         });
 
@@ -48,12 +48,12 @@ public class HttpTestActivity extends BaseActivity {
 
         String url = "http://192.168.12.38/hecsp/elder/queryFoodInfo";
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("page","1");
-        hashMap.put("pagesize","10");
+        hashMap.put("page", "1");
+        hashMap.put("pagesize", "10");
 
-        BaseObserver loginObserver = new BaseObserver<UserInfo>("foodInfo") {
+        BaseObserver loginObserver = new BaseObserver<Object>("foodInfo") {
             @Override
-            public void success(UserInfo result) {
+            public void success(Object result) {
                 Log.d("info", result.toString());
             }
 
@@ -73,12 +73,12 @@ public class HttpTestActivity extends BaseActivity {
 
         String url = "http://192.168.12.38/hecsp/elder/queryFoodInfo";
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("page","1");
-        hashMap.put("pagesize","10");
-        BaseObserver loginObserver = new BaseObserver<LoginEntity>() {
+        hashMap.put("page", "1");
+        hashMap.put("pagesize", "10");
+        BaseObserver loginObserver = new BaseObserver<Object>() {
             @Override
-            public void success(LoginEntity result) {
-                Log.d("info", result.userid);
+            public void success(Object result) {
+                Log.d("info", result.toString());
             }
 
             @Override
@@ -91,11 +91,53 @@ public class HttpTestActivity extends BaseActivity {
 //        json传参
         HttpUtil.getInstance().postFormReq(url, hashMap, loginObserver);
 
+    }
 
-        String BASE_URL = "http://112.124.3.197:8011/app/method/app_bound.php";
-        UserDetailPostParams params = new UserDetailPostParams();
-        //json传参
-        HttpUtil.getInstance().postFormReq(BASE_URL, params, loginObserver);
+
+    /**
+     * 上传文件
+     */
+    private void uploadFile(){
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("page", "1");
+        hashMap.put("pagesize", "10");
+        BaseObserver loginObserver = new BaseObserver<Object>() {
+            @Override
+            public void success(Object result) {
+                Log.d("info", result.toString());
+            }
+
+            @Override
+            public void fail(String msg) {
+                Log.e("错误信息", msg);
+            }
+
+        };
+        HttpUtil.getInstance().uploadFileReq("http://192.168.12.38/hecsp/elder/queryFoodInfo",null,loginObserver );
+    }
+
+
+    /**
+     * 文件下载
+     */
+    private void downloadFile(){
+        HttpUtil.getInstance().downLoadFileReq("", new HashMap<String, Object>(), new DownLoadObserver() {
+            @Override
+            public void onDownLoadSuccess(File file) {
+
+            }
+
+            @Override
+            public void onDownLoadFail(String errorMsg) {
+
+            }
+
+            @Override
+            public void onDownLoadProgress(int progress, long total) {
+
+            }
+        });
     }
 
 
