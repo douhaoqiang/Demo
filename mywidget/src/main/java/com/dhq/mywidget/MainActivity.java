@@ -14,6 +14,8 @@ import com.dhq.mywidget.cardswipe.CardSwipeActivity;
 import com.dhq.mywidget.divider.DividerActivity;
 import com.dhq.mywidget.ui.CompressActivity;
 import com.dhq.mywidget.ui.HttpTestActivity;
+import com.dhq.mywidget.ui.LayoutMangerTestActivity;
+import com.dhq.mywidget.ui.UpdateActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +37,12 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.btn_card_swipe)
     Button btnCardSwipe;
+
+    @BindView(R.id.btn_layoutmanger_test)
+    Button btnLayoutManger;
+
+    @BindView(R.id.btn_update)
+    Button btnUpdate;
 
 
     @Override
@@ -78,10 +86,27 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        btnLayoutManger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LayoutMangerTestActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btnDivider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DividerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
                 startActivity(intent);
             }
         });

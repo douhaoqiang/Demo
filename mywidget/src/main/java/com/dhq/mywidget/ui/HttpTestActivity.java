@@ -71,27 +71,30 @@ public class HttpTestActivity extends BaseActivity {
 
     private void jsonRequest() {
 
-//        BaseObserver<BaseResponse> loginObserver = new BaseObserver<LoginEntity>() {
-//            @Override
-//            public void success(LoginEntity result) {
-//                Log.d("info", result.userid);
-//            }
-//
-//            @Override
-//            public void fail(String msg) {
-//                Log.e("错误信息", msg);
-//            }
-//
-//        };
+        String url = "http://192.168.12.38/hecsp/elder/queryFoodInfo";
+        HashMap<String, String> hashMap = new HashMap<>();
 
+        BaseObserver loginObserver = new BaseObserver<LoginEntity>() {
+            @Override
+            public void success(LoginEntity result) {
+                Log.d("info", result.userid);
+            }
+
+            @Override
+            public void fail(String msg) {
+                Log.e("错误信息", msg);
+            }
+
+        };
+
+//        json传参
+        HttpUtil.getInstance().postJsonHttpRequest(url, hashMap, loginObserver);
+
+
+        String BASE_URL = "http://112.124.3.197:8011/app/method/app_bound.php";
+        UserDetailPostParams params = new UserDetailPostParams();
         //json传参
-//        HttpUtil.getInstance().postJsonHttpRequest(url, hashMap, loginObserver);
-
-
-//        String BASE_URL = "http://112.124.3.197:8011/app/method/app_bound.php";
-//        UserDetailPostParams params = new UserDetailPostParams();
-//        //json传参
-//        HttpUtil.getInstance().postJsonHttpRequest(BASE_URL, params, loginObserver);
+        HttpUtil.getInstance().postJsonHttpRequest(BASE_URL, params, loginObserver);
     }
 
 

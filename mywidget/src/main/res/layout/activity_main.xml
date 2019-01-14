@@ -35,6 +35,21 @@
 
 
 
+    <Button
+        android:id="@+id/btn_layoutmanger_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义LayoutManger"/>
+
+
+    <Button
+        android:id="@+id/btn_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="版本更新"/>
+
+
+
     <TextView
         android:id="@+id/tv_html_text"
         android:layout_width="match_parent"
