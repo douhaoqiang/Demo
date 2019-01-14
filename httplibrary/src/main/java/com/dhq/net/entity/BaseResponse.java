@@ -1,5 +1,6 @@
 package com.dhq.net.entity;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
@@ -15,7 +16,7 @@ public class BaseResponse implements Serializable{
     //    提示信息
     private String result;
     //显示数据（用户需要关心的数据）
-    private JsonObject resultMap;
+    private JsonElement resultMap;
 
     public String getCode() {
         return code;
@@ -33,11 +34,11 @@ public class BaseResponse implements Serializable{
         this.result = result;
     }
 
-    public JsonObject getResultMap() {
+    public JsonElement getResultMap() {
         return resultMap;
     }
 
-    public void setResultMap(JsonObject resultMap) {
+    public void setResultMap(JsonElement resultMap) {
         this.resultMap = resultMap;
     }
 }

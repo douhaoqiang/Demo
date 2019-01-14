@@ -3,8 +3,6 @@ package com.dhq.net.http;
 import android.support.annotation.NonNull;
 
 import com.dhq.net.entity.BaseResponse;
-import com.dhq.net.entity.LoginEntity;
-import com.dhq.net.entity.UserInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,23 +32,26 @@ public interface ApiService {
 
     /**
      * get请求 添加参数
+     *
      * @return
      */
     @GET()
-    Observable<BaseResponse> getReq(@NonNull @Url String url, @QueryMap HashMap<String,Object> paramMaps);
+    Observable<BaseResponse> getReq(@NonNull @Url String url, @QueryMap HashMap<String, Object> paramMaps);
 
 
     /**
      * post请求 添加表单参数
+     *
      * @return
      */
     @POST()
     @FormUrlEncoded
-    Observable<BaseResponse> postFormReq(@NonNull @Url String url, @FieldMap(encoded=true) HashMap<String,Object> paramMaps);
+    Observable<BaseResponse> postFormReq(@NonNull @Url String url, @FieldMap(encoded = true) HashMap<String, Object> paramMaps);
 
 
     /**
      * post请求 添加表json参数
+     *
      * @param url
      * @param jsonBody
      * @return
@@ -61,14 +62,16 @@ public interface ApiService {
 
     /**
      * post请求上传文件
+     *
      * @return
      */
     @Multipart
-    Observable<BaseResponse> uploadFileReq(@Part List<MultipartBody.Part> fileList);
+    @POST()
+    Observable<BaseResponse> uploadFileReq(@NonNull @Url String url,@Part List<MultipartBody.Part> fileList);
 
 
     @Streaming
     @GET
-    Observable<ResponseBody> downLoadFileReq(@NonNull @Url String url, @QueryMap HashMap<String,Object> paramMaps);
+    Observable<ResponseBody> downLoadFileReq(@NonNull @Url String url, @QueryMap HashMap<String, Object> paramMaps);
 
 }

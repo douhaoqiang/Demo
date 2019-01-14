@@ -86,7 +86,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
                     T result = gson.fromJson(response.getResult(), getEntityClass());
                     success(result);
                 } else {
-                    T result = gson.fromJson(response.getResultMap().getAsJsonObject(mEntityName), getEntityClass());
+                    T result = gson.fromJson(response.getResultMap(), getEntityClass());
                     success(result);
                 }
 
