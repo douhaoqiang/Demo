@@ -7,7 +7,6 @@ import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.mywidget.R;
 import com.dhq.mywidget.base.UserDetailPostParams;
 import com.dhq.net.BaseObserver;
-import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.entity.LoginEntity;
 import com.dhq.net.entity.UserInfo;
 import com.dhq.net.http.HttpUtil;
@@ -38,7 +37,7 @@ public class HttpTestActivity extends BaseActivity {
         findViewById(R.id.tv_json_request).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                formRequest();
+                jsonRequest();
             }
         });
 
@@ -49,7 +48,8 @@ public class HttpTestActivity extends BaseActivity {
 
         String url = "http://192.168.12.38/hecsp/elder/queryFoodInfo";
         HashMap<String, String> hashMap = new HashMap<>();
-
+        hashMap.put("page","1");
+        hashMap.put("pagesize","10");
 
         BaseObserver loginObserver = new BaseObserver<UserInfo>("foodInfo") {
             @Override
@@ -66,14 +66,15 @@ public class HttpTestActivity extends BaseActivity {
 
 
         //表单形式传参
-        HttpUtil.getInstance().postFormHttpRequest(url, hashMap, loginObserver);
+        HttpUtil.getInstance().postFormReq(url, hashMap, loginObserver);
     }
 
     private void jsonRequest() {
 
         String url = "http://192.168.12.38/hecsp/elder/queryFoodInfo";
         HashMap<String, String> hashMap = new HashMap<>();
-
+        hashMap.put("page","1");
+        hashMap.put("pagesize","10");
         BaseObserver loginObserver = new BaseObserver<LoginEntity>() {
             @Override
             public void success(LoginEntity result) {
@@ -88,13 +89,13 @@ public class HttpTestActivity extends BaseActivity {
         };
 
 //        json传参
-        HttpUtil.getInstance().postJsonHttpRequest(url, hashMap, loginObserver);
+        HttpUtil.getInstance().postFormReq(url, hashMap, loginObserver);
 
 
         String BASE_URL = "http://112.124.3.197:8011/app/method/app_bound.php";
         UserDetailPostParams params = new UserDetailPostParams();
         //json传参
-        HttpUtil.getInstance().postJsonHttpRequest(BASE_URL, params, loginObserver);
+        HttpUtil.getInstance().postFormReq(BASE_URL, params, loginObserver);
     }
 
 

@@ -1,20 +1,11 @@
 package com.dhq.mywidget.ui;
 
-import android.os.Environment;
-
 import com.azhon.appupdate.base.BaseHttpDownloadManager;
 import com.azhon.appupdate.listener.OnDownloadListener;
-import com.azhon.appupdate.utils.Constant;
-import com.azhon.appupdate.utils.FileUtil;
 import com.dhq.net.DownLoadObserver;
 import com.dhq.net.http.HttpUtil;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -36,7 +27,7 @@ public class MyDownload extends BaseHttpDownloadManager {
 
         try {
 
-            HttpUtil.getInstance().getDownLoadRequest(apkUrl, new HashMap<String, String>(), new DownLoadObserver() {
+            HttpUtil.getInstance().downLoadFileReq(apkUrl, new HashMap<String, Object>(), new DownLoadObserver() {
 
                 @Override
                 public void onDownLoadSuccess(File file) {
