@@ -54,8 +54,8 @@ public class MyIntercepter implements Interceptor {
         try {
             ResponseBody responseBody = response.peekBody(1024 * 1024);
 
-            Log.d("infe","响应头："+response.code());
-            Log.d("infe","请求地址："+response.request().url());
+//            Log.d("infe","响应头："+response.code());
+//            Log.d("infe","请求地址："+response.request().url());
             Log.d("infe","返回数据："+responseBody.string());
 
         } catch (IOException e) {

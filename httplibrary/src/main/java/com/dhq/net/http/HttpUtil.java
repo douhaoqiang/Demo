@@ -111,12 +111,12 @@ public class HttpUtil {
      * @param paramMaps
      * @return
      */
-    public void getHttpRequest(String url, HashMap<String, String> paramMaps, Observer observer) {
+    public void getHttpRequest(String url, HashMap<String, Object> paramMaps, Observer observer) {
 
 //        Observable<BaseResponse> observable = mApiService.getHttpRequest(url, paramMaps).map(new HttpResultFunc());
 //        toSubscribe(observable, observer);
 
-        mApiService.getHttpRequest(url, paramMaps).compose(new RxTransformer()).subscribe(observer);
+        mApiService.getReq(url, paramMaps).compose(new RxTransformer()).subscribe(observer);
     }
 
     /**
@@ -126,12 +126,12 @@ public class HttpUtil {
      * @param paramMaps
      * @return
      */
-    public void getDownLoadRequest(String url, HashMap<String, String> paramMaps, DownLoadObserver observer) {
+    public void getDownLoadRequest(String url, HashMap<String, Object> paramMaps, DownLoadObserver observer) {
 
 //        Observable<BaseResponse> observable = mApiService.getHttpRequest(url, paramMaps).map(new HttpResultFunc());
 //        toSubscribe(observable, observer);
 
-        mApiService.downLoadFile(url, paramMaps).compose(new RxDownloadTransformer(observer)).subscribe(observer);
+        mApiService.downLoadFileReq(url, paramMaps).compose(new RxDownloadTransformer(observer)).subscribe(observer);
     }
 
     /**
@@ -141,11 +141,11 @@ public class HttpUtil {
      * @param paramMaps
      * @param observer
      */
-    public void postFormHttpRequest(String url, HashMap<String, String> paramMaps, BaseObserver observer) {
+    public void postFormHttpRequest(String url, HashMap<String, Object> paramMaps, BaseObserver observer) {
         String jsonParam = DataUtils.mapToJson(paramMaps);
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("data", jsonParam);
-        mApiService.postFormHttpRequest(url, hashMap).compose(new RxTransformer()).subscribe(observer);
+        mApiService.postFormReq(url, hashMap).compose(new RxTransformer()).subscribe(observer);
 
     }
 
@@ -173,7 +173,7 @@ public class HttpUtil {
 //        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
 //        toSubscribe(observable, observer);
 
-        mApiService.postJsonHttpRequest(url, body).compose(new RxTransformer<>()).subscribe(observer);
+        mApiService.postJsonReq(url, body).compose(new RxTransformer<>()).subscribe(observer);
 
     }
 

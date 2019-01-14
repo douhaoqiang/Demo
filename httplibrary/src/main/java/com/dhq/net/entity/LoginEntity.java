@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Created by douhaoqiang on 2017/3/28.
  */
 
-public class LoginEntity {
+public class LoginEntity extends BaseResponse{
 
     public String userid;
 
