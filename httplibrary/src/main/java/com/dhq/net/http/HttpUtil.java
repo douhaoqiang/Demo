@@ -111,9 +111,9 @@ public class HttpUtil {
      * @param paramMaps
      * @return
      */
-    public void getHttpRequest(String url, HashMap<String, Object> paramMaps, Observer observer) {
+    public void getReq(String url, HashMap<String, Object> paramMaps, Observer observer) {
 
-//        Observable<BaseResponse> observable = mApiService.getHttpRequest(url, paramMaps).map(new HttpResultFunc());
+//        Observable<BaseResponse> observable = mApiService.getReq(url, paramMaps).map(new HttpResultFunc());
 //        toSubscribe(observable, observer);
 
         mApiService.getReq(url, paramMaps).compose(new RxTransformer()).subscribe(observer);
@@ -126,9 +126,9 @@ public class HttpUtil {
      * @param paramMaps
      * @return
      */
-    public void getDownLoadRequest(String url, HashMap<String, Object> paramMaps, DownLoadObserver observer) {
+    public void downLoadFileReq(String url, HashMap<String, Object> paramMaps, DownLoadObserver observer) {
 
-//        Observable<BaseResponse> observable = mApiService.getHttpRequest(url, paramMaps).map(new HttpResultFunc());
+//        Observable<BaseResponse> observable = mApiService.getReq(url, paramMaps).map(new HttpResultFunc());
 //        toSubscribe(observable, observer);
 
         mApiService.downLoadFileReq(url, paramMaps).compose(new RxDownloadTransformer(observer)).subscribe(observer);
@@ -141,7 +141,7 @@ public class HttpUtil {
      * @param paramMaps
      * @param observer
      */
-    public void postFormHttpRequest(String url, HashMap<String, Object> paramMaps, BaseObserver observer) {
+    public void postFormReq(String url, HashMap<String, Object> paramMaps, BaseObserver observer) {
         String jsonParam = DataUtils.mapToJson(paramMaps);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("data", jsonParam);
@@ -165,12 +165,12 @@ public class HttpUtil {
      * @param paramMaps
      * @return
      */
-    public void postJsonHttpRequest(String url, HashMap<String, String> paramMaps, Observer observer) {
+    public void postFormReq(String url, HashMap<String, String> paramMaps, Observer observer) {
 
         String jsonParam = DataUtils.mapToJson(paramMaps);
         RequestBody body = RequestBody.create(mediaTypeJson, jsonParam);
 
-//        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
+//        Observable<BaseResponse> observable = mApiService.postFormReq(url, body).map(new HttpResultFunc());
 //        toSubscribe(observable, observer);
 
         mApiService.postJsonReq(url, body).compose(new RxTransformer<>()).subscribe(observer);
@@ -184,12 +184,12 @@ public class HttpUtil {
      * @param paramMaps
      * @return
      */
-    public void postJsonHttpRequest(String url, Object paramMaps, Observer observer) {
+    public void postFormReq(String url, Object paramMaps, Observer observer) {
 
 //        String jsonParam = DataUtils.gsonObjectToJson(paramMaps);
 //        RequestBody body = RequestBody.create(mediaTypeJson, jsonParam);
 //
-//        Observable<BaseResponse> observable = mApiService.postJsonHttpRequest(url, body).map(new HttpResultFunc());
+//        Observable<BaseResponse> observable = mApiService.postFormReq(url, body).map(new HttpResultFunc());
 //        toSubscribe(observable, observer);
     }
 

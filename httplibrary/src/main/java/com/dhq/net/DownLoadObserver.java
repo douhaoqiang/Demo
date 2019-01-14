@@ -1,6 +1,5 @@
 package com.dhq.net;
 
-import android.content.Context;
 import android.os.Environment;
 
 import com.dhq.baselibrary.util.LogUtil;
@@ -22,8 +21,9 @@ public abstract class DownLoadObserver implements Observer<File> {
     private static final String TAG = "DownLoadObserver";
     private Disposable mDisposable;
 
-    private String destFileDir= Environment.getExternalStorageDirectory() + "/AppUpdate";//目标文件夹
-    private String destFileName="test.apk";//目标文件名
+    private String destFileDir = Environment.getExternalStorageDirectory() + "/AppUpdate";//目标文件夹
+    private String destFileName = "test.apk";//目标文件名
+
     /**
      * 不显示弹框
      */
@@ -88,6 +88,7 @@ public abstract class DownLoadObserver implements Observer<File> {
 
     /**
      * 将文件写入本地
+     *
      * @param responseBody 请求结果全体
      * @return 写入完成的文件
      * @throws IOException IO异常
@@ -113,9 +114,9 @@ public abstract class DownLoadObserver implements Observer<File> {
                 sum += len;
                 fos.write(buf, 0, len);
                 final long finalSum = sum;
-                LogUtil.d(""+(int) (finalSum * 100 / total));
+                LogUtil.d("" + (int) (finalSum * 100 / total));
                 //这里就是对进度的监听回调
-                onDownLoadProgress((int) (finalSum * 100 / total),total);
+                onDownLoadProgress((int) (finalSum * 100 / total), total);
             }
             fos.flush();
 
@@ -134,7 +135,6 @@ public abstract class DownLoadObserver implements Observer<File> {
             }
         }
     }
-
 
 
     //下载成功的回调

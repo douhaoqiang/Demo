@@ -2,12 +2,20 @@ package com.dhq.net;
 
 import android.util.Log;
 
+import com.dhq.baselibrary.util.LogUtil;
+
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.Buffer;
+
+import static okhttp3.internal.Util.UTF_8;
 
 /**
  * DESC 请求拦截类
@@ -35,6 +43,7 @@ public class MyIntercepter implements Interceptor {
                 .header("token", "oneself_token")
                 .build();
 
+        printParams(newRequest.body());
 
         return newRequest;
     }
@@ -62,6 +71,28 @@ public class MyIntercepter implements Interceptor {
             e.printStackTrace();
         }
 
+    }
+
+
+    /**
+     * 打印请求参数
+     * @param body
+     */
+    private void printParams(RequestBody body) {
+
+        Buffer buffer = new Buffer();
+        try {
+            body.writeTo(buffer);
+            Charset charset = Charset.forName("UTF-8");
+            MediaType contentType = body.contentType();
+            if (contentType != null) {
+                charset = contentType.charset(UTF_8);
+            }
+            String params = buffer.readString(charset);
+            LogUtil.d(TAG, "请求参数： | " + params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
