@@ -1,18 +1,16 @@
 package com.dhq.net.http;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.dhq.net.BaseObserver;
 import com.dhq.net.DownLoadObserver;
 import com.dhq.net.MyIntercepter;
-import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.util.DataUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.bind.CollectionTypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -20,8 +18,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import javax.xml.transform.Transformer;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -44,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class HttpUtil {
-
+    private static String TAG = HttpUtil.class.getSimpleName();
 
     private static HttpUtil mHttpUtil;
 
@@ -136,20 +132,21 @@ public class HttpUtil {
      * @param url
      * @return
      */
-    public void uploadFileReq(String url,List<File> files, BaseObserver observer) {
+    public void uploadFileReq(String url, List<File> files, BaseObserver observer) {
 //        File file = new File(picPath);
         MultipartBody.Builder builder = new MultipartBody.Builder();
 
-        if (files!=null){
-            for (File file : files) {
-                RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                builder.setType(MultipartBody.FORM)
+        if (files == null) {
+            Log.d(TAG, "必须添加一个文件");
+            return;
+        }
+        for (File file : files) {
+            RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            builder.setType(MultipartBody.FORM)
 //                    .addFormDataPart("phone", phone)
 //                    .addFormDataPart("password", password)
-                        .addFormDataPart("uploadFile", file.getName(), imageBody);
-            }
+                    .addFormDataPart("uploadFile", file.getName(), imageBody);
         }
-
         builder.addFormDataPart("phone", "phone");
 
         List<MultipartBody.Part> parts = builder.build().parts();
@@ -188,7 +185,6 @@ public class HttpUtil {
     }
 
 
-
 //    public <T> void toSubscribe(Observable<T> observable, Observer<T> subscriber) {
 //        observable
 //                /*
@@ -212,45 +208,46 @@ public class HttpUtil {
 //        //subscribeOn影响的是它调用之前的代码（也就是observable），observeOn影响的是它调用之后的代码（也就是subscribe()）
 //    }
 
-    public class RxTransformer<T> implements ObservableTransformer<T,T>{
+    public class RxTransformer<T> implements ObservableTransformer<T, T> {
 
         @Override
         public ObservableSource apply(Observable<T> observable) {
             Observable<T> tObservable = observable
-                /*
-                订阅关系发生在IO线程中
-                 */
+                    /*
+                    订阅关系发生在IO线程中
+                     */
                     .subscribeOn(Schedulers.io())
-                /*
-                解除订阅关系也发生在IO线程中
-                 */
+                    /*
+                    解除订阅关系也发生在IO线程中
+                     */
                     .unsubscribeOn(Schedulers.io())
-                /*
-                指定subscriber (观察者)的回调在主线程中，
-                observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
-                由于subscriber已经能取到界面所关心的数据了，所以设定指定subscriber的回调在主线程中
-                 */
+                    /*
+                    指定subscriber (观察者)的回调在主线程中，
+                    observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
+                    由于subscriber已经能取到界面所关心的数据了，所以设定指定subscriber的回调在主线程中
+                     */
                     .observeOn(AndroidSchedulers.mainThread());
             return tObservable;
         }
     }
 
-    public class RxDownloadTransformer implements ObservableTransformer<ResponseBody,File>{
+    public class RxDownloadTransformer implements ObservableTransformer<ResponseBody, File> {
         private DownLoadObserver mLoadObserver;
+
         public RxDownloadTransformer(DownLoadObserver loadObserver) {
-            this.mLoadObserver=loadObserver;
+            this.mLoadObserver = loadObserver;
         }
 
         @Override
         public ObservableSource apply(Observable<ResponseBody> observable) {
             Observable<File> tObservable = observable
-                /*
-                订阅关系发生在IO线程中
-                 */
+                    /*
+                    订阅关系发生在IO线程中
+                     */
                     .subscribeOn(Schedulers.io())
-                /*
-                解除订阅关系也发生在IO线程中
-                 */
+                    /*
+                    解除订阅关系也发生在IO线程中
+                     */
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(Schedulers.computation())//需要
                     .map(new Function<ResponseBody, File>() {
@@ -259,11 +256,11 @@ public class HttpUtil {
                             return mLoadObserver.saveFile(responseBody);
                         }
                     })
-                /*
-                指定subscriber (观察者)的回调在主线程中，
-                observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
-                由于subscriber已经能取到界面所关心的数据了，所以设定指定subscriber的回调在主线程中
-                 */
+                    /*
+                    指定subscriber (观察者)的回调在主线程中，
+                    observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
+                    由于subscriber已经能取到界面所关心的数据了，所以设定指定subscriber的回调在主线程中
+                     */
                     .observeOn(AndroidSchedulers.mainThread());
             return tObservable;
         }

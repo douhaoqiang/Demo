@@ -88,6 +88,10 @@ public class MyIntercepter implements Interceptor {
             if (contentType != null) {
                 charset = contentType.charset(UTF_8);
             }
+            if ("multipart".equals(contentType.type())){
+                //表示是文件上传
+                return;
+            }
             String params = buffer.readString(charset);
             LogUtil.d(TAG, "请求参数： | " + params);
         } catch (IOException e) {
