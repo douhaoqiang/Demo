@@ -17,7 +17,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
- * DESC
+ * DESC 通用请求响应处理类
  * Created by douhaoqiang on 2017/2/14.
  */
 public abstract class BaseObserver<T> implements Observer<BaseResponse> {

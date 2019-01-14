@@ -1,6 +1,9 @@
 package com.dhq.net.http;
 
+import android.support.annotation.NonNull;
+
 import com.dhq.net.BaseObserver;
+import com.dhq.net.DownLoadObserver;
 import com.dhq.net.MyIntercepter;
 import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.util.DataUtils;
@@ -13,6 +16,7 @@ import com.google.gson.internal.bind.CollectionTypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -112,6 +117,21 @@ public class HttpUtil {
 //        toSubscribe(observable, observer);
 
         mApiService.getHttpRequest(url, paramMaps).compose(new RxTransformer()).subscribe(observer);
+    }
+
+    /**
+     * get请求 添加参数
+     *
+     * @param url
+     * @param paramMaps
+     * @return
+     */
+    public void getDownLoadRequest(String url, HashMap<String, String> paramMaps, DownLoadObserver observer) {
+
+//        Observable<BaseResponse> observable = mApiService.getHttpRequest(url, paramMaps).map(new HttpResultFunc());
+//        toSubscribe(observable, observer);
+
+        mApiService.downLoadFile(url, paramMaps).compose(new RxDownloadTransformer(observer)).subscribe(observer);
     }
 
     /**
@@ -210,6 +230,40 @@ public class HttpUtil {
                 解除订阅关系也发生在IO线程中
                  */
                     .unsubscribeOn(Schedulers.io())
+                /*
+                指定subscriber (观察者)的回调在主线程中，
+                observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
+                由于subscriber已经能取到界面所关心的数据了，所以设定指定subscriber的回调在主线程中
+                 */
+                    .observeOn(AndroidSchedulers.mainThread());
+            return tObservable;
+        }
+    }
+
+    public class RxDownloadTransformer implements ObservableTransformer<ResponseBody,File>{
+        private DownLoadObserver mLoadObserver;
+        public RxDownloadTransformer(DownLoadObserver loadObserver) {
+            this.mLoadObserver=loadObserver;
+        }
+
+        @Override
+        public ObservableSource apply(Observable<ResponseBody> observable) {
+            Observable<File> tObservable = observable
+                /*
+                订阅关系发生在IO线程中
+                 */
+                    .subscribeOn(Schedulers.io())
+                /*
+                解除订阅关系也发生在IO线程中
+                 */
+                    .unsubscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.computation())//需要
+                    .map(new Function<ResponseBody, File>() {
+                        @Override
+                        public File apply(@NonNull ResponseBody responseBody) throws Exception {
+                            return mLoadObserver.saveFile(responseBody);
+                        }
+                    })
                 /*
                 指定subscriber (观察者)的回调在主线程中，
                 observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,

@@ -1,5 +1,7 @@
 package com.dhq.net.http;
 
+import android.support.annotation.NonNull;
+
 import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.entity.LoginEntity;
 import com.dhq.net.entity.UserInfo;
@@ -8,12 +10,14 @@ import java.util.HashMap;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
 /**
@@ -29,7 +33,7 @@ public interface ApiService {
      * @return
      */
     @GET()
-    Observable<BaseResponse> getHttpRequest(@Url String url, @QueryMap HashMap<String,String> paramMaps);
+    Observable<BaseResponse> getReq(@NonNull @Url String url, @QueryMap HashMap<String,Object> paramMaps);
 
 
     /**
@@ -38,7 +42,7 @@ public interface ApiService {
      */
     @POST()
     @FormUrlEncoded
-    Observable<BaseResponse> postFormHttpRequest(@Url String url, @FieldMap(encoded=true) HashMap<String,String> paramMaps);
+    Observable<BaseResponse> postFormReq(@NonNull @Url String url, @FieldMap(encoded=true) HashMap<String,Object> paramMaps);
 
 
     /**
@@ -48,7 +52,21 @@ public interface ApiService {
      * @return
      */
     @POST()
-    Observable<BaseResponse> postJsonHttpRequest(@Url String url, @Body RequestBody jsonBody);
+    Observable<BaseResponse> postJsonReq(@NonNull @Url String url, @Body RequestBody jsonBody);
 
+
+    /**
+     * post请求上传文件
+     * @param url
+     * @param jsonBody
+     * @return
+     */
+    @POST()
+    Observable<BaseResponse> uploadFileReq(@NonNull @Url String url, @Body RequestBody jsonBody);
+
+
+    @Streaming
+    @GET
+    Observable<ResponseBody> downLoadFileReq(@NonNull @Url String url, @QueryMap HashMap<String,Object> paramMaps);
 
 }
