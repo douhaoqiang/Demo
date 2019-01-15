@@ -39,6 +39,7 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
     private DownloadManager manager;
     private boolean forcedUpgrade;
     private Button update;
+    private Button cancle;
     private String downloadPath;
     private OnButtonClickListener buttonClickListener;
     private int dialogImage, dialogButtonTextColor, dialogButtonColor;
@@ -133,15 +134,14 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
     }
 
     private void initView(View view) {
-        View ibClose = view.findViewById(R.id.ib_close);
         ImageView ivBg = view.findViewById(R.id.iv_bg);
         TextView title = view.findViewById(R.id.tv_title);
         size = view.findViewById(R.id.tv_size);
         TextView description = view.findViewById(R.id.tv_description);
         update = view.findViewById(R.id.btn_update);
-        View line = view.findViewById(R.id.line);
+        cancle = view.findViewById(R.id.btn_update_cancle);
         update.setOnClickListener(this);
-        ibClose.setOnClickListener(this);
+        cancle.setOnClickListener(this);
         //自定义
         if (dialogImage != -1) {
             ivBg.setBackgroundResource(dialogImage);
@@ -160,8 +160,7 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
         }
         //强制升级
         if (forcedUpgrade) {
-            line.setVisibility(View.GONE);
-            ibClose.setVisibility(View.GONE);
+            cancle.setVisibility(View.GONE);
             setOnKeyListener(new OnKeyListener() {
                 @Override
                 public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -195,7 +194,7 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.ib_close) {
+        if (id == R.id.btn_update_cancle) {
             if (!forcedUpgrade) {
                 dismiss();
             }
