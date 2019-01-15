@@ -2,16 +2,6 @@ package com.azhon.appupdate.listener;
 
 import java.io.File;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.listener
- * 文件名:    OnDownloadListener
- * 创建时间:  2018/1/27 on 18:59
- * 描述:     TODO 正在下载的回调
- *
- * @author 阿钟
- */
-
 
 public interface OnDownloadListener {
 

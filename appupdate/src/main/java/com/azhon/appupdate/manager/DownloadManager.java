@@ -16,16 +16,6 @@ import com.azhon.appupdate.utils.Constant;
 import com.azhon.appupdate.utils.LogUtil;
 import com.azhon.appupdate.utils.PermissionUtil;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.manager
- * 文件名:    DownloadManager
- * 创建时间:  2018/1/27 on 10:27
- * 描述:     TODO
- *
- * @author 阿钟
- */
-
 
 public class DownloadManager {
 

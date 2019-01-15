@@ -20,15 +20,6 @@ import com.azhon.appupdate.service.DownloadService;
 
 import java.io.File;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.utils
- * 文件名:    NotificationUtil
- * 创建时间:  2018/1/26 on 23:35
- * 描述:     TODO 通知工具类
- *
- * @author 阿钟
- */
 
 public final class NotificationUtil {
 

@@ -22,16 +22,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.manager
- * 文件名:    HttpDownloadManager
- * 创建时间:  2018/1/27 on 21:50
- * 描述:     TODO 库中默认的下载管理
- *
- * @author 阿钟
- */
-
 
 public class HttpDownloadManager extends BaseHttpDownloadManager {
 

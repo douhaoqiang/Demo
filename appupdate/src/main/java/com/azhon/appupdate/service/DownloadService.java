@@ -23,15 +23,6 @@ import com.azhon.appupdate.utils.NotificationUtil;
 
 import java.io.File;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.service
- * 文件名:    DownloadService
- * 创建时间:  2018/1/27 on 13:22
- * 描述:     TODO apk 下载服务
- *
- * @author 阿钟
- */
 
 
 public final class DownloadService extends Service implements OnDownloadListener {

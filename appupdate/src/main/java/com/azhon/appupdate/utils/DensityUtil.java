@@ -2,14 +2,6 @@ package com.azhon.appupdate.utils;
 
 import android.content.Context;
 
-/**
- * 文件名:    DensityUtil
- * 创建时间:  2018/3/18 on 13:32
- * 描述:     TODO
- *
- * @author 阿钟
- */
-
 
 public class DensityUtil {
     /**

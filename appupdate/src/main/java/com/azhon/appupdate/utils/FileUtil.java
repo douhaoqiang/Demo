@@ -4,16 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.utils
- * 文件名:    FileUtil
- * 创建时间:  2018/1/27 on 16:34
- * 描述:     TODO
- *
- * @author 阿钟
- */
-
 
 public final class FileUtil {
 

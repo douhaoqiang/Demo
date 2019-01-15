@@ -5,16 +5,6 @@ import android.support.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.listener
- * 文件名:    OnButtonClickListener
- * 创建时间:  2018/5/7 on 20:00
- * 描述:     TODO
- *
- * @author 阿钟
- */
-
 public interface OnButtonClickListener {
 
     /**

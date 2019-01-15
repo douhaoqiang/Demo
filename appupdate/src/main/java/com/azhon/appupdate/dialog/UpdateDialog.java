@@ -33,17 +33,6 @@ import com.azhon.appupdate.utils.ScreenUtil;
 
 import java.io.File;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.dialog
- * 文件名:    UpdateDialog
- * 创建时间:  2018/1/30 on 15:13
- * 描述:     TODO 显示升级对话框
- *
- * @author 阿钟
- */
-
-
 public class UpdateDialog extends Dialog implements View.OnClickListener {
 
     private Context mContext;

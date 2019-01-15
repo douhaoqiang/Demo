@@ -10,15 +10,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.utils
- * 文件名:    PermissionUtil
- * 创建时间:  2018/1/27 on 16:56
- * 描述:     TODO
- *
- * @author 阿钟
- */
 
 
 public final class PermissionUtil {

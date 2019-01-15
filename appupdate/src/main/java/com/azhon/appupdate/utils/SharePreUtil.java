@@ -8,16 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.utils
- * 文件名:    SharePreUtil
- * 创建时间:  2018/1/27 on 16:56
- * 描述:     TODO 文件存储
- *
- * @author 阿钟
- */
-
 
 public final class SharePreUtil {
 

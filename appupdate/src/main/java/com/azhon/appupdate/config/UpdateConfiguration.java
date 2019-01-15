@@ -7,16 +7,6 @@ import com.azhon.appupdate.base.BaseHttpDownloadManager;
 import com.azhon.appupdate.listener.OnButtonClickListener;
 import com.azhon.appupdate.listener.OnDownloadListener;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.config
- * 文件名:    UpdateConfiguration
- * 创建时间:  2018/1/27 on 10:42
- * 描述:     TODO 版本更新的一些配置信息,配置一些必须要的默认信息
- *
- * @author 阿钟
- */
-
 
 public class UpdateConfiguration {
     /**

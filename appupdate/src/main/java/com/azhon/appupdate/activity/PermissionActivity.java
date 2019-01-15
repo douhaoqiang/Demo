@@ -19,15 +19,6 @@ import com.azhon.appupdate.utils.Constant;
 import com.azhon.appupdate.utils.LogUtil;
 import com.azhon.appupdate.utils.PermissionUtil;
 
-/**
- * 项目名:    AppUpdate
- * 包名       com.azhon.appupdate.activity
- * 文件名:    PermissionActivity
- * 创建时间:  2018/1/27 on 17:16
- * 描述:     TODO 用来申请权限的活动
- *
- * @author 阿钟
- */
 
 public class PermissionActivity extends AppCompatActivity {
 
