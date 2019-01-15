@@ -42,7 +42,7 @@ public final class NotificationUtil {
      */
     private static NotificationCompat.Builder builderNotification(Context context, int icon, String title, String content) {
         String channelId = "";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             channelId = getNotificationChannelId();
         }
         return new NotificationCompat.Builder(context, channelId)

@@ -1,5 +1,6 @@
 package com.azhon.appupdate.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,11 +23,15 @@ import com.azhon.appupdate.R;
 import com.azhon.appupdate.activity.PermissionActivity;
 import com.azhon.appupdate.config.UpdateConfiguration;
 import com.azhon.appupdate.listener.OnButtonClickListener;
+import com.azhon.appupdate.listener.OnDownloadListener;
 import com.azhon.appupdate.manager.DownloadManager;
 import com.azhon.appupdate.service.DownloadService;
+import com.azhon.appupdate.utils.ApkUtil;
 import com.azhon.appupdate.utils.DensityUtil;
 import com.azhon.appupdate.utils.PermissionUtil;
 import com.azhon.appupdate.utils.ScreenUtil;
+
+import java.io.File;
 
 /**
  * 项目名:    AppUpdate
@@ -41,13 +46,16 @@ import com.azhon.appupdate.utils.ScreenUtil;
 
 public class UpdateDialog extends Dialog implements View.OnClickListener {
 
-    private Context context;
+    private Context mContext;
     private DownloadManager manager;
     private boolean forcedUpgrade;
     private Button update;
     private String downloadPath;
     private OnButtonClickListener buttonClickListener;
     private int dialogImage, dialogButtonTextColor, dialogButtonColor;
+
+    private TextView size;
+    private String authorities;
 
     public UpdateDialog(@NonNull Context context) {
         super(context, R.style.UpdateDialog);
@@ -58,7 +66,8 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
      * 初始化布局
      */
     private void init(Context context) {
-        this.context = context;
+        this.mContext = context;
+        authorities = mContext.getPackageName();
         manager = DownloadManager.getInstance();
         UpdateConfiguration configuration = manager.getConfiguration();
         downloadPath = manager.getDownloadPath();
@@ -71,13 +80,74 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
         setContentView(view);
         setWindowSize(context);
         initView(view);
+        DownloadManager.getInstance().getConfiguration().setOnDownloadListener(new OnDownloadListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void downloading(final int max, final int progress) {
+                ((Activity)mContext).runOnUiThread(new Runnable(){
+
+                    @Override
+                    public void run() {
+                        //更新UI
+                        update.setText(String.format(mContext.getResources().getString(R.string.downloading_progress),getCurrentPrecent(progress,max)));
+                    }
+
+                });
+
+            }
+
+            @Override
+            public void done(final File apk) {
+                ((Activity)mContext).runOnUiThread(new Runnable(){
+
+                    @Override
+                    public void run() {
+                        //更新UI
+                        update.setEnabled(true);
+                        update.setText("点击安装");
+                        update.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ApkUtil.installApk(mContext, authorities, apk);
+                            }
+                        });
+                    }
+
+                });
+
+            }
+
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void error(Exception e) {
+                ((Activity)mContext).runOnUiThread(new Runnable(){
+
+                    @Override
+                    public void run() {
+                        //更新UI
+                        update.setEnabled(true);
+                        update.setText("下载失败，重新下载！");
+                    }
+
+                });
+
+            }
+        });
     }
 
     private void initView(View view) {
         View ibClose = view.findViewById(R.id.ib_close);
         ImageView ivBg = view.findViewById(R.id.iv_bg);
         TextView title = view.findViewById(R.id.tv_title);
-        TextView size = view.findViewById(R.id.tv_size);
+        size = view.findViewById(R.id.tv_size);
         TextView description = view.findViewById(R.id.tv_description);
         update = view.findViewById(R.id.btn_update);
         View line = view.findViewById(R.id.line);
@@ -94,7 +164,7 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
             StateListDrawable drawable = new StateListDrawable();
             GradientDrawable colorDrawable = new GradientDrawable();
             colorDrawable.setColor(dialogButtonColor);
-            colorDrawable.setCornerRadius(DensityUtil.dip2px(context, 3));
+            colorDrawable.setCornerRadius(DensityUtil.dip2px(mContext, 3));
             drawable.addState(new int[]{android.R.attr.state_pressed}, colorDrawable);
             drawable.addState(new int[]{}, colorDrawable);
             update.setBackgroundDrawable(drawable);
@@ -113,11 +183,11 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
         }
         //设置界面数据
         if (!TextUtils.isEmpty(manager.getApkVersionName())) {
-            String newVersion = context.getResources().getString(R.string.dialog_new);
+            String newVersion = mContext.getResources().getString(R.string.dialog_new);
             title.setText(String.format(newVersion, manager.getApkVersionName()));
         }
         if (!TextUtils.isEmpty(manager.getApkSize())) {
-            String newVersionSize = context.getResources().getString(R.string.dialog_new_size);
+            String newVersionSize = mContext.getResources().getString(R.string.dialog_new_size);
             size.setText(String.format(newVersionSize, manager.getApkSize()));
             size.setVisibility(View.VISIBLE);
         }
@@ -147,7 +217,8 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
         } else if (id == R.id.btn_update) {
             if (forcedUpgrade) {
                 update.setEnabled(false);
-                update.setText(R.string.background_downloading);
+                update.setText(String.format(mContext.getResources().getString(R.string.downloading_progress),"0%"));
+//                update.setText(R.string.background_downloading);
             } else {
                 dismiss();
             }
@@ -156,14 +227,31 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
                 buttonClickListener.onButtonClick(OnButtonClickListener.UPDATE);
             }
             //使用缓存目录不申请权限
-            if (!downloadPath.equals(context.getExternalCacheDir().getPath())) {
-                if (!PermissionUtil.checkStoragePermission(context)) {
+            if (!downloadPath.equals(mContext.getExternalCacheDir().getPath())) {
+                if (!PermissionUtil.checkStoragePermission(mContext)) {
                     //没有权限,去申请权限
-                    context.startActivity(new Intent(context, PermissionActivity.class));
+                    mContext.startActivity(new Intent(mContext, PermissionActivity.class));
                     return;
                 }
             }
-            context.startService(new Intent(context, DownloadService.class));
+            mContext.startService(new Intent(mContext, DownloadService.class));
         }
+    }
+
+
+    /**
+     * 设置当前进度值
+     *
+     * @param current
+     */
+    public String getCurrentPrecent(long current,long totle) {
+        String precent="";
+        int value = (int) (current*1f / totle * 100);
+        if (value < 100) {
+            precent = value + "%";
+        } else {
+            precent = "100%";
+        }
+        return precent;
     }
 }

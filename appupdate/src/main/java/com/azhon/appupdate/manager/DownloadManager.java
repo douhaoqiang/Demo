@@ -48,12 +48,6 @@ public class DownloadManager {
      */
     private String downloadPath;
     /**
-     * 是否提示用户 "当前已是最新版本"
-     * <p>
-     * {@link #download()}
-     */
-    private boolean showNewerToast = false;
-    /**
      * 通知栏的图标 资源路径
      */
     private int smallIcon = -1;
@@ -131,21 +125,6 @@ public class DownloadManager {
     }
 
     /**
-     * 获取apk的VersionCode
-     */
-    public int getApkVersionCode() {
-        return apkVersionCode;
-    }
-
-    /**
-     * 设置apk的VersionCode
-     */
-    public DownloadManager setApkVersionCode(int apkVersionCode) {
-        this.apkVersionCode = apkVersionCode;
-        return this;
-    }
-
-    /**
      * 获取apk的名称
      */
     public String getApkName() {
@@ -173,21 +152,6 @@ public class DownloadManager {
     public DownloadManager setDownloadPath(String downloadPath) {
         this.downloadPath = downloadPath;
         return this;
-    }
-
-    /**
-     * 设置是否提示用户"当前已是最新版本"
-     */
-    public DownloadManager setShowNewerToast(boolean showNewerToast) {
-        this.showNewerToast = showNewerToast;
-        return this;
-    }
-
-    /**
-     * 获取是否提示用户"当前已是最新版本"
-     */
-    public boolean isShowNewerToast() {
-        return showNewerToast;
     }
 
     /**
@@ -292,28 +256,8 @@ public class DownloadManager {
             //参数设置出错....
             return;
         }
-        if (checkVersionCode()) {
-            //使用缓存目录不申请权限
-            if (!downloadPath.equals(context.getExternalCacheDir().getPath())) {
-                //检查权限
-                if (!PermissionUtil.checkStoragePermission(context)) {
-                    context.startActivity(new Intent(context, PermissionActivity.class));
-                    return;
-                }
-            }
-            context.startService(new Intent(context, DownloadService.class));
-        } else {
-            //对版本进行判断，是否显示升级对话框
-            if (apkVersionCode > ApkUtil.getVersionCode(context)) {
-                UpdateDialog dialog = new UpdateDialog(context);
-                dialog.show();
-            } else {
-                if (showNewerToast) {
-                    Toast.makeText(context, R.string.latest_version, Toast.LENGTH_SHORT).show();
-                }
-                LogUtil.e(TAG, "当前已是最新版本");
-            }
-        }
+        UpdateDialog dialog = new UpdateDialog(context);
+        dialog.show();
     }
 
     /**
@@ -364,28 +308,6 @@ public class DownloadManager {
         if (configuration == null) {
             configuration = new UpdateConfiguration();
         }
-        return true;
-    }
-
-    /**
-     * 检查设置的apkVersionCode 如果是大于1则使用内置的对话框
-     * 如果小于等于1则直接启动服务下载
-     */
-    private boolean checkVersionCode() {
-        //如果设置了小于的versionCode 你不是在写bug就是脑子瓦塌拉
-        if (apkVersionCode < 1) {
-            apkVersionCode = 1;
-            LogUtil.e(TAG, "apkVersionCode can not be < 1 !");
-            return true;
-        }
-        if (apkVersionCode > 1) {
-            //设置了 VersionCode 则库中进行对话框逻辑处理
-            if (TextUtils.isEmpty(apkDescription)) {
-                LogUtil.e(TAG, "apkDescription can not be empty!");
-            }
-            return false;
-        }
-        //等于1的情况
         return true;
     }
 
