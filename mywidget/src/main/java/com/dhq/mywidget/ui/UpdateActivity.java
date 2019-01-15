@@ -7,10 +7,10 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 
-import com.azhon.appupdate.config.UpdateConfiguration;
-import com.azhon.appupdate.listener.OnButtonClickListener;
-import com.azhon.appupdate.listener.OnDownloadListener;
-import com.azhon.appupdate.manager.DownloadManager;
+import com.dhq.appupdate.config.UpdateConfiguration;
+import com.dhq.appupdate.listener.OnButtonClickListener;
+import com.dhq.appupdate.listener.OnDownloadListener;
+import com.dhq.appupdate.manager.DownloadManager;
 import com.dhq.baselibrary.activity.BaseActivity;
 import com.dhq.mywidget.R;
 
@@ -92,10 +92,8 @@ public class UpdateActivity extends BaseActivity implements OnDownloadListener, 
 //                .setApkUrl("https://raw.githubusercontent.com/azhon/AppUpdate/master/apk/appupdate.apk")
                 .setApkUrl("http://download.hscpro.com/cecm/iOS/HSCAssessmentV1.2.0-20181207.apk")
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setShowNewerToast(true)
                 .setConfiguration(configuration)
 //                .setDownloadPath(Environment.getExternalStorageDirectory() + "/AppUpdate")
-                .setApkVersionCode(2)
                 .setApkVersionName("2.1.8")
                 .setApkSize("20.4")
                 .setAuthorities(getPackageName())

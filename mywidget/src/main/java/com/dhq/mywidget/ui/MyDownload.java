@@ -1,7 +1,7 @@
 package com.dhq.mywidget.ui;
 
-import com.azhon.appupdate.base.BaseHttpDownloadManager;
-import com.azhon.appupdate.listener.OnDownloadListener;
+import com.dhq.appupdate.base.BaseHttpDownloadManager;
+import com.dhq.appupdate.listener.OnDownloadListener;
 import com.dhq.net.DownLoadObserver;
 import com.dhq.net.http.HttpUtil;
 
