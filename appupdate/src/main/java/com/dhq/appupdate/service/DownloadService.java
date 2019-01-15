@@ -55,6 +55,9 @@ public final class DownloadService extends Service implements OnDownloadListener
     private void init() {
         apkUrl = DownloadManager.getInstance().getApkUrl();
         apkName = DownloadManager.getInstance().getApkName();
+        if (TextUtils.isEmpty(apkName)){
+            apkName=apkUrl.substring(apkUrl.lastIndexOf("/")+1);
+        }
         downloadPath = DownloadManager.getInstance().getDownloadPath();
         smallIcon = DownloadManager.getInstance().getSmallIcon();
         authorities = DownloadManager.getInstance().getAuthorities();
