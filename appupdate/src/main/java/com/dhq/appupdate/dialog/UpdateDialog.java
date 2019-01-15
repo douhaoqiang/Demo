@@ -1,4 +1,4 @@
-package com.azhon.appupdate.dialog;
+package com.dhq.appupdate.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -19,17 +19,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.azhon.appupdate.R;
-import com.azhon.appupdate.activity.PermissionActivity;
-import com.azhon.appupdate.config.UpdateConfiguration;
-import com.azhon.appupdate.listener.OnButtonClickListener;
-import com.azhon.appupdate.listener.OnDownloadListener;
-import com.azhon.appupdate.manager.DownloadManager;
-import com.azhon.appupdate.service.DownloadService;
-import com.azhon.appupdate.utils.ApkUtil;
-import com.azhon.appupdate.utils.DensityUtil;
-import com.azhon.appupdate.utils.PermissionUtil;
-import com.azhon.appupdate.utils.ScreenUtil;
+import com.dhq.appupdate.R;
+import com.dhq.appupdate.activity.PermissionActivity;
+import com.dhq.appupdate.config.UpdateConfiguration;
+import com.dhq.appupdate.listener.OnButtonClickListener;
+import com.dhq.appupdate.listener.OnDownloadListener;
+import com.dhq.appupdate.manager.DownloadManager;
+import com.dhq.appupdate.service.DownloadService;
+import com.dhq.appupdate.utils.ApkUtil;
+import com.dhq.appupdate.utils.DensityUtil;
+import com.dhq.appupdate.utils.PermissionUtil;
+import com.dhq.appupdate.utils.ScreenUtil;
 
 import java.io.File;
 

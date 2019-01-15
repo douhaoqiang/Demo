@@ -1,14 +1,14 @@
-package com.azhon.appupdate.manager;
+package com.dhq.appupdate.manager;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.azhon.appupdate.base.BaseHttpDownloadManager;
-import com.azhon.appupdate.listener.OnDownloadListener;
-import com.azhon.appupdate.utils.Constant;
-import com.azhon.appupdate.utils.FileUtil;
-import com.azhon.appupdate.utils.LogUtil;
-import com.azhon.appupdate.utils.SharePreUtil;
+import com.dhq.appupdate.base.BaseHttpDownloadManager;
+import com.dhq.appupdate.listener.OnDownloadListener;
+import com.dhq.appupdate.utils.Constant;
+import com.dhq.appupdate.utils.FileUtil;
+import com.dhq.appupdate.utils.LogUtil;
+import com.dhq.appupdate.utils.SharePreUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;

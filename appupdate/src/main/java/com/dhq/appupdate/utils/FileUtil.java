@@ -1,4 +1,4 @@
-package com.azhon.appupdate.utils;
+package com.dhq.appupdate.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;

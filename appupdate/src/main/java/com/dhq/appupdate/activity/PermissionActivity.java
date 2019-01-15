@@ -1,4 +1,4 @@
-package com.azhon.appupdate.activity;
+package com.dhq.appupdate.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -13,11 +13,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.azhon.appupdate.R;
-import com.azhon.appupdate.service.DownloadService;
-import com.azhon.appupdate.utils.Constant;
-import com.azhon.appupdate.utils.LogUtil;
-import com.azhon.appupdate.utils.PermissionUtil;
+import com.dhq.appupdate.R;
+import com.dhq.appupdate.service.DownloadService;
+import com.dhq.appupdate.utils.Constant;
+import com.dhq.appupdate.utils.LogUtil;
+import com.dhq.appupdate.utils.PermissionUtil;
 
 
 public class PermissionActivity extends AppCompatActivity {

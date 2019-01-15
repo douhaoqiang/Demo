@@ -1,4 +1,4 @@
-package com.azhon.appupdate.service;
+package com.dhq.appupdate.service;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -10,16 +10,16 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.azhon.appupdate.R;
-import com.azhon.appupdate.base.BaseHttpDownloadManager;
-import com.azhon.appupdate.listener.OnDownloadListener;
-import com.azhon.appupdate.manager.DownloadManager;
-import com.azhon.appupdate.manager.HttpDownloadManager;
-import com.azhon.appupdate.utils.ApkUtil;
-import com.azhon.appupdate.utils.Constant;
-import com.azhon.appupdate.utils.FileUtil;
-import com.azhon.appupdate.utils.LogUtil;
-import com.azhon.appupdate.utils.NotificationUtil;
+import com.dhq.appupdate.R;
+import com.dhq.appupdate.base.BaseHttpDownloadManager;
+import com.dhq.appupdate.listener.OnDownloadListener;
+import com.dhq.appupdate.manager.DownloadManager;
+import com.dhq.appupdate.manager.HttpDownloadManager;
+import com.dhq.appupdate.utils.ApkUtil;
+import com.dhq.appupdate.utils.Constant;
+import com.dhq.appupdate.utils.FileUtil;
+import com.dhq.appupdate.utils.LogUtil;
+import com.dhq.appupdate.utils.NotificationUtil;
 
 import java.io.File;
 

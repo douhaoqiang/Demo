@@ -1,4 +1,4 @@
-package com.azhon.appupdate.utils;
+package com.dhq.appupdate.utils;
 
 
 public final class Constant {

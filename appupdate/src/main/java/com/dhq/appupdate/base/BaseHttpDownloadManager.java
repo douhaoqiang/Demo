@@ -1,6 +1,6 @@
-package com.azhon.appupdate.base;
+package com.dhq.appupdate.base;
 
-import com.azhon.appupdate.listener.OnDownloadListener;
+import com.dhq.appupdate.listener.OnDownloadListener;
 
 
 public abstract class BaseHttpDownloadManager {

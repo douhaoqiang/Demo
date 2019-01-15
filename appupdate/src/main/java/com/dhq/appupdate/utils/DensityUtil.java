@@ -1,4 +1,4 @@
-package com.azhon.appupdate.utils;
+package com.dhq.appupdate.utils;
 
 import android.content.Context;
 

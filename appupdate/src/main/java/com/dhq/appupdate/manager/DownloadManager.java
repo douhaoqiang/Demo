@@ -1,20 +1,13 @@
-package com.azhon.appupdate.manager;
+package com.dhq.appupdate.manager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.azhon.appupdate.R;
-import com.azhon.appupdate.activity.PermissionActivity;
-import com.azhon.appupdate.base.BaseHttpDownloadManager;
-import com.azhon.appupdate.config.UpdateConfiguration;
-import com.azhon.appupdate.dialog.UpdateDialog;
-import com.azhon.appupdate.service.DownloadService;
-import com.azhon.appupdate.utils.ApkUtil;
-import com.azhon.appupdate.utils.Constant;
-import com.azhon.appupdate.utils.LogUtil;
-import com.azhon.appupdate.utils.PermissionUtil;
+import com.dhq.appupdate.base.BaseHttpDownloadManager;
+import com.dhq.appupdate.config.UpdateConfiguration;
+import com.dhq.appupdate.dialog.UpdateDialog;
+import com.dhq.appupdate.utils.Constant;
+import com.dhq.appupdate.utils.LogUtil;
 
 
 public class DownloadManager {

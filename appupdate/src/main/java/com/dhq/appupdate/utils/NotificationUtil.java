@@ -1,4 +1,4 @@
-package com.azhon.appupdate.utils;
+package com.dhq.appupdate.utils;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -14,9 +14,9 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
-import com.azhon.appupdate.config.UpdateConfiguration;
-import com.azhon.appupdate.manager.DownloadManager;
-import com.azhon.appupdate.service.DownloadService;
+import com.dhq.appupdate.config.UpdateConfiguration;
+import com.dhq.appupdate.manager.DownloadManager;
+import com.dhq.appupdate.service.DownloadService;
 
 import java.io.File;
 

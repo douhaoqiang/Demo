@@ -1,11 +1,11 @@
-package com.azhon.appupdate.config;
+package com.dhq.appupdate.config;
 
 import android.app.NotificationChannel;
 import android.support.annotation.ColorInt;
 
-import com.azhon.appupdate.base.BaseHttpDownloadManager;
-import com.azhon.appupdate.listener.OnButtonClickListener;
-import com.azhon.appupdate.listener.OnDownloadListener;
+import com.dhq.appupdate.base.BaseHttpDownloadManager;
+import com.dhq.appupdate.listener.OnButtonClickListener;
+import com.dhq.appupdate.listener.OnDownloadListener;
 
 
 public class UpdateConfiguration {

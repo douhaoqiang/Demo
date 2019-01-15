@@ -1,8 +1,8 @@
-package com.azhon.appupdate.utils;
+package com.dhq.appupdate.utils;
 
 import android.util.Log;
 
-import com.azhon.appupdate.manager.DownloadManager;
+import com.dhq.appupdate.manager.DownloadManager;
 
 
 
