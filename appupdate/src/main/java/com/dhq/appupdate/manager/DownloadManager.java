@@ -267,6 +267,14 @@ public class DownloadManager {
             LogUtil.e(TAG, "apkUrl can not be empty!");
             return false;
         }
+        if (TextUtils.isEmpty(apkName)) {
+            LogUtil.e(TAG, "apkName can not be empty!");
+            return false;
+        }
+        if (!apkName.endsWith(Constant.APK_SUFFIX)) {
+            LogUtil.e(TAG, "apkName must endsWith .apk!");
+            return false;
+        }
         /*
             这里需要注意，如果用户没有设置保存目录则使用缓存目录
             路径为:/storage/emulated/0/Android/data/ your packageName /cache
