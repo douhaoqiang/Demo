@@ -37,7 +37,7 @@ public class EditActivity extends BaseActivity {
         edtext1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                showToast("是否聚焦"+hasFocus);
+//                showToast("是否聚焦"+hasFocus);
             }
         });
 
@@ -47,7 +47,7 @@ public class EditActivity extends BaseActivity {
 
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction()==KeyEvent.ACTION_DOWN) {
                     //表示按下的是回车键
-                    showToast("点击回车键！");
+//                    showToast("点击回车键！");
 //                    edtext.isFocused();
                     return true;
                 }

@@ -100,7 +100,7 @@ public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecycl
 
     @Override
     public void loadingData() {
-        showToast("正在努力加载数据！");
+//        showToast("正在努力加载数据！");
     }
 
     @Override
@@ -110,6 +110,6 @@ public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecycl
 
     @Override
     public void getDataFinal(String msg) {
-        showToast("加载数据失败，请刷新！");
+//        showToast("加载数据失败，请刷新！");
     }
 }
