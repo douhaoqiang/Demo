@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.dhq.baselibrary.R;
+import com.dhq.baselibrary.util.HeaderUtil;
 
 /**
  * DESC 基础Activity
@@ -19,12 +20,15 @@ import com.dhq.baselibrary.R;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
+    private HeaderUtil headerUtil;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View contentView = getLayoutInflater().inflate(R.layout.activity_base_lay, null);
         setContentView(contentView);
         initStatusBar();
+        headerUtil = new HeaderUtil(this, contentView);
         addContentView();
         initialize();
     }
@@ -57,6 +61,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
     }
 
+
+    public HeaderUtil getHeaderUtil() {
+        return headerUtil;
+    }
 
     /**
      * 获取Activity对应的布局文件
