@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:id="@+id/id_header_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp750_96"
+        android:clipToPadding="false">
+
+        <ImageView
+            android:id="@+id/iv_header_left"
+            android:layout_width="@dimen/dp750_72"
+            android:layout_height="@dimen/dp750_72"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp750_20"
+            android:padding="@dimen/dp750_10"
+            android:src="@mipmap/header_back_default" />
+
+        <TextView
+            android:id="@+id/tv_header_left"
+            style="@style/title_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp750_20"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_header_title"
+            style="@style/title_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="标题" />
+
+
+        <TextView
+            android:id="@+id/tv_header_right"
+            style="@style/title_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp750_20"
+            android:visibility="gone" />
+
+
+        <ImageView
+            android:id="@+id/iv_header_right"
+            android:layout_width="@dimen/dp750_48"
+            android:layout_height="@dimen/dp750_48"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp750_20"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
