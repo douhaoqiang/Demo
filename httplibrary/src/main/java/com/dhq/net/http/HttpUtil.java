@@ -220,7 +220,7 @@ public class HttpUtil {
                     /*
                     解除订阅关系也发生在IO线程中
                      */
-                    .unsubscribeOn(Schedulers.io())
+//                    .unsubscribeOn(Schedulers.io())
                     /*
                     指定subscriber (观察者)的回调在主线程中，
                     observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
@@ -248,7 +248,7 @@ public class HttpUtil {
                     /*
                     解除订阅关系也发生在IO线程中
                      */
-                    .unsubscribeOn(Schedulers.io())
+//                    .unsubscribeOn(Schedulers.io())
                     .observeOn(Schedulers.computation())//需要
                     .map(new Function<ResponseBody, File>() {
                         @Override
