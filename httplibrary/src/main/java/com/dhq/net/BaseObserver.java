@@ -27,6 +27,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
     private Disposable mDisposable;
     private MyDialog myDialog;
     private String mEntityName;
+    private BaseResponse mResponse;
 
     /**
      * 显示弹框
@@ -70,31 +71,9 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
 
     @Override
     public void onNext(BaseResponse response) {
-        if (response == null) {
-            fail("请求数据错误");
-            return;
-        }
-        if (!"success".equals(response.getResult())) {
-            fail(response.getResult());
-            return;
-        }
 
-        try {
-            Class<T> entityClass = getEntityClass();
-            if (entityClass != null) {
-                if (TextUtils.isEmpty(mEntityName)) {
-                    T result = gson.fromJson(response.getResult(), getEntityClass());
-                    success(result);
-                } else {
-                    T result = gson.fromJson(response.getResultMap(), getEntityClass());
-                    success(result);
-                }
+        mResponse = response;
 
-            }
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-            fail("解析数据失败！");
-        }
     }
 
     @Override
@@ -108,9 +87,33 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
     @Override
     public void onComplete() {
         hintWaitingDialog();
-//        if (responseCallback != null) {
-//            responseCallback.onComplete();
-//        }
+
+        if (mResponse == null) {
+            fail("请求数据错误");
+            return;
+        }
+        if (!"success".equals(mResponse.getResult())) {
+            fail(mResponse.getResult());
+            return;
+        }
+
+        try {
+            Class<T> entityClass = getEntityClass();
+            if (entityClass != null) {
+                if (TextUtils.isEmpty(mEntityName)) {
+                    T result = gson.fromJson(mResponse.getResult(), getEntityClass());
+                    success(result);
+                } else {
+                    T result = gson.fromJson(mResponse.getResultMap(), getEntityClass());
+                    success(result);
+                }
+
+            }
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+            fail("解析数据失败！");
+        }
+
     }
 
 
@@ -126,16 +129,18 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
      * 显示网络请求等待框
      */
     private void showWaitingDialog() {
-        if (myDialog != null)
+        if (myDialog != null) {
             myDialog.show();
+        }
     }
 
     /**
      * 取消等待框
      */
     private void hintWaitingDialog() {
-        if (myDialog != null)
+        if (myDialog != null) {
             myDialog.cancel();
+        }
     }
 
 
