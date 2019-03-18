@@ -167,10 +167,8 @@ public class MyDialog extends Dialog implements View.OnClickListener {
 
     private void changeAlertType(int alertType, boolean fromCreate) {
         mAlertType = alertType;
-        // call after created views
         if (mDialogView != null) {
             if (!fromCreate) {
-                // restore all of views state before switching alert type
                 restore();
             }
             switch (mAlertType) {
@@ -305,6 +303,7 @@ public class MyDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
+    @Override
     protected void onStart() {
         mDialogView.startAnimation(mModalInAnim);
         playAnimation();
