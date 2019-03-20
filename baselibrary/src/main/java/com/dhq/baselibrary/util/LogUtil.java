@@ -1,7 +1,5 @@
 package com.dhq.baselibrary.util;
 
-import android.content.Context;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -136,7 +134,9 @@ public final class LogUtil {
     }
 
     private static void log(int type, String tag, Object... contents) {
-        if (!sLogSwitch) return;
+        if (!sLogSwitch) {
+            return;
+        }
         final String[] processContents = processContents(type, tag, contents);
         tag = processContents[0];
         String msg = processContents[1];
@@ -162,6 +162,8 @@ public final class LogUtil {
                 break;
             case XML:
                 printLog(D, tag, msg);
+                break;
+            default:
                 break;
         }
     }
@@ -293,6 +295,8 @@ public final class LogUtil {
             case A:
                 Log.wtf(tag, msg);
                 break;
+            default:
+                break;
         }
     }
 
@@ -341,8 +345,12 @@ public final class LogUtil {
 
     private static boolean createOrExistsFile(String filePath) {
         File file = new File(filePath);
-        if (file.exists()) return file.isFile();
-        if (!createOrExistsDir(file.getParentFile())) return false;
+        if (file.exists()) {
+            return file.isFile();
+        }
+        if (!createOrExistsDir(file.getParentFile())) {
+            return false;
+        }
         try {
             return file.createNewFile();
         } catch (IOException e) {
@@ -356,7 +364,9 @@ public final class LogUtil {
     }
 
     private static boolean isSpace(String s) {
-        if (s == null) return true;
+        if (s == null) {
+            return true;
+        }
         for (int i = 0, len = s.length(); i < len; ++i) {
             if (!Character.isWhitespace(s.charAt(i))) {
                 return false;

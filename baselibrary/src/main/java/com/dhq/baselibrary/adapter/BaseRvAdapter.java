@@ -13,7 +13,7 @@ import java.util.Collections;
  * Created by douhaoqiang on 2016/9/6.
  */
 
-public abstract class RecycleViewBaseAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private ArrayList<T> datas = new ArrayList<>();
@@ -22,7 +22,7 @@ public abstract class RecycleViewBaseAdapter<T> extends RecyclerView.Adapter<Rec
     /**
      * @param itemId 单个item的布局文件id
      */
-    public RecycleViewBaseAdapter(int itemId) {
+    public BaseRvAdapter(int itemId) {
         this.layoutId = itemId;
     }
 

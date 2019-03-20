@@ -28,6 +28,7 @@ public class PermissionFragment extends Fragment {
         this.listener = listener;
     }
 
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setRetainInstance(true);
@@ -55,6 +56,7 @@ public class PermissionFragment extends Fragment {
 
     }
 
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
