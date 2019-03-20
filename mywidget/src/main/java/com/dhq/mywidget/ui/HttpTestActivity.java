@@ -49,7 +49,7 @@ public class HttpTestActivity extends BaseActivity {
     private void formRequest() {
 
         String url = "http://192.168.12.38/hecsp/elder/queryFoodInfo";
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("page", "1");
         hashMap.put("pagesize", "10");
 
@@ -91,7 +91,7 @@ public class HttpTestActivity extends BaseActivity {
         };
 
 //        json传参
-        HttpUtil.getInstance().postFormReq(url, hashMap, loginObserver);
+        HttpUtil.getInstance().postFormBodyReq(url, hashMap, loginObserver);
 
     }
 
