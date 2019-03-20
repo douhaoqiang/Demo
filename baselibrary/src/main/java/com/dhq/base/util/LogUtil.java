@@ -1,9 +1,9 @@
-package com.dhq.baselibrary.util;
+package com.dhq.base.util;
 
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.dhq.baselibrary.BuildConfig;
+import com.dhq.base.BuildConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;

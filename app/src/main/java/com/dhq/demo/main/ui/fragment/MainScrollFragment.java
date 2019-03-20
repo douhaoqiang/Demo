@@ -7,14 +7,14 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
 
-import com.dhq.baselibrary.fragment.BaseMvpFragment;
+import com.dhq.base.fragment.BaseFragment;
 import com.dhq.demo.R;
 
 /**
  * DESC
  * Created by douhaoqiang on 2016/11/23.
  */
-public class MainScrollFragment extends BaseMvpFragment {
+public class MainScrollFragment extends BaseFragment {
 
     private static final String TAG = "MainScrollFragment";
     private ScrollView pullableView;

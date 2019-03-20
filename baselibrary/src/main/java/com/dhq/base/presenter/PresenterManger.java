@@ -1,6 +1,4 @@
-package com.dhq.baselibrary.presenter;
-
-import java.util.ArrayList;
+package com.dhq.base.presenter;
 
 /**
  * DESC
@@ -9,9 +7,15 @@ import java.util.ArrayList;
  */
 public interface PresenterManger {
 
-
+    /**
+     * 添加绑定 presenter
+     * @param presenter
+     */
     void addPresenter(BasePresenter presenter);
 
+    /**
+     * 解绑view
+     */
     void detachView();
 
 }

@@ -5,14 +5,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.demo.R;
 
 /**
  * DESC
  * Created by douhaoqiang on 2016/11/11.
  */
-public class EditActivity extends BaseMvpActivity {
+public class EditActivity extends BaseActivity {
     private static final String TAG = "EditActivity";
 
     private EditText edtext1;

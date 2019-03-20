@@ -5,9 +5,9 @@ import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
-import com.dhq.baselibrary.adapter.BaseRvAdapter;
-import com.dhq.baselibrary.adapter.RecycleViewBaseHolder;
+import com.dhq.base.activity.BaseActivity;
+import com.dhq.base.adapter.BaseRvAdapter;
+import com.dhq.base.adapter.BaseRvHolder;
 import com.dhq.mywidget.R;
 import com.dhq.mywidget.layoutmanger.SimpleLayoutManager;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * DESC
  * Created by douhaoqiang on 2018/7/9.
  */
-public class LayoutMangerTestActivity extends BaseMvpActivity {
+public class LayoutMangerTestActivity extends BaseActivity {
 
     private RecyclerView mRv;
     private BaseRvAdapter<String> mAdapter;
@@ -46,7 +46,7 @@ public class LayoutMangerTestActivity extends BaseMvpActivity {
 
         mAdapter = new BaseRvAdapter<String>(R.layout.item_recycler_view) {
             @Override
-            public void convert(RecycleViewBaseHolder holder, String item, int position) {
+            public void convert(BaseRvHolder holder, String item, int position) {
                 TextView tvName = holder.getView(R.id.tv_test);
                 tvName.setText("position" + position);
             }
@@ -54,7 +54,7 @@ public class LayoutMangerTestActivity extends BaseMvpActivity {
             @Override
             public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
                 int realPosition = position % mDatas.size();
-                convert((RecycleViewBaseHolder) holder, mDatas.get(realPosition), realPosition);
+                convert((BaseRvHolder) holder, mDatas.get(realPosition), realPosition);
             }
 
 //            @Override

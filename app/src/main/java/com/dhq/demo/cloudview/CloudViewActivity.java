@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
-import com.dhq.baselibrary.view.TagCloudView;
+import com.dhq.base.activity.BaseActivity;
+import com.dhq.base.view.TagCloudView;
 import com.dhq.demo.R;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
  * DESC
  * Created by douhaoqiang on 2017/2/27.
  */
-public class CloudViewActivity extends BaseMvpActivity implements TagCloudView.OnTagListener<String> {
+public class CloudViewActivity extends BaseActivity implements TagCloudView.OnTagListener<String> {
     private static final String TAG = "CloudViewActivity";
 
     @Override

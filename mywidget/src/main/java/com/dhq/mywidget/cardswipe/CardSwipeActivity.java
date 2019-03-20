@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.cardswipelibrary.good.CardAdapter;
 import com.dhq.cardswipelibrary.good.CardSlideLayout;
 import com.dhq.mywidget.R;
@@ -24,7 +24,7 @@ import static com.dhq.cardswipelibrary.good.CardSlideLayout.VANISH_TYPE_LEFT;
  * Create by 2017/8/23.
  */
 
-public class CardSwipeActivity extends BaseMvpActivity {
+public class CardSwipeActivity extends BaseActivity {
 
     private CardSlideLayout.CardSwitchListener cardSwitchListener;
 

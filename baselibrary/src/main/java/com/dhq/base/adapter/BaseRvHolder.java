@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.adapter;
+package com.dhq.base.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -9,18 +9,24 @@ import android.view.View;
  * Created by douhaoqiang on 2016/9/7.
  */
 
-public class RecycleViewBaseHolder extends RecyclerView.ViewHolder {
+public class BaseRvHolder extends RecyclerView.ViewHolder {
     /**
      * save view ids
      */
     private SparseArray<View> mSparseArray;
-
+    private int mViewType;
     private View rootView;
 
-    public RecycleViewBaseHolder(View itemView) {
+    public BaseRvHolder(View itemView) {
         super(itemView);
         this.mSparseArray = new SparseArray<>();
         this.rootView = itemView;
+    }
+
+
+    public BaseRvHolder(View itemView, int viewType) {
+        this(itemView);
+        this.mViewType = viewType;
     }
 
     /**
@@ -30,6 +36,10 @@ public class RecycleViewBaseHolder extends RecyclerView.ViewHolder {
      */
     public View getRootView() {
         return rootView;
+    }
+
+    public int getViewType() {
+        return mViewType;
     }
 
     /**
@@ -42,7 +52,7 @@ public class RecycleViewBaseHolder extends RecyclerView.ViewHolder {
     public <T extends View> T getView(int resId) {
         View view = mSparseArray.get(resId);
         if (view == null) {
-            view=rootView.findViewById(resId);
+            view = rootView.findViewById(resId);
             mSparseArray.put(resId, view);
         }
         return (T) view;

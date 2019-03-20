@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.util;
+package com.dhq.base.util;
 
 /**
  * DESC 字符串工具类

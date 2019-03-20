@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.util;
+package com.dhq.base.util;
 
 import android.app.Activity;
 import android.os.Build;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dhq.baselibrary.R;
+import com.dhq.base.R;
 
 
 /**

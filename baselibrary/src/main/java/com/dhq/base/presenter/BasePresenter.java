@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.presenter;
+package com.dhq.base.presenter;
 
 import java.lang.ref.WeakReference;
 

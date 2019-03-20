@@ -2,7 +2,7 @@ package com.dhq.net;
 
 import android.os.Environment;
 
-import com.dhq.baselibrary.util.LogUtil;
+import com.dhq.base.util.LogUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;

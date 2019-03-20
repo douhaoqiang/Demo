@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dhq.baselibrary.adapter.ItemTouchCallback;
-import com.dhq.baselibrary.adapter.BaseRvAdapter;
-import com.dhq.baselibrary.adapter.RecycleViewBaseHolder;
+import com.dhq.base.adapter.ItemTouchCallback;
+import com.dhq.base.adapter.BaseRvAdapter;
+import com.dhq.base.adapter.BaseRvHolder;
 import com.dhq.demo.R;
 import com.dhq.demo.recycle.bean.MyMessage;
 
@@ -59,7 +59,7 @@ public class ItemFragment extends Fragment {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new BaseRvAdapter<MyMessage>(R.layout.recycle_view_item) {
             @Override
-            public void convert(RecycleViewBaseHolder holder, MyMessage message, int position) {
+            public void convert(BaseRvHolder holder, MyMessage message, int position) {
 
                 ImageView logoIv = holder.getView(R.id.recycle_item_logo_iv);
                 TextView titleTv = holder.getView(R.id.recycle_item_title_tv);

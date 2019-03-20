@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.activity;
+package com.dhq.base.activity;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -10,10 +10,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.dhq.baselibrary.R;
-import com.dhq.baselibrary.presenter.BasePresenter;
-import com.dhq.baselibrary.presenter.PresenterManger;
-import com.dhq.baselibrary.util.HeaderUtil;
+import com.dhq.base.R;
+import com.dhq.base.presenter.BasePresenter;
+import com.dhq.base.presenter.PresenterManger;
+import com.dhq.base.util.HeaderUtil;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by douhaoqiang on 2016/9/1.
  */
 
-public abstract class BaseMvpActivity extends AppCompatActivity implements PresenterManger{
+public abstract class BaseActivity extends AppCompatActivity implements PresenterManger{
 
     private ArrayList<BasePresenter> mPresenters=new ArrayList<>();
     private HeaderUtil headerUtil;

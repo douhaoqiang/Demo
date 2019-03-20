@@ -5,17 +5,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
-import com.dhq.baselibrary.fragment.BaseMvpFragment;
+import com.dhq.base.fragment.BaseFragment;
 import com.dhq.demo.R;
 import com.dhq.demo.home.Presenter.HomePresenter;
 import com.dhq.demo.home.adapter.HomePagerAdapter;
 import com.dhq.demo.home.contract.HomeContract;
-import com.dhq.demo.home.fragment.ItemFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2016/8/18.
  */
-public class HomeFragment extends BaseMvpFragment implements HomeContract.IHomeView {
+public class HomeFragment extends BaseFragment implements HomeContract.IHomeView {
 
 
     @BindView(R.id.home_drawer_layout)

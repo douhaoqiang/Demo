@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.mywidget.R;
 import com.dhq.net.BaseObserver;
 import com.dhq.net.DownLoadObserver;
@@ -18,7 +18,7 @@ import java.util.HashMap;
  * Created by douhaoqiang on 2017/7/24.
  */
 
-public class HttpTestActivity extends BaseMvpActivity {
+public class HttpTestActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {

@@ -1,12 +1,10 @@
 package com.dhq.demo.main.ui.fragment;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 
-import com.dhq.baselibrary.fragment.BaseMvpFragment;
+import com.dhq.base.fragment.BaseFragment;
 import com.dhq.demo.R;
 import com.dhq.demo.SlideViewActivity;
 import com.dhq.demo.cloudview.CloudViewActivity;
@@ -26,7 +24,7 @@ import butterknife.Unbinder;
  * DESC 主页Fragment
  * Created by douhaoqiang on 2016/11/18.
  */
-public class MainFragment extends BaseMvpFragment implements MainContract.IMainView {
+public class MainFragment extends BaseFragment implements MainContract.IMainView {
     private static final String TAG = "MainFragment";
     private Unbinder bind;
 

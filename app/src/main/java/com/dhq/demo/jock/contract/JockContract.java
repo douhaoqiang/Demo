@@ -1,6 +1,6 @@
 package com.dhq.demo.jock.contract;
 
-import com.dhq.baselibrary.presenter.BasePresenter;
+import com.dhq.base.presenter.BasePresenter;
 
 /**
  * DESC

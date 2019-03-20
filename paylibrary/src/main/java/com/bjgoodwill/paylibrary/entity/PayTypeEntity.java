@@ -1,7 +1,7 @@
 package com.bjgoodwill.paylibrary.entity;
 
 
-import com.dhq.baselibrary.entity.BaseEntity;
+import com.dhq.base.entity.BaseEntity;
 
 /**
  * Created by dongpeng on 2016/12/2.

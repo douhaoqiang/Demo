@@ -2,7 +2,7 @@ package com.dhq.demo.jock.ui;
 
 import android.os.Bundle;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.demo.jock.contract.JockContract;
 import com.dhq.demo.jock.presenter.JockPresenterImpl;
 
@@ -10,7 +10,7 @@ import com.dhq.demo.jock.presenter.JockPresenterImpl;
  * DESC
  * Created by douhaoqiang on 2016/10/18.
  */
-public class JockActivity extends BaseMvpActivity implements JockContract.IJockView {
+public class JockActivity extends BaseActivity implements JockContract.IJockView {
     private static final String TAG = "JockActivity";
 
 

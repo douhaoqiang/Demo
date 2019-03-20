@@ -2,7 +2,7 @@ package com.dhq.mywidget.ui;
 
 import android.os.Bundle;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.mywidget.R;
 
 /**
@@ -10,7 +10,7 @@ import com.dhq.mywidget.R;
  * Created by douhaoqiang on 2017/11/10.
  */
 
-public class SvgActivity extends BaseMvpActivity {
+public class SvgActivity extends BaseActivity {
 
 
     @Override

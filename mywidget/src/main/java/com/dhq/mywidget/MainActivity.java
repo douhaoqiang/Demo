@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
-import com.dhq.baselibrary.util.PermissionUtil.PermissionListener;
-import com.dhq.baselibrary.util.PermissionUtil.PermissionUtil;
+import com.dhq.base.activity.BaseActivity;
+import com.dhq.base.util.PermissionUtil.PermissionListener;
+import com.dhq.base.util.PermissionUtil.PermissionUtil;
 import com.dhq.mywidget.cardswipe.CardSwipeActivity;
 import com.dhq.mywidget.divider.DividerActivity;
 import com.dhq.mywidget.ui.CompressActivity;
@@ -21,7 +21,7 @@ import com.dhq.mywidget.ui.UpdateActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseMvpActivity {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.btn_http_test)
     Button btnHttpTest;

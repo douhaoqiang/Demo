@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.fragment;
+package com.dhq.base.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dhq.baselibrary.presenter.BasePresenter;
-import com.dhq.baselibrary.presenter.PresenterManger;
+import com.dhq.base.presenter.BasePresenter;
+import com.dhq.base.presenter.PresenterManger;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * DESC
  * Created by douhaoqiang on 2016/11/21.
  */
-public abstract class BaseMvpFragment extends Fragment implements PresenterManger {
+public abstract class BaseFragment extends Fragment implements PresenterManger {
 
     private ArrayList<BasePresenter> mPresenters = new ArrayList<>();
 

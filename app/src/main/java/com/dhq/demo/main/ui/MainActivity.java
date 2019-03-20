@@ -8,10 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.demo.R;
-import com.dhq.demo.home.TabContentFragment;
-import com.dhq.demo.home.fragment.HomeFragment;
 import com.dhq.demo.main.contract.MainContract;
 import com.dhq.demo.main.presenter.MainPresenterImpl;
 import com.dhq.demo.main.ui.fragment.MainFragment;
@@ -24,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends BaseMvpActivity implements MainContract.IMainView {
+public class MainActivity extends BaseActivity implements MainContract.IMainView {
 
 
     @BindView(R.id.main_viewpage)

@@ -3,7 +3,7 @@ package com.dhq.demo.rx;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.demo.R;
 
 import rx.Observable;
@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2016/11/15.
  */
 
-public class RxActivity extends BaseMvpActivity {
+public class RxActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {

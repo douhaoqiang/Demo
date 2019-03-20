@@ -5,7 +5,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.demo.widget.MotionListener;
 import com.dhq.demo.widget.SlideIcon;
 
@@ -13,7 +13,7 @@ import com.dhq.demo.widget.SlideIcon;
  * DESC
  * Created by douhaoqiang on 2017/3/1.
  */
-public class SlideViewActivity extends BaseMvpActivity {
+public class SlideViewActivity extends BaseActivity {
 
     private static final String TAG = "SlideViewActivity";
 

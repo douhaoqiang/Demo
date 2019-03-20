@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.view;
+package com.dhq.base.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dhq.baselibrary.R;
+import com.dhq.base.R;
 
 import java.util.List;
 

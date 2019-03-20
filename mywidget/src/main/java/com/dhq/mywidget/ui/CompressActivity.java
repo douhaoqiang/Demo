@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.imagecompress.CompressHelper;
 import com.dhq.imagecompress.FileUtil;
 import com.dhq.mywidget.R;
@@ -25,7 +25,7 @@ import java.util.Random;
  * Create by 2017/8/17.
  */
 
-public class CompressActivity extends BaseMvpActivity {
+public class CompressActivity extends BaseActivity {
 
     private ImageView mImageOld;
     private ImageView mImageNew;

@@ -1,4 +1,4 @@
-package com.dhq.baselibrary;
+package com.dhq.base;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

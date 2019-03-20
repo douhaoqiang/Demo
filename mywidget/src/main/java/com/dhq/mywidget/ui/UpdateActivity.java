@@ -10,7 +10,7 @@ import android.widget.Button;
 import com.dhq.appupdate.config.UpdateConfiguration;
 import com.dhq.appupdate.listener.OnDownloadListener;
 import com.dhq.appupdate.manager.DownloadManager;
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.mywidget.R;
 
 import java.io.File;
@@ -19,7 +19,7 @@ import java.io.File;
  * DESC
  * Created by douhaoqiang on 2019/1/7.
  */
-public class UpdateActivity extends BaseMvpActivity implements OnDownloadListener {
+public class UpdateActivity extends BaseActivity implements OnDownloadListener {
 
     private Button btn_update;
     private DownloadManager manager;

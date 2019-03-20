@@ -1,7 +1,6 @@
 package com.dhq.demo.recycle.contract;
 
-import com.dhq.baselibrary.presenter.BasePresenter;
-import com.dhq.demo.home.contract.HomeContract;
+import com.dhq.base.presenter.BasePresenter;
 import com.dhq.demo.recycle.bean.MyMessage;
 
 import java.util.ArrayList;

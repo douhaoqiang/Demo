@@ -2,7 +2,7 @@ package com.dhq.net;
 
 import android.util.Log;
 
-import com.dhq.baselibrary.util.LogUtil;
+import com.dhq.base.util.LogUtil;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

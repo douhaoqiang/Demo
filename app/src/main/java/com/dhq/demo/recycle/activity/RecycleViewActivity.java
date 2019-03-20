@@ -7,11 +7,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
+import com.dhq.base.activity.BaseActivity;
 import com.dhq.demo.R;
-import com.dhq.baselibrary.adapter.ItemTouchCallback;
-import com.dhq.baselibrary.adapter.BaseRvAdapter;
-import com.dhq.baselibrary.adapter.RecycleViewBaseHolder;
+import com.dhq.base.adapter.ItemTouchCallback;
+import com.dhq.base.adapter.BaseRvAdapter;
+import com.dhq.base.adapter.BaseRvHolder;
 import com.dhq.demo.recycle.bean.MyMessage;
 import com.dhq.demo.recycle.contract.RecycleContract;
 import com.dhq.demo.recycle.prestener.RecycleViewPresenter;
@@ -27,7 +27,7 @@ import butterknife.Unbinder;
  * Created by douhaoqiang on 2016/9/6.
  */
 
-public class RecycleViewActivity extends BaseMvpActivity implements RecycleContract.IRecycleView {
+public class RecycleViewActivity extends BaseActivity implements RecycleContract.IRecycleView {
 
     @BindView(R.id.home_first_recycleview)
     RecyclerView recycleview;
@@ -56,7 +56,7 @@ public class RecycleViewActivity extends BaseMvpActivity implements RecycleContr
         recycleview.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BaseRvAdapter<MyMessage>(R.layout.recycle_view_item) {
             @Override
-            public void convert(RecycleViewBaseHolder holder, MyMessage message, int position) {
+            public void convert(BaseRvHolder holder, MyMessage message, int position) {
 
                 ImageView logoIv=holder.getView(R.id.recycle_item_logo_iv);
                 TextView titleTv=holder.getView(R.id.recycle_item_title_tv);

@@ -2,11 +2,9 @@ package com.dhq.demo.recycle.prestener;
 
 import android.content.Context;
 
-import com.dhq.baselibrary.presenter.BasePresenter;
 import com.dhq.demo.recycle.bean.MyMessage;
 import com.dhq.demo.recycle.contract.RecycleContract;
 import com.dhq.demo.recycle.model.RecycleViewModel;
-import com.dhq.demo.recycle.view.IRecycleView;
 
 import java.util.ArrayList;
 

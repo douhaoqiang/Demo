@@ -5,15 +5,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.dhq.baselibrary.activity.BaseMvpActivity;
-import com.dhq.baselibrary.adapter.BaseRvAdapter;
-import com.dhq.baselibrary.adapter.RecycleViewBaseHolder;
-import com.dhq.baselibrary.util.LogUtil;
+import com.dhq.base.activity.BaseActivity;
+import com.dhq.base.adapter.BaseRvAdapter;
+import com.dhq.base.adapter.BaseRvHolder;
+import com.dhq.base.util.LogUtil;
 import com.dhq.mywidget.R;
 
 import java.util.ArrayList;
 
-public class DividerActivity extends BaseMvpActivity {
+public class DividerActivity extends BaseActivity {
 
     RecyclerView recyclerView;
 
@@ -60,7 +60,7 @@ public class DividerActivity extends BaseMvpActivity {
 
         BaseRvAdapter adapter = new BaseRvAdapter<String>(R.layout.item_recycler_view) {
             @Override
-            public void convert(RecycleViewBaseHolder holder, String item, final int position) {
+            public void convert(BaseRvHolder holder, String item, final int position) {
 
                 holder.getRootView().setOnClickListener(new View.OnClickListener() {
                     @Override

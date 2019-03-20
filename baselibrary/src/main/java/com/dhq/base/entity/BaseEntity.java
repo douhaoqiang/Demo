@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.entity;
+package com.dhq.base.entity;
 
 import java.io.Serializable;
 

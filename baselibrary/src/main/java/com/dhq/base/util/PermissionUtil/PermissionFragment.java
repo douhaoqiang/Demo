@@ -1,4 +1,4 @@
-package com.dhq.baselibrary.util.PermissionUtil;
+package com.dhq.base.util.PermissionUtil;
 
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
