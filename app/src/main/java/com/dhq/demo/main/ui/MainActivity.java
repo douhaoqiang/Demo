@@ -60,7 +60,6 @@ public class MainActivity extends BaseMvpActivity implements MainContract.IMainV
 
 //        mViewpage.setAdapter(new FragAdapter);
         List<Fragment> fragments = new ArrayList<Fragment>();
-        fragments.add(new HomeFragment());
         fragments.add(new MainFragment());
         fragments.add(new MainScrollFragment());
 
