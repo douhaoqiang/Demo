@@ -23,12 +23,25 @@ public abstract class DownLoadObserver implements Observer<File> {
 
     private String destFileDir = Environment.getExternalStorageDirectory() + "/AppUpdate";//目标文件夹
     private String destFileName = "test.apk";//目标文件名
+    private boolean isDownLoadSuc = false;
+    private File mFile;
 
     /**
-     * 不显示弹框
+     * 不显示弹框(保存路径默认)
      */
     public DownLoadObserver() {
 
+    }
+
+    /**
+     * 不显示弹框
+     *
+     * @param savePath 保存路径
+     * @param fileName 保存文件名称
+     */
+    public DownLoadObserver(String savePath, String fileName) {
+        this.destFileDir = savePath;
+        this.destFileName = fileName;
     }
 
 
@@ -40,13 +53,8 @@ public abstract class DownLoadObserver implements Observer<File> {
 
     @Override
     public void onNext(File file) {
-        try {
-            onDownLoadSuccess(file);
-//            saveFile(responseBody);
-        } catch (Exception e) {
-            e.printStackTrace();
-            onDownLoadFail("下载失败");
-        }
+        isDownLoadSuc = true;
+        mFile = file;
     }
 
     @Override
@@ -58,6 +66,17 @@ public abstract class DownLoadObserver implements Observer<File> {
     @Override
     public void onComplete() {
         hintWaitingDialog();
+        try {
+            if (mFile == null) {
+                onDownLoadFail("下载失败");
+            } else {
+                //下载成功
+                onDownLoadSuccess(mFile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            onDownLoadFail("下载失败");
+        }
     }
 
 
@@ -113,10 +132,8 @@ public abstract class DownLoadObserver implements Observer<File> {
             while ((len = is.read(buf)) != -1) {
                 sum += len;
                 fos.write(buf, 0, len);
-                final long finalSum = sum;
-                LogUtil.d("" + (int) (finalSum * 100 / total));
                 //这里就是对进度的监听回调
-                onDownLoadProgress((int) (finalSum * 100 / total), total);
+                onDownLoadProgress((int) (sum * 100 / total), total);
             }
             fos.flush();
 
@@ -141,13 +158,23 @@ public abstract class DownLoadObserver implements Observer<File> {
     }
 
 
-    //下载成功的回调
+    /**
+     * 下载成功的回调
+     * @param file  保存成功路径
+     */
     public abstract void onDownLoadSuccess(File file);
 
-    //下载失败回调
+    /**
+     * 下载失败回调
+     * @param errorMsg  下载失败信息
+     */
     public abstract void onDownLoadFail(String errorMsg);
 
-    //下载进度监听
+    /**
+     * 下载进度监听
+     * @param progress  加载百分比
+     * @param total     下载总大小
+     */
     public abstract void onDownLoadProgress(int progress, long total);
 
 
