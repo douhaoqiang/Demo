@@ -21,14 +21,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile var.SupportRecyclerview
-    compile var.SupportDesign
-    compile var.SupportCardview
-    compile var.SupportDesign
-    compile 'com.facebook.rebound:rebound:0.3.8'
-    testCompile 'junit:junit:4.12'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api var.SupportRecyclerview
+    api var.SupportDesign
+    api var.SupportCardview
+    api var.SupportDesign
+    api 'com.facebook.rebound:rebound:0.3.8'
 }

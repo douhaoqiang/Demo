@@ -8,7 +8,7 @@ import com.dhq.demo.jock.contract.JockContract;
 public class JockPresenterImpl extends JockContract.Presenter{
 
     public JockPresenterImpl(JockContract.IJockView jockView) {
-        attachView(jockView);
+        super(jockView);
     }
 
 }

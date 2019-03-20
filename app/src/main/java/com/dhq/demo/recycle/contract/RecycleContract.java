@@ -34,6 +34,10 @@ public interface RecycleContract {
     }
 
     public abstract class IRecyclePresenter extends BasePresenter<IRecycleView> {
+        public IRecyclePresenter(IRecycleView view) {
+            super(view);
+        }
+
         public abstract void getListData();
     }
 

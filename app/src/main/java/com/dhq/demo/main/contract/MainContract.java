@@ -22,6 +22,9 @@ public interface MainContract {
 
     abstract class IMainPresenter extends BasePresenter<IMainView> {
 
+        public IMainPresenter(IMainView view) {
+            super(view);
+        }
     }
 
     interface IMainModel {

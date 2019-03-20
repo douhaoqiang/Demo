@@ -76,6 +76,16 @@ public class HeaderUtil {
      *
      * @return
      */
+    public HeaderUtil setLeftBackHint() {
+        left_tv.setVisibility(View.GONE);
+        LeftIv.setVisibility(View.GONE);
+        return this;
+    }
+    /**
+     * 显示左侧返回按钮
+     *
+     * @return
+     */
     public HeaderUtil setLeftBack() {
         left_tv.setVisibility(View.GONE);
         LeftIv.setVisibility(View.VISIBLE);

@@ -14,9 +14,8 @@ public class HomePresenter extends HomeContract.IHomePresenter {
     private Context mContext;
     private HomeMode mHomeMode = new HomeMode();
 
-    public HomePresenter(Context context) {
-        this.mContext = context.getApplicationContext();
+
+    public HomePresenter(HomeContract.IHomeView view) {
+        super(view);
     }
-
-
 }

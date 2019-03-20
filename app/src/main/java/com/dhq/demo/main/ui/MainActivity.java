@@ -1,5 +1,6 @@
 package com.dhq.demo.main.ui;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,6 +10,8 @@ import android.widget.LinearLayout;
 
 import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.R;
+import com.dhq.demo.home.TabContentFragment;
+import com.dhq.demo.home.fragment.HomeFragment;
 import com.dhq.demo.main.contract.MainContract;
 import com.dhq.demo.main.presenter.MainPresenterImpl;
 import com.dhq.demo.main.ui.fragment.MainFragment;
@@ -21,11 +24,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> implements MainContract.IMainView {
+public class MainActivity extends BaseMvpActivity implements MainContract.IMainView {
 
 
     @BindView(R.id.main_viewpage)
-    ViewPager mainViewpage;
+    ViewPager mViewpage;
 
     @BindView(R.id.main_bottom_lay)
     LinearLayout mainBottomLay;
@@ -40,10 +43,14 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
     }
 
     @Override
-    protected void initializes() {
+    protected void initializes(Bundle savedInstanceState) {
+
         bind = ButterKnife.bind(this);
+        getHeaderUtil().setLeftBackHint().setHeaderTitle("首页");
         initListener();
         initData();
+
+        new MainPresenterImpl(this);
     }
 
     /**
@@ -51,14 +58,15 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
      */
     private void initData() {
 
-//        mainViewpage.setAdapter(new FragAdapter);
+//        mViewpage.setAdapter(new FragAdapter);
         List<Fragment> fragments = new ArrayList<Fragment>();
+        fragments.add(new HomeFragment());
         fragments.add(new MainFragment());
         fragments.add(new MainScrollFragment());
 
         FragAdapter adapter = new FragAdapter(getSupportFragmentManager(), fragments);
-        mainViewpage.setAdapter(adapter);
-        mainViewpage.setCurrentItem(0);
+        mViewpage.setAdapter(adapter);
+//        mViewpage.setCurrentItem(0);
     }
 
 
@@ -66,7 +74,7 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
      * 事件监听器初始化
      */
     private void initListener() {
-        mainViewpage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewpage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -86,11 +94,6 @@ public class MainActivity extends BaseMvpActivity<MainContract.IMainPresenter> i
 
     }
 
-
-    @Override
-    protected MainPresenterImpl createPresenter() {
-        return new MainPresenterImpl(this);
-    }
 
     @Override
     public void isLoading() {

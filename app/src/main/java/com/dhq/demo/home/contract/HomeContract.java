@@ -14,6 +14,9 @@ public interface HomeContract {
     }
     public abstract class IHomePresenter extends BasePresenter<IHomeView>{
 
+        public IHomePresenter(IHomeView view) {
+            super(view);
+        }
     }
     public interface IHomeModel{
 

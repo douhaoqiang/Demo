@@ -11,9 +11,10 @@ public class MainPresenterImpl extends MainContract.IMainPresenter {
 
     private Context mContext;
 
-    public MainPresenterImpl(Context context){
-        this.mContext=context.getApplicationContext();
+    public MainPresenterImpl(MainContract.IMainView view) {
+        super(view);
     }
+
 
     public void getData(){
 

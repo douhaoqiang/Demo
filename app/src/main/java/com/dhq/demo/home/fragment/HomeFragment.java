@@ -27,7 +27,7 @@ import butterknife.Unbinder;
 /**
  * Created by Administrator on 2016/8/18.
  */
-public class HomeFragment extends BaseMvpFragment<HomeContract.IHomePresenter> implements HomeContract.IHomeView {
+public class HomeFragment extends BaseMvpFragment implements HomeContract.IHomeView {
 
 
     @BindView(R.id.home_drawer_layout)
@@ -54,12 +54,15 @@ public class HomeFragment extends BaseMvpFragment<HomeContract.IHomePresenter> i
     }
 
     @Override
-    protected void initializes() {
+    protected void initialize() {
+
 
         bind = ButterKnife.bind(this,getView());
         initToolBar();
         initTab();
         initListener();
+
+        new HomePresenter(this);
 
     }
 
@@ -107,12 +110,6 @@ public class HomeFragment extends BaseMvpFragment<HomeContract.IHomePresenter> i
 
             }
         });
-    }
-
-
-    @Override
-    protected HomeContract.IHomePresenter createPresenter() {
-        return new HomePresenter(getContext());
     }
 
 

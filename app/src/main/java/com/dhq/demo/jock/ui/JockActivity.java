@@ -1,5 +1,7 @@
 package com.dhq.demo.jock.ui;
 
+import android.os.Bundle;
+
 import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.jock.contract.JockContract;
 import com.dhq.demo.jock.presenter.JockPresenterImpl;
@@ -8,7 +10,7 @@ import com.dhq.demo.jock.presenter.JockPresenterImpl;
  * DESC
  * Created by douhaoqiang on 2016/10/18.
  */
-public class JockActivity extends BaseMvpActivity<JockContract.Presenter> implements JockContract.IJockView {
+public class JockActivity extends BaseMvpActivity implements JockContract.IJockView {
     private static final String TAG = "JockActivity";
 
 
@@ -18,14 +20,11 @@ public class JockActivity extends BaseMvpActivity<JockContract.Presenter> implem
     }
 
     @Override
-    protected void initializes() {
+    protected void initializes(Bundle savedInstanceState) {
+        new JockPresenterImpl(this);
 
     }
 
-    @Override
-    protected JockContract.Presenter createPresenter() {
-        return new JockPresenterImpl(this);
-    }
 
 
     @Override

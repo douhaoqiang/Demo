@@ -18,9 +18,10 @@ public class RecycleViewPresenter extends RecycleContract.IRecyclePresenter {
     private Context mContext;
     private RecycleViewModel model = new RecycleViewModel();
 
-    public RecycleViewPresenter(Context context) {
-        this.mContext = context.getApplicationContext();
+    public RecycleViewPresenter(RecycleContract.IRecycleView view) {
+        super(view);
     }
+
 
     /**
      * 获取列表数据

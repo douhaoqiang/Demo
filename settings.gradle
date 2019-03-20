@@ -1,4 +1,4 @@
-include ':app', ':cardswipelibrary'
+include ':app', ':cardswipelibrary',':animatorlib'
 include ':banner'
 include ':imagecompress'
 include ':refleshlibrary'
@@ -10,4 +10,5 @@ include ':filter'
 include ':popuplist'
 include ':mywidget'
 include ':paylibrary'
+include ':appupdate'
 

@@ -14,9 +14,7 @@ import com.dhq.demo.edit.EditActivity;
 import com.dhq.demo.home.fragment.HomeFragment;
 import com.dhq.demo.main.contract.MainContract;
 import com.dhq.demo.main.presenter.MainPresenterImpl;
-import com.dhq.demo.ndk.activity.NdkDemoActivity;
 import com.dhq.demo.recycle.activity.RecycleViewActivity;
-import com.dhq.demo.refresh.PullToRefreshLayout;
 import com.dhq.demo.rx.RxActivity;
 import com.dhq.dialoglibrary.MyDialog;
 
@@ -28,12 +26,9 @@ import butterknife.Unbinder;
  * DESC 主页Fragment
  * Created by douhaoqiang on 2016/11/18.
  */
-public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
+public class MainFragment extends BaseMvpFragment implements MainContract.IMainView {
     private static final String TAG = "MainFragment";
     private Unbinder bind;
-
-    @BindView(R.id.main_refresh_view)
-    PullToRefreshLayout refreshView;
 
     @BindView(R.id.main_menu_recycle)
     Button menuRecycle;
@@ -59,43 +54,26 @@ public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
     @BindView(R.id.main_menu_slide_view)
     Button slideView;
 
-    private Handler handler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-
-        }
-    };
-
-    private Runnable task =new Runnable() {
-        @Override
-        public void run() {
-            refreshView.complete();
-        }
-    };
-
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main_lay;
     }
 
     @Override
-    protected void initializes() {
-        bind = ButterKnife.bind(this,getView());
+    protected void initialize() {
+
+        bind = ButterKnife.bind(this, getView());
         initData();
         initListener();
+
+        new MainPresenterImpl(this);
     }
 
-    @Override
-    protected MainContract.IMainPresenter createPresenter() {
-        return new MainPresenterImpl(getActivity());
-    }
+
     /**
      * 初始化列表数据
      */
     private void initData() {
-
 
 
     }
@@ -105,23 +83,6 @@ public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
      * 事件监听器初始化
      */
     private void initListener() {
-
-        refreshView.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-                //刷新列表
-//                pullToRefreshLayout.complete();
-                handler.postDelayed(task, 2000);
-            }
-
-            @Override
-            public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
-                //加载更多
-//                pullToRefreshLayout.complete();
-                handler.postDelayed(task, 2000);
-            }
-        });
-
 
         menuRecycle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +94,7 @@ public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
         menuNdk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoActivity(NdkDemoActivity.class);
+
             }
         });
 
@@ -184,10 +145,19 @@ public class MainFragment extends BaseMvpFragment<MainContract.IMainPresenter> {
     }
 
 
-    private void gotoActivity(Class aClass){
-        Intent intent=new Intent(getActivity(),aClass);
+    private void gotoActivity(Class aClass) {
+        Intent intent = new Intent(getActivity(), aClass);
         startActivity(intent);
     }
 
 
+    @Override
+    public void isLoading() {
+
+    }
+
+    @Override
+    public void isCompleted() {
+
+    }
 }

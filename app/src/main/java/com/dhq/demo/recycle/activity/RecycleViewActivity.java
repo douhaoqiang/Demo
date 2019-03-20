@@ -1,5 +1,6 @@
 package com.dhq.demo.recycle.activity;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,7 +27,7 @@ import butterknife.Unbinder;
  * Created by douhaoqiang on 2016/9/6.
  */
 
-public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecyclePresenter> implements RecycleContract.IRecycleView {
+public class RecycleViewActivity extends BaseMvpActivity implements RecycleContract.IRecycleView {
 
     @BindView(R.id.home_first_recycleview)
     RecyclerView recycleview;
@@ -34,16 +35,20 @@ public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecycl
 
     private BaseRvAdapter<MyMessage> adapter;
 
+    private RecycleViewPresenter mPresenter;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_recycleview;
     }
 
     @Override
-    protected void initializes() {
-
+    protected void initializes(Bundle savedInstanceState) {
+        
         bind = ButterKnife.bind(this);
         initView();
+        mPresenter = new RecycleViewPresenter(this);
+
         getData();
     }
 
@@ -86,11 +91,7 @@ public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecycl
         mPresenter.getListData();
     }
 
-    @Override
-    protected RecycleViewPresenter createPresenter() {
-        return new RecycleViewPresenter(this);
-    }
-
+    
 
     @Override
     protected void onDestroy() {
