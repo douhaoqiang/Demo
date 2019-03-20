@@ -1,5 +1,6 @@
 package com.dhq.mywidget.cardswipe;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.cardswipelibrary.good.CardAdapter;
 import com.dhq.cardswipelibrary.good.CardSlideLayout;
 import com.dhq.mywidget.R;
@@ -23,7 +24,7 @@ import static com.dhq.cardswipelibrary.good.CardSlideLayout.VANISH_TYPE_LEFT;
  * Create by 2017/8/23.
  */
 
-public class CardSwipeActivity extends BaseActivity{
+public class CardSwipeActivity extends BaseMvpActivity {
 
     private CardSlideLayout.CardSwitchListener cardSwitchListener;
 
@@ -48,7 +49,8 @@ public class CardSwipeActivity extends BaseActivity{
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes(Bundle savedInstanceState) {
+
         initView();
     }
 

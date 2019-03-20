@@ -1,6 +1,8 @@
 package com.dhq.mywidget.ui;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import android.os.Bundle;
+
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.mywidget.R;
 
 /**
@@ -8,7 +10,7 @@ import com.dhq.mywidget.R;
  * Created by douhaoqiang on 2017/11/10.
  */
 
-public class SvgActivity extends BaseActivity {
+public class SvgActivity extends BaseMvpActivity {
 
 
     @Override
@@ -17,8 +19,10 @@ public class SvgActivity extends BaseActivity {
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes(Bundle savedInstanceState) {
+
 
     }
+
 
 }

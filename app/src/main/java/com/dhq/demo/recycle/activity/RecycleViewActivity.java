@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.R;
 import com.dhq.baselibrary.adapter.ItemTouchCallback;
-import com.dhq.baselibrary.adapter.RecycleViewBaseAdapter;
+import com.dhq.baselibrary.adapter.BaseRvAdapter;
 import com.dhq.baselibrary.adapter.RecycleViewBaseHolder;
 import com.dhq.demo.recycle.bean.MyMessage;
 import com.dhq.demo.recycle.contract.RecycleContract;
@@ -32,7 +32,7 @@ public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecycl
     RecyclerView recycleview;
     private Unbinder bind;
 
-    private RecycleViewBaseAdapter<MyMessage> adapter;
+    private BaseRvAdapter<MyMessage> adapter;
 
     @Override
     protected int getLayoutId() {
@@ -49,7 +49,7 @@ public class RecycleViewActivity extends BaseMvpActivity<RecycleContract.IRecycl
 
     private void initView(){
         recycleview.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecycleViewBaseAdapter<MyMessage>(R.layout.recycle_view_item) {
+        adapter = new BaseRvAdapter<MyMessage>(R.layout.recycle_view_item) {
             @Override
             public void convert(RecycleViewBaseHolder holder, MyMessage message, int position) {
 

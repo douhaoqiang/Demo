@@ -2,23 +2,18 @@ package com.dhq.demo;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 
-import com.dhq.baselibrary.activity.BaseActivity;
-import com.dhq.demo.main.ui.MainActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.widget.MotionListener;
 import com.dhq.demo.widget.SlideIcon;
-import com.dhq.demo.widget.SlideView;
 
 /**
  * DESC
  * Created by douhaoqiang on 2017/3/1.
  */
-public class SlideViewActivity extends BaseActivity {
+public class SlideViewActivity extends BaseMvpActivity {
 
     private static final String TAG = "SlideViewActivity";
 
@@ -37,21 +32,19 @@ public class SlideViewActivity extends BaseActivity {
     }
 
     @Override
-    protected void initialize() {
-
-
+    protected void initializes(Bundle savedInstanceState) {
         mSlideView = (SlideIcon) findViewById(R.id.slideview);
 
 
         mSlideView.setListener(new MotionListener() {
             @Override
             public void onActionMove(int distanceX) {
-                Log.d(TAG,"distanceX:"+distanceX);
+                Log.d(TAG, "distanceX:" + distanceX);
             }
 
             @Override
             public void onActionUp(int x) {
-                Log.d(TAG,"x:"+x);
+                Log.d(TAG, "x:" + x);
             }
         });
 
@@ -87,9 +80,6 @@ public class SlideViewActivity extends BaseActivity {
 //                mSlideView.reset();
 //            }
 //        });
-
     }
-
-
 
 }

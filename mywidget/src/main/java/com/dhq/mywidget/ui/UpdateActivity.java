@@ -1,17 +1,16 @@
 package com.dhq.mywidget.ui;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 
 import com.dhq.appupdate.config.UpdateConfiguration;
-import com.dhq.appupdate.listener.OnButtonClickListener;
 import com.dhq.appupdate.listener.OnDownloadListener;
 import com.dhq.appupdate.manager.DownloadManager;
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.mywidget.R;
 
 import java.io.File;
@@ -20,7 +19,7 @@ import java.io.File;
  * DESC
  * Created by douhaoqiang on 2019/1/7.
  */
-public class UpdateActivity extends BaseActivity implements OnDownloadListener {
+public class UpdateActivity extends BaseMvpActivity implements OnDownloadListener {
 
     private Button btn_update;
     private DownloadManager manager;
@@ -33,7 +32,7 @@ public class UpdateActivity extends BaseActivity implements OnDownloadListener {
             super.handleMessage(msg);
 //            progressBar.setMax(msg.arg1);
 //            progressBar.setProgress(msg.arg2);
-            btn_update.setText(msg.arg2+"");
+            btn_update.setText(msg.arg2 + "");
         }
     };
 
@@ -43,9 +42,9 @@ public class UpdateActivity extends BaseActivity implements OnDownloadListener {
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes(Bundle savedInstanceState) {
 
-        btn_update=findViewById(R.id.btn_update);
+        btn_update = findViewById(R.id.btn_update);
 
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +80,7 @@ public class UpdateActivity extends BaseActivity implements OnDownloadListener {
                 .setShowNotification(true)
                 //设置强制更新
                 .setForcedUpgrade(true);
-                //设置下载过程的监听
+        //设置下载过程的监听
 //                .setOnDownloadListener(this);
 
         manager = DownloadManager.getInstance(this);

@@ -2,7 +2,6 @@ package com.dhq.demo.home.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.Size;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dhq.baselibrary.adapter.ItemTouchCallback;
-import com.dhq.baselibrary.adapter.RecycleViewBaseAdapter;
+import com.dhq.baselibrary.adapter.BaseRvAdapter;
 import com.dhq.baselibrary.adapter.RecycleViewBaseHolder;
 import com.dhq.demo.R;
 import com.dhq.demo.recycle.bean.MyMessage;
@@ -35,7 +34,7 @@ public class ItemFragment extends Fragment {
     @BindView(R.id.item_fragment_recyclerview)
     RecyclerView mRecyclerview;
 
-    private RecycleViewBaseAdapter<MyMessage> adapter;
+    private BaseRvAdapter<MyMessage> adapter;
     private Unbinder bind;
 
     @Nullable
@@ -58,7 +57,7 @@ public class ItemFragment extends Fragment {
 
     private void initView() {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new RecycleViewBaseAdapter<MyMessage>(R.layout.recycle_view_item) {
+        adapter = new BaseRvAdapter<MyMessage>(R.layout.recycle_view_item) {
             @Override
             public void convert(RecycleViewBaseHolder holder, MyMessage message, int position) {
 

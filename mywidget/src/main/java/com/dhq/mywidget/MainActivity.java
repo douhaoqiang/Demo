@@ -2,12 +2,13 @@ package com.dhq.mywidget;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.baselibrary.util.PermissionUtil.PermissionListener;
 import com.dhq.baselibrary.util.PermissionUtil.PermissionUtil;
 import com.dhq.mywidget.cardswipe.CardSwipeActivity;
@@ -20,7 +21,7 @@ import com.dhq.mywidget.ui.UpdateActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseMvpActivity {
 
     @BindView(R.id.btn_http_test)
     Button btnHttpTest;
@@ -51,7 +52,8 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes(Bundle savedInstanceState) {
+
         ButterKnife.bind(this);
 
         btnHttpTest.setOnClickListener(new View.OnClickListener() {

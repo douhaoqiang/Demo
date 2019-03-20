@@ -3,12 +3,13 @@ package com.dhq.mywidget.ui;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.imagecompress.CompressHelper;
 import com.dhq.imagecompress.FileUtil;
 import com.dhq.mywidget.R;
@@ -24,7 +25,7 @@ import java.util.Random;
  * Create by 2017/8/17.
  */
 
-public class CompressActivity extends BaseActivity {
+public class CompressActivity extends BaseMvpActivity {
 
     private ImageView mImageOld;
     private ImageView mImageNew;
@@ -42,7 +43,8 @@ public class CompressActivity extends BaseActivity {
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes(Bundle savedInstanceState) {
+
         mImageOld = (ImageView) findViewById(R.id.main_image_old);
         mImageNew = (ImageView) findViewById(R.id.main_image_new);
         mTextOld = (TextView) findViewById(R.id.main_text_old);
@@ -53,7 +55,6 @@ public class CompressActivity extends BaseActivity {
     public void compress(View view) {
         // 默认的压缩方法，多张图片只需要直接加入循环即可
         newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(oldFile);
-
 
 
 //        String yourFileName = "123.jpg";

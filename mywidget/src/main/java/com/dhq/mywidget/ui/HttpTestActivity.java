@@ -1,9 +1,10 @@
 package com.dhq.mywidget.ui;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.mywidget.R;
 import com.dhq.net.BaseObserver;
 import com.dhq.net.DownLoadObserver;
@@ -17,7 +18,7 @@ import java.util.HashMap;
  * Created by douhaoqiang on 2017/7/24.
  */
 
-public class HttpTestActivity extends BaseActivity {
+public class HttpTestActivity extends BaseMvpActivity {
 
     @Override
     protected int getLayoutId() {
@@ -25,7 +26,8 @@ public class HttpTestActivity extends BaseActivity {
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes(Bundle savedInstanceState) {
+
         findViewById(R.id.tv_form_request).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +99,7 @@ public class HttpTestActivity extends BaseActivity {
     /**
      * 上传文件
      */
-    private void uploadFile(){
+    private void uploadFile() {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("page", "1");
@@ -114,14 +116,14 @@ public class HttpTestActivity extends BaseActivity {
             }
 
         };
-        HttpUtil.getInstance().uploadFileReq("http://192.168.12.38/hecsp/elder/queryFoodInfo",null,loginObserver );
+        HttpUtil.getInstance().uploadFileReq("http://192.168.12.38/hecsp/elder/queryFoodInfo", null, loginObserver);
     }
 
 
     /**
      * 文件下载
      */
-    private void downloadFile(){
+    private void downloadFile() {
         HttpUtil.getInstance().downLoadFileReq("", new HashMap<String, Object>(), new DownLoadObserver() {
             @Override
             public void onDownLoadSuccess(File file) {

@@ -1,18 +1,18 @@
 package com.dhq.demo.edit;
 
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.R;
 
 /**
  * DESC
  * Created by douhaoqiang on 2016/11/11.
  */
-public class EditActivity extends BaseActivity {
+public class EditActivity extends BaseMvpActivity {
     private static final String TAG = "EditActivity";
 
     private EditText edtext1;
@@ -23,16 +23,18 @@ public class EditActivity extends BaseActivity {
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes(Bundle savedInstanceState) {
+
+
         init();
 //        initListener();
     }
 
-    private void init(){
+    private void init() {
 //        edtext1=(EditText)findViewById(R.id.edit_name);
     }
 
-    private void initListener(){
+    private void initListener() {
 
         edtext1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -45,7 +47,7 @@ public class EditActivity extends BaseActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction()==KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     //表示按下的是回车键
 //                    showToast("点击回车键！");
 //                    edtext.isFocused();

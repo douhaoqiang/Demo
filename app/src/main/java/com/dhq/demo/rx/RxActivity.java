@@ -1,13 +1,13 @@
 package com.dhq.demo.rx;
 
+import android.os.Bundle;
 import android.util.Log;
 
-import com.dhq.baselibrary.activity.BaseActivity;
+import com.dhq.baselibrary.activity.BaseMvpActivity;
 import com.dhq.demo.R;
 
 import rx.Observable;
 import rx.Observer;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2016/11/15.
  */
 
-public class RxActivity extends BaseActivity {
+public class RxActivity extends BaseMvpActivity {
 
     @Override
     protected int getLayoutId() {
@@ -25,7 +25,8 @@ public class RxActivity extends BaseActivity {
     }
 
     @Override
-    protected void initialize() {
+    protected void initializes(Bundle savedInstanceState) {
+
         init();
     }
 
@@ -92,7 +93,7 @@ public class RxActivity extends BaseActivity {
     }
 
 
-    private <T> void dddd(){
+    private <T> void dddd() {
         new Observer<T>() {
             @Override
             public void onCompleted() {

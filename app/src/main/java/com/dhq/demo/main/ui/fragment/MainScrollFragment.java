@@ -7,14 +7,14 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
 
-import com.dhq.baselibrary.fragment.BaseFragment;
+import com.dhq.baselibrary.fragment.BaseMvpFragment;
 import com.dhq.demo.R;
 
 /**
  * DESC
  * Created by douhaoqiang on 2016/11/23.
  */
-public class MainScrollFragment extends BaseFragment {
+public class MainScrollFragment extends BaseMvpFragment {
 
     private static final String TAG = "MainScrollFragment";
     private ScrollView pullableView;
@@ -31,15 +31,13 @@ public class MainScrollFragment extends BaseFragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                Log.e(TAG,"上拉："+canChildScrollUp(v));
-                Log.e(TAG,"下拉："+canChildScrollDown(v));
+                Log.e(TAG, "上拉：" + canChildScrollUp(v));
+                Log.e(TAG, "下拉：" + canChildScrollDown(v));
 
                 return false;
             }
         });
     }
-
-
 
 
     /**
