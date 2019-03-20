@@ -3,7 +3,7 @@ package com.dhq.baselibrary.presenter;
 import java.lang.ref.WeakReference;
 
 /**
- * DESC
+ * DESC Presenter父类
  * Created by douhaoqiang on 2016/9/1.
  */
 
@@ -11,12 +11,19 @@ public class BasePresenter<V> {
 
     private WeakReference<V> viewRef;
 
+    public BasePresenter(V view) {
+        attachView(view);
+        if (view instanceof PresenterManger) {
+            ((PresenterManger) view).addPresenter(this);
+        }
+    }
+
     /**
      * 绑定对应的view
      *
      * @param view
      */
-    public void attachView(V view) {
+    private void attachView(V view) {
         viewRef = new WeakReference<>(view);
     }
 
