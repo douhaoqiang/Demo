@@ -166,6 +166,10 @@ public class HttpUtil {
         }
 
         List<MultipartBody.Part> parts = builder.build().parts();
+        if (parts==null || parts.size()==0){
+
+            return;
+        }
         mApiService.uploadFileReq(url, parts).compose(new RxTransformer()).subscribe(observer);
     }
 

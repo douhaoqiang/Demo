@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.dhq.dialoglibrary.MyDialog;
 import com.dhq.net.entity.BaseResponse;
+import com.dhq.net.exception.MyHttpException;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -73,21 +74,6 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
     public void onNext(BaseResponse response) {
 
         mResponse = response;
-
-    }
-
-    @Override
-    public void onError(Throwable e) {
-        hintWaitingDialog();
-        Log.d(TAG, e.toString());
-        fail("网络请求失败！");
-
-    }
-
-    @Override
-    public void onComplete() {
-        hintWaitingDialog();
-
         if (mResponse == null) {
             fail("请求数据错误");
             return;
@@ -97,23 +83,30 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
             return;
         }
 
-        try {
-            Class<T> entityClass = getEntityClass();
-            if (entityClass != null) {
-                if (TextUtils.isEmpty(mEntityName)) {
-                    T result = gson.fromJson(mResponse.getResult(), getEntityClass());
-                    success(result);
-                } else {
-                    T result = gson.fromJson(mResponse.getResultMap(), getEntityClass());
-                    success(result);
-                }
-
+        Class<T> entityClass = getEntityClass();
+        if (entityClass != null) {
+            if (TextUtils.isEmpty(mEntityName)) {
+                T result = gson.fromJson(mResponse.getResult(), getEntityClass());
+                success(result);
+            } else {
+                T result = gson.fromJson(mResponse.getResultMap(), getEntityClass());
+                success(result);
             }
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-            fail("解析数据失败！");
+
         }
 
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        hintWaitingDialog();
+        String error = MyHttpException.handleException(e).getMessage();
+        fail(error);
+    }
+
+    @Override
+    public void onComplete() {
+        hintWaitingDialog();
     }
 
 
