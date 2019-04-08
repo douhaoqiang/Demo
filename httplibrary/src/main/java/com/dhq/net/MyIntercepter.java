@@ -2,8 +2,6 @@ package com.dhq.net;
 
 import android.util.Log;
 
-import com.dhq.base.util.LogUtil;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -77,7 +75,7 @@ public class MyIntercepter implements Interceptor {
             ResponseBody responseBody = response.body();
 //            Log.d("infe","响应头："+response.code());
 //            Log.d("infe","请求地址："+response.request().url());
-            Log.d("infe", "返回数据：" + responseBody.string());
+//            Log.d("infe", "返回数据：" + responseBody.string());
 
             long contentLength = responseBody.contentLength();
             String bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
@@ -140,7 +138,7 @@ public class MyIntercepter implements Interceptor {
                 return;
             }
             String params = buffer.readString(charset);
-            LogUtil.d(TAG, "请求参数： | " + params);
+//            LogUtil.d(TAG, "请求参数： | " + params);
         } catch (IOException e) {
             e.printStackTrace();
         }

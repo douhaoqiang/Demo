@@ -1,112 +1,51 @@
 package com.dhq.net;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.dhq.dialoglibrary.MyDialog;
-import com.dhq.net.entity.BaseResponse;
 import com.dhq.net.exception.MyHttpException;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.io.IOException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import okhttp3.ResponseBody;
 
 /**
  * DESC 通用请求响应处理类
  * Created by douhaoqiang on 2017/2/14.
  */
-public abstract class BaseObserver<T> implements Observer<BaseResponse> {
+public abstract class BaseObserver implements Observer<ResponseBody> {
+
     private static final String TAG = "BaseObserver";
-    private Gson gson = new Gson();
-    private Context mContext;
+
     private Disposable mDisposable;
-    private MyDialog myDialog;
-    private String mEntityName;
-    private BaseResponse mResponse;
 
-    /**
-     * 显示弹框
-     *
-     * @param context
-     */
-    public BaseObserver(Context context) {
-        mContext = context;
-        myDialog = new MyDialog(mContext, MyDialog.WARNING_TYPE)
-                .setContentText("加载中。。。");
-
-        myDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                //弹框消失，取消网络请求
-                cancle();
-            }
-        });
-
-    }
-
-    /**
-     * 不显示弹框
-     */
-    public BaseObserver() {
-
-    }
-
-    /**
-     * 不显示弹框
-     */
-    public BaseObserver(String entityName) {
-        mEntityName = entityName;
-    }
 
     @Override
     public void onSubscribe(Disposable d) {
         this.mDisposable = d;
-        showWaitingDialog();
+        showLoadingDialog();
     }
 
     @Override
-    public void onNext(BaseResponse response) {
-
-        mResponse = response;
-        if (mResponse == null) {
-            fail("请求数据错误");
-            return;
-        }
-        if (!"success".equals(mResponse.getResult())) {
-            fail(mResponse.getResult());
-            return;
+    public void onNext(ResponseBody response) {
+        try {
+            reqSucc(response.string());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        Class<T> entityClass = getEntityClass();
-        if (entityClass != null) {
-            if (TextUtils.isEmpty(mEntityName)) {
-                T result = gson.fromJson(mResponse.getResult(), getEntityClass());
-                success(result);
-            } else {
-                T result = gson.fromJson(mResponse.getResultMap(), getEntityClass());
-                success(result);
-            }
-
-        }
 
     }
 
     @Override
     public void onError(Throwable e) {
-        hintWaitingDialog();
+        hintLoadingDialog();
         String error = MyHttpException.handleException(e).getMessage();
-        fail(error);
+        reqFail(error);
     }
 
     @Override
     public void onComplete() {
-        hintWaitingDialog();
+        hintLoadingDialog();
     }
 
 
@@ -119,53 +58,28 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
 
 
     /**
-     * 显示网络请求等待框
+     * 显示请求等待框
      */
-    private void showWaitingDialog() {
-        if (myDialog != null) {
-            myDialog.show();
-        }
-    }
+    public abstract void showLoadingDialog();
 
     /**
-     * 取消等待框
+     * 隐藏请求等待框
      */
-    private void hintWaitingDialog() {
-        if (myDialog != null) {
-            myDialog.cancel();
-        }
-    }
-
-
-    /**
-     * 获取泛型T的Class
-     *
-     * @return
-     */
-    public Class<T> getEntityClass() {
-        Type t = getClass().getGenericSuperclass();
-        Class<T> entityClass = null;
-        if (t instanceof ParameterizedType) {
-            Type[] p = ((ParameterizedType) t).getActualTypeArguments();
-            entityClass = (Class<T>) p[0];
-        }
-        return entityClass;
-    }
-
+    public abstract void hintLoadingDialog();
 
     /**
      * 请求成功
      *
-     * @param result 请求数据
+     * @param response 请求返回数据
      */
-    public abstract void success(T result);
+    public abstract void reqSucc(String response);
 
     /**
      * 请求失败
      *
      * @param msg 失败信息
      */
-    public abstract void fail(String msg);
+    public abstract void reqFail(String msg);
 
 
 }

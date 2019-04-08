@@ -33,6 +33,7 @@ dependencies {
     api project(path: ':imagecompress')
     api project(':cardswipelibrary')
     api project(':appupdate')
+    api project(':dialoglibrary')
     api 'com.github.bumptech.glide:glide:3.7.0'
     api 'com.daimajia.numberprogressbar:library:1.4@aar'
 }

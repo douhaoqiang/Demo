@@ -1,7 +1,6 @@
-package com.dhq.net.entity;
+package com.dhq.mywidget.entity;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 

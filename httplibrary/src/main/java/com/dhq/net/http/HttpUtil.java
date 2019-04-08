@@ -1,7 +1,5 @@
 package com.dhq.net.http;
 
-import android.support.annotation.NonNull;
-
 import com.dhq.net.BaseObserver;
 import com.dhq.net.DownLoadObserver;
 import com.dhq.net.MyIntercepter;
@@ -248,7 +246,7 @@ public class HttpUtil {
                     .observeOn(Schedulers.computation())//需要
                     .map(new Function<ResponseBody, File>() {
                         @Override
-                        public File apply(@NonNull ResponseBody responseBody) throws Exception {
+                        public File apply(ResponseBody responseBody) throws Exception {
                             return mLoadObserver.saveFile(responseBody);
                         }
                     })

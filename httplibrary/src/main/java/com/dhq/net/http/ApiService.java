@@ -1,9 +1,5 @@
 package com.dhq.net.http;
 
-import android.support.annotation.NonNull;
-
-import com.dhq.net.entity.BaseResponse;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +32,7 @@ public interface ApiService {
      * @return
      */
     @GET()
-    Observable<BaseResponse> getReq(@NonNull @Url String url, @QueryMap HashMap<String, Object> paramMaps);
+    Observable<ResponseBody> getReq(@Url String url, @QueryMap HashMap<String, Object> paramMaps);
 
 
     /**
@@ -46,7 +42,7 @@ public interface ApiService {
      */
     @POST()
     @FormUrlEncoded
-    Observable<BaseResponse> postFormReq(@NonNull @Url String url, @FieldMap(encoded = true) HashMap<String, Object> paramMaps);
+    Observable<ResponseBody> postFormReq(@Url String url, @FieldMap(encoded = true) HashMap<String, Object> paramMaps);
 
 
     /**
@@ -57,7 +53,7 @@ public interface ApiService {
      * @return
      */
     @POST()
-    Observable<BaseResponse> postJsonReq(@NonNull @Url String url, @Body RequestBody jsonBody);
+    Observable<ResponseBody> postJsonReq(@Url String url, @Body RequestBody jsonBody);
 
 
     /**
@@ -67,11 +63,11 @@ public interface ApiService {
      */
     @Multipart
     @POST()
-    Observable<BaseResponse> uploadFileReq(@NonNull @Url String url,@Part List<MultipartBody.Part> fileList);
+    Observable<ResponseBody> uploadFileReq(@Url String url, @Part List<MultipartBody.Part> fileList);
 
 
     @Streaming
     @GET
-    Observable<ResponseBody> downLoadFileReq(@NonNull @Url String url, @QueryMap HashMap<String, Object> paramMaps);
+    Observable<ResponseBody> downLoadFileReq(@Url String url, @QueryMap HashMap<String, Object> paramMaps);
 
 }

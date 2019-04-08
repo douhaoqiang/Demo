@@ -29,7 +29,7 @@ dependencies {
     api 'io.reactivex.rxjava2:rxjava:2.0.5'
     api 'io.reactivex.rxjava2:rxandroid:2.0.1'
     api 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
-    api project(':baselibrary')
-    api project(':dialoglibrary')
+//    api project(':baselibrary')
+//    api project(':dialoglibrary')
 
 }

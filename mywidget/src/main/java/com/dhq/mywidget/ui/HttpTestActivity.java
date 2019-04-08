@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.dhq.base.activity.BaseActivity;
 import com.dhq.mywidget.R;
+import com.dhq.mywidget.protocol.MyObserver;
 import com.dhq.net.BaseObserver;
 import com.dhq.net.DownLoadObserver;
 import com.dhq.net.http.HttpUtil;
@@ -48,12 +49,12 @@ public class HttpTestActivity extends BaseActivity {
 
     private void formRequest() {
 
-        String url = "http://192.168.12.38/hecsp/elder/queryFoodInfo";
+        String url = "http://192.168.100.63/hecsp/elder/queryFoodInfo";
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("page", "1");
         hashMap.put("pagesize", "10");
 
-        BaseObserver loginObserver = new BaseObserver<Object>("foodInfo") {
+        BaseObserver loginObserver = new MyObserver<Object>("foodInfo") {
             @Override
             public void success(Object result) {
                 Log.d("info", result.toString());
@@ -77,7 +78,7 @@ public class HttpTestActivity extends BaseActivity {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("page", "1");
         hashMap.put("pagesize", "10");
-        BaseObserver loginObserver = new BaseObserver<Object>() {
+        BaseObserver loginObserver = new MyObserver<Object>() {
             @Override
             public void success(Object result) {
                 Log.d("info", result.toString());
@@ -104,7 +105,7 @@ public class HttpTestActivity extends BaseActivity {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("page", "1");
         hashMap.put("pagesize", "10");
-        BaseObserver loginObserver = new BaseObserver<Object>() {
+        BaseObserver loginObserver = new MyObserver() {
             @Override
             public void success(Object result) {
                 Log.d("info", result.toString());
