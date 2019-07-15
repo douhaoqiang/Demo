@@ -28,6 +28,11 @@ public class MyHttpException extends Exception {
         this.message = throwable.getMessage();
     }
 
+    public MyHttpException(String errorMsg, int code) {
+        this.code = code;
+        this.message = errorMsg;
+    }
+
     public int getCode() {
         return code;
     }

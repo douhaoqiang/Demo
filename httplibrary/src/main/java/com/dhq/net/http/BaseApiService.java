@@ -23,7 +23,7 @@ import retrofit2.http.Url;
  * Created by douhaoqiang on 2017/3/28.
  */
 
-public interface ApiService {
+public interface BaseApiService {
 
 
     /**

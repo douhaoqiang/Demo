@@ -17,35 +17,38 @@ public abstract class BaseObserver implements Observer<ResponseBody> {
     private static final String TAG = "BaseObserver";
 
     private Disposable mDisposable;
+    private String result="";
 
 
     @Override
     public void onSubscribe(Disposable d) {
         this.mDisposable = d;
-        showLoadingDialog();
+        reqStart();
     }
 
     @Override
     public void onNext(ResponseBody response) {
+
         try {
-            reqSucc(response.string());
+            result=response.string();
         } catch (IOException e) {
             e.printStackTrace();
+            onError(e);
         }
-
 
     }
 
     @Override
     public void onError(Throwable e) {
-        hintLoadingDialog();
-        String error = MyHttpException.handleException(e).getMessage();
-        reqFail(error);
+        reqEnd();
+        MyHttpException httpException = MyHttpException.handleException(e);
+        reqFail(httpException);
     }
 
     @Override
     public void onComplete() {
-        hintLoadingDialog();
+        reqEnd();
+        reqSucc(result);
     }
 
 
@@ -54,18 +57,19 @@ public abstract class BaseObserver implements Observer<ResponseBody> {
      */
     public void cancle() {
         mDisposable.dispose();
+        reqEnd();
     }
 
 
     /**
      * 显示请求等待框
      */
-    public abstract void showLoadingDialog();
+    public abstract void reqStart();
 
     /**
      * 隐藏请求等待框
      */
-    public abstract void hintLoadingDialog();
+    public abstract void reqEnd();
 
     /**
      * 请求成功
@@ -77,9 +81,9 @@ public abstract class BaseObserver implements Observer<ResponseBody> {
     /**
      * 请求失败
      *
-     * @param msg 失败信息
+     * @param e 异常
      */
-    public abstract void reqFail(String msg);
+    public abstract void reqFail(MyHttpException e);
 
 
 }

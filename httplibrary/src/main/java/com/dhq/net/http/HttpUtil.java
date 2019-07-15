@@ -52,7 +52,7 @@ public class HttpUtil {
     private static final String baseUrl = "http://www.baidu.com/";
 
     private Retrofit retrofit;
-    private ApiService mApiService;
+    private BaseApiService mApiService;
 
     private HttpUtil() {
         retrofitBuild();
@@ -98,7 +98,7 @@ public class HttpUtil {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(baseUrl)
                 .build();
-        mApiService = retrofit.create(ApiService.class);
+        mApiService = retrofit.create(BaseApiService.class);
     }
 
     /**
@@ -111,64 +111,6 @@ public class HttpUtil {
     public void getReq(String url, HashMap<String, Object> paramMaps, Observer observer) {
 
         mApiService.getReq(url, paramMaps).compose(new RxTransformer()).subscribe(observer);
-    }
-
-    /**
-     * get请求 添加参数
-     *
-     * @param url
-     * @param paramMaps
-     * @return
-     */
-    public void downLoadFileReq(String url, HashMap<String, Object> paramMaps, DownLoadObserver observer) {
-
-        mApiService.downLoadFileReq(url, paramMaps).compose(new RxDownloadTransformer(observer)).subscribe(observer);
-    }
-
-    /**
-     * 上传文件请求
-     *
-     * @param url
-     * @return
-     */
-    public void uploadFileReq(String url, List<File> files, BaseObserver observer) {
-        uploadFileReq(url, null, files, observer);
-    }
-
-    /**
-     * 上传文件请求
-     *
-     * @param url
-     * @return
-     */
-    public void uploadFileReq(String url, Map<String, String> map, List<File> files, BaseObserver observer) {
-//        File file = new File(picPath);
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-
-        if (files != null) {
-            for (File file : files) {
-                RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                builder.setType(MultipartBody.FORM)
-//                    .addFormDataPart("phone", phone)
-//                    .addFormDataPart("password", password)
-                        .addFormDataPart("uploadFile", file.getName(), imageBody);
-            }
-        }
-
-        if (map != null) {
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                String mapKey = entry.getKey();
-                String mapValue = entry.getValue();
-                builder.addFormDataPart(mapKey, mapValue);
-            }
-        }
-
-        List<MultipartBody.Part> parts = builder.build().parts();
-        if (parts==null || parts.size()==0){
-
-            return;
-        }
-        mApiService.uploadFileReq(url, parts).compose(new RxTransformer()).subscribe(observer);
     }
 
     /**
@@ -202,6 +144,69 @@ public class HttpUtil {
 
     }
 
+
+    /**
+     * get请求 添加参数
+     *
+     * @param url
+     * @param paramMaps
+     * @return
+     */
+    public void downLoadFileReq(String url, HashMap<String, Object> paramMaps, DownLoadObserver observer) {
+
+        mApiService.downLoadFileReq(url, paramMaps).compose(new RxDownloadTransformer(observer)).subscribe(observer);
+    }
+
+    /**
+     * 上传文件请求
+     *
+     * @param url
+     * @return
+     */
+    public void uploadFileReq(String url, List<File> files, BaseObserver observer) {
+        uploadFileReq(url, null, files, observer);
+    }
+
+    /**
+     * 上传文件请求
+     *
+     * @param url
+     * @return
+     */
+    public void uploadFileReq(String url, Map<String, String> map, List<File> files, BaseObserver observer) {
+//        File file = new File(picPath);
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+
+        if (files != null && files.size()>0) {
+            for (File file : files) {
+                RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                builder.setType(MultipartBody.FORM)
+//                    .addFormDataPart("phone", phone)
+//                    .addFormDataPart("password", password)
+                        .addFormDataPart("uploadFile", file.getName(), imageBody);
+            }
+        }else {
+            return;
+        }
+
+        if (map != null) {
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                String mapKey = entry.getKey();
+                String mapValue = entry.getValue();
+                builder.addFormDataPart(mapKey, mapValue);
+            }
+        }
+
+        List<MultipartBody.Part> parts = builder.build().parts();
+        if (parts==null || parts.size()==0){
+
+            return;
+        }
+        mApiService.uploadFileReq(url, parts).compose(new RxTransformer()).subscribe(observer);
+    }
+
+
+
     public class RxTransformer<T> implements ObservableTransformer<T, T> {
 
         @Override
@@ -214,7 +219,7 @@ public class HttpUtil {
                     /*
                     解除订阅关系也发生在IO线程中
                      */
-//                    .unsubscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
                     /*
                     指定subscriber (观察者)的回调在主线程中，
                     observeOn的作用是指定subscriber（观察者）将会在哪个Scheduler观察这个Observable,
