@@ -1,12 +1,12 @@
 package com.dhq.mywidget.protocol;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.TextUtils;
 
 import com.dhq.dialoglibrary.MyDialog;
 import com.dhq.mywidget.entity.BaseResponse;
 import com.dhq.net.BaseObserver;
+import com.dhq.net.exception.MyHttpException;
 import com.google.gson.Gson;
 
 import java.lang.reflect.ParameterizedType;
@@ -19,20 +19,14 @@ import java.lang.reflect.Type;
  */
 public abstract class MyObserver<T> extends BaseObserver {
 
-    private String mEntityName;
+
     private Context mContext;
     private Gson gson = new Gson();
     private MyDialog myDialog;
+    private boolean mIsShowLoading;
+    private boolean mIsShowError;
 
-    /**
-     * 显示弹框
-     *
-     * @param context
-     */
-    public MyObserver(Context context) {
-        mContext = context;
 
-    }
 
     /**
      * 不显示弹框
@@ -42,32 +36,47 @@ public abstract class MyObserver<T> extends BaseObserver {
     }
 
     /**
-     * 不显示弹框
+     * 显示弹框
+     *
+     * @param context
      */
-    public MyObserver(String entityName) {
-        mEntityName = entityName;
+    public MyObserver(Context context) {
+        this(context,true,true);
+    }
+
+
+
+    /**
+     * 显示弹框
+     *
+     * @param context
+     */
+    public MyObserver(Context context,boolean isShowLoading,boolean isShowError) {
+        mContext = context;
+        mIsShowLoading = isShowLoading;
+        mIsShowError = isShowError;
     }
 
 
     @Override
-    public void showLoadingDialog() {
+    public void reqStart() {
 
         if (mContext != null) {
             myDialog = new MyDialog(mContext, MyDialog.WARNING_TYPE)
                     .setContentText("加载中。。。");
 
-            myDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    //弹框消失，取消网络请求
-                    cancle();
-                }
-            });
+//            myDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialog) {
+//                    //弹框消失，取消网络请求
+//                    cancle();
+//                }
+//            });
         }
     }
 
     @Override
-    public void hintLoadingDialog() {
+    public void reqEnd() {
         if (myDialog != null) {
             myDialog.cancel();
         }
@@ -77,34 +86,33 @@ public abstract class MyObserver<T> extends BaseObserver {
     public void reqSucc(String response) {
 
         if (TextUtils.isEmpty(response)) {
-            reqFail("数据错误");
+            reqFail(new MyHttpException("数据错误", MyHttpException.ERROR.UNKNOWN));
             return;
         }
 
         BaseResponse baseResponse = gson.fromJson(response, BaseResponse.class);
 
         if (!"success".equals(baseResponse.getResult())) {
-            reqFail(baseResponse.getResult());
+            reqFail(new MyHttpException(baseResponse.getResult(), MyHttpException.ERROR.UNKNOWN));
             return;
         }
 
         Class<T> entityClass = getEntityClass();
         if (entityClass != null) {
-            if (TextUtils.isEmpty(mEntityName)) {
-                T result = gson.fromJson(baseResponse.getResult(), getEntityClass());
-                success(result);
-            } else {
-                T result = gson.fromJson(baseResponse.getResultMap(), getEntityClass());
-                success(result);
-            }
-
+            success(gson.fromJson(baseResponse.getResultMap(), entityClass));
+        }else {
+            fail("请求失败");
         }
     }
 
     @Override
-    public void reqFail(String msg) {
-        fail(msg);
+    public void reqFail(MyHttpException e) {
+        fail(e.getMessage());
     }
+
+    public abstract void success(T result);
+
+    public abstract void fail(String msg);
 
 
     /**
@@ -121,11 +129,5 @@ public abstract class MyObserver<T> extends BaseObserver {
         }
         return entityClass;
     }
-
-
-    public abstract void success(T result);
-
-    public abstract void fail(String msg);
-
 
 }

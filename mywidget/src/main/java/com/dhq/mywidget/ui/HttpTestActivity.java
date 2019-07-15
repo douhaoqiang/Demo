@@ -54,7 +54,7 @@ public class HttpTestActivity extends BaseActivity {
         hashMap.put("page", "1");
         hashMap.put("pagesize", "10");
 
-        BaseObserver loginObserver = new MyObserver<Object>("foodInfo") {
+        BaseObserver loginObserver = new MyObserver<Object>() {
             @Override
             public void success(Object result) {
                 Log.d("info", result.toString());
