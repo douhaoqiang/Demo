@@ -70,9 +70,10 @@
                 android:text="@string/main_menu_slide_view" />
 
             <Button
+                android:id="@+id/btn_wheel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/main_menu_more" />
+                android:text="@string/main_menu_wheel" />
 
             <Button
                 android:layout_width="match_parent"

@@ -10,8 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dhq.base.activity.BaseActivity;
-import com.dhq.imagecompress.CompressHelper;
-import com.dhq.imagecompress.FileUtil;
+
 import com.dhq.mywidget.R;
 
 import java.io.File;
@@ -54,7 +53,7 @@ public class CompressActivity extends BaseActivity {
 
     public void compress(View view) {
         // 默认的压缩方法，多张图片只需要直接加入循环即可
-        newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(oldFile);
+//        newFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(oldFile);
 
 
 //        String yourFileName = "123.jpg";
@@ -72,8 +71,8 @@ public class CompressActivity extends BaseActivity {
 //                .compressToFile(oldFile);
 
 
-        mImageNew.setImageBitmap(BitmapFactory.decodeFile(newFile.getAbsolutePath()));
-        mTextNew.setText(String.format("Size : %s", getReadableFileSize(newFile.length())));
+//        mImageNew.setImageBitmap(BitmapFactory.decodeFile(newFile.getAbsolutePath()));
+//        mTextNew.setText(String.format("Size : %s", getReadableFileSize(newFile.length())));
     }
 
     public void takePhoto(View view) {
@@ -85,21 +84,21 @@ public class CompressActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            if (data == null) {
-                showError("Failed to open picture!");
-                return;
-            }
-            try {
-                oldFile = FileUtil.getTempFile(this, data.getData());
-                mImageOld.setImageBitmap(BitmapFactory.decodeFile(oldFile.getAbsolutePath()));
-                mTextOld.setText(String.format("Size : %s", getReadableFileSize(oldFile.length())));
-                clearImage();
-            } catch (IOException e) {
-                showError("Failed to read picture data!");
-                e.printStackTrace();
-            }
-        }
+//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+//            if (data == null) {
+//                showError("Failed to open picture!");
+//                return;
+//            }
+//            try {
+//                oldFile = FileUtil.getTempFile(this, data.getData());
+//                mImageOld.setImageBitmap(BitmapFactory.decodeFile(oldFile.getAbsolutePath()));
+//                mTextOld.setText(String.format("Size : %s", getReadableFileSize(oldFile.length())));
+//                clearImage();
+//            } catch (IOException e) {
+//                showError("Failed to read picture data!");
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void showError(String errorMessage) {

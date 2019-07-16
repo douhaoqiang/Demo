@@ -52,6 +52,9 @@ public class MainFragment extends BaseFragment implements MainContract.IMainView
     @BindView(R.id.main_menu_slide_view)
     Button slideView;
 
+    @BindView(R.id.btn_wheel)
+    Button btnWheel;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main_lay;
@@ -137,6 +140,13 @@ public class MainFragment extends BaseFragment implements MainContract.IMainView
             @Override
             public void onClick(View v) {
                 gotoActivity(SlideViewActivity.class);
+            }
+        });
+
+        btnWheel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                gotoActivity(WheelActivity.class);
             }
         });
 
